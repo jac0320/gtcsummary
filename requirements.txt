@@ -1,0 +1,13 @@
+streamlit
+streamlit_pdf_viewer
+git+https://github.com/nathanrchn/perplexityai.git
+llama-index-llms-openai
+scipy
+JinJa2
+PyPDF2
+beautifulsoup4
+llama-index
+llama-index-core 
+llama-index-readers-file 
+llama-index-llms-ollama 
+llama-index-embeddings-huggingface

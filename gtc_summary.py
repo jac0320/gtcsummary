@@ -7,17 +7,17 @@ import numpy as np
 
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
+from llama_index.llms.openai import OpenAI
 from perplexity import Perplexity
 
 from static import *
 
 from llama_index.core import (
+    ServiceContext,
     VectorStoreIndex,
     SimpleDirectoryReader, 
     StorageContext,
-    PromptTemplate,
     load_index_from_storage,
-
     Settings
 )
 
@@ -28,16 +28,11 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
 KEYNOTE_PERSIST_DIR = ".keynote_storage"
 NOTES_PERSIST_DIR = ".notes_storage"
 
 
 def stream_data(response):
-    for word in response.split(" "):
-        yield word + " "
-        time.sleep(0.02)
-
     for word in response.split(" "):
         yield word + " "
         time.sleep(0.02)
@@ -58,21 +53,26 @@ def keynote_qa():
     if not os.path.exists(KEYNOTE_PERSIST_DIR):
         # load the documents and create the index
         documents = SimpleDirectoryReader("keynote").load_data()
-        index = VectorStoreIndex.from_documents(documents)
-        # store it for later
+        # index = VectorStoreIndex.from_documents(documents)
+        service_context = ServiceContext.from_defaults(
+            llm=OpenAI(
+                model="gpt-3.5-turbo", 
+                temperature=0.5, 
+                system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features."
+                )
+            )
+        index = VectorStoreIndex.from_documents(documents, service_context=service_context)
         index.storage_context.persist(persist_dir=KEYNOTE_PERSIST_DIR)
     else:
         # load the existing index
         storage_context = StorageContext.from_defaults(persist_dir=KEYNOTE_PERSIST_DIR)
         index = load_index_from_storage(storage_context)
 
-    if 'embeddings' not in st.session_state:
-        st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
-
     # embedding model
-    Settings.embed_model = st.session_state.embeddings
+    # Settings.embed_model = st.session_state.embeddings
+
     # ollama
-    Settings.llm = Ollama(model="mistral", request_timeout=30.0)
+    # Settings.llm = Ollama(model="mistral", request_timeout=30.0)
 
     if 'chat_engine' not in st.session_state or st.session_state.chat_engine is None:
         st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question")
@@ -108,10 +108,17 @@ def ama_qa():
     # check if storage already exists
     if not os.path.exists(NOTES_PERSIST_DIR):
         # load the documents and create the index
-        documents = SimpleDirectoryReader("notes").load_data()
-        index = VectorStoreIndex.from_documents(documents)
-        # store it for later
-        index.storage_context.persist(persist_dir=NOTES_PERSIST_DIR)
+        documents = SimpleDirectoryReader("keynote").load_data()
+        # index = VectorStoreIndex.from_documents(documents)
+        service_context = ServiceContext.from_defaults(
+            llm=OpenAI(
+                model="gpt-3.5-turbo", 
+                temperature=0.5, 
+                system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features."
+                )
+            )
+        index = VectorStoreIndex.from_documents(documents, service_context=service_context)
+        index.storage_context.persist(persist_dir=KEYNOTE_PERSIST_DIR)
     else:
         # load the existing index
         storage_context = StorageContext.from_defaults(persist_dir=NOTES_PERSIST_DIR)
@@ -121,10 +128,10 @@ def ama_qa():
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
 
     # embedding model
-    Settings.embed_model = st.session_state.embeddings
+    # Settings.embed_model = st.session_state.embeddings
 
     # ollama
-    Settings.llm = Ollama(model="mistral", request_timeout=30.0)
+    # Settings.llm = Ollama(model="mistral", request_timeout=30.0)
 
     if 'ama_chat_engine' not in st.session_state or st.session_state.ama_chat_engine is None:
         st.session_state.ama_chat_engine = index.as_chat_engine(chat_mode="condense_question")
@@ -146,9 +153,6 @@ def ama_qa():
     st.button("Start New Chat 🧹", key='ama_clean', on_click=reset_ama_messages, use_container_width=True)
 
 def talk_show():
-
-    if 'embeddings' not in st.session_state:
-        st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
 
     user_search = st.text_input("Search for a talk", key='talk_search')
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
@@ -181,9 +185,6 @@ def talk_show():
 
 def company_show():
 
-    if 'embeddings' not in st.session_state:
-        st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
-
     user_search = st.text_input("Descibe what you wish to know", key='company_search')
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
@@ -194,7 +195,8 @@ def company_show():
     embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
     df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
     st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
-
+    
+    st.write("---")
     if query := st.chat_input("Tell me more about Unstructured ai company?", key='company_chat'):
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
@@ -212,6 +214,9 @@ def company_show():
 def main():
 
     st.title("GTC 2024 | A Summary")
+
+    if 'embeddings' not in st.session_state:
+        st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(
         ["👋 Welcome!", "🏆 The Keynote", "📕 Ask My Notes", "🎙️ Technical Talks", "🏢 Companies", ]

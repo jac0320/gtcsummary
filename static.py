@@ -157,12 +157,8 @@ def notes_summary():
             This was mentioned in the keynote by Jensen Huang. He said
                     
             > The way that computing was done is Retrieval, you would grab you phone and touche something. And some signal go off basically
-            to some sotrage somwhere that is PRE-RECORDED content somebody wrote, like a sotry, image, video. Then
-            Pre-recorded content is streamed back to the phoen and recomposed in a way based on a recommender system to present the information
-            to you. The future of the vast majority of the content will not be retrieved and the reason is those pre-recorded content was made by somebody 
-            who doesn't understand the context which is the reason why we retrieve so much content. If you can work with an AI that understand the context,
-            like who you are, for what reason you're fetching this information, and produce the information for you just the way you like it. 
-            The amount of enery we save, the amount resource we save, the amount of wasted time we saved wiull be tremendous."
+            to some sotrage somwhere that is PRE-RECORDED content somebody wrote, like a sotry, image, video. Then Pre-recorded content is streamed back to the phoen and recomposed in a way based on a recommender system to present the information to you. The future of the vast majority of the content will not be retrieved and the reason is those pre-recorded content was made by somebody 
+            who doesn't understand the context which is the reason why we retrieve so much content. If you can work with an AI that understand the context, like who you are, for what reason you're fetching this information, and produce the information for you just the way you like it. The amount of enery we save, the amount resource we save, the amount of wasted time we saved wiull be tremendous."
                     
             Take the following example when I want to know which fasterner to use for a outdoor deck using 2x6 redwood:
             
@@ -170,9 +166,7 @@ def notes_summary():
             2. Then I search for a video on YouTube, which is a 10 minutes video that I have to watch, and (hopefully) get the information.
             3. Then I hop on perplexity.ai and asked the exact same questions, and I got the AI-generated answer in less than 5 seconds (with references).
             
-            The context is diversified and apperantly the AI was able to "guess" what I was looking for. However, I still believe that there are high
-            quality pre-recorded content that will be available. It is all about feeding the right info to the right user at the right context, and for that,
-            I am putting my bets more on the generative AI.
+            The context is diversified and apperantly the AI was able to "guess" what I was looking for. However, I still believe that there are high quality pre-recorded content that will be available. It is all about feeding the right info to the right user at the right context, and for that, I am putting my bets more on the generative AI.
         """)
     
     with st.expander("The Need for Scalable Inference"):
@@ -183,56 +177,44 @@ def notes_summary():
             * The higher the FPX bit, the more precision weights for better quality while request bigger memory bandwidth and slower inference. 
             * The lower the FPX bit, the less precision weights for less quality while request smaller memory bandwidth and faster inference.
                     
-            Note that model inference is different from model training. Inference is the process of using a trained model to make predictions on new data.
-            And hence, the majority of the applications, we are simply doing inference. And the speed of inference is crucial for the real-time applications.
-            For example, if you want to deploy a large model on a robot for it to complete a series of tasks based on a high-level command, you want the inference
-            to be as fast as possible. Another example is the autonomous vehicle. The vehicle needs to make real-time decisions based on the input 
-            from the sensors. The faster the inference, the safer this vehicle manuever. Last example is the support agent system using LLM, you want
-            you support agent model to have fast inference to respond to the customer on the phone in a very natural and human-like way.
+            Note that model inference is different from model training. Inference is the process of using a trained model to make predictions on new data. And hence, the majority of the applications, we are simply doing inference. And the speed of inference is crucial for the real-time applications. For example, if you want to deploy a large model on a robot for it to complete a series of tasks based on a high-level command, you want the inference to be as fast as possible. Another example is the autonomous vehicle. The vehicle needs to make real-time decisions based on the input from the sensors. The faster the inference, the safer this vehicle manuever. Last example is the support agent system using LLM, you want you support agent model to have fast inference to respond to the customer on the phone in a very natural and human-like way.
                     
-            However, being fast is not enough. The further AI being developed, the more tasks it will do, and the more energy it will consume.
-            If I build an AI support agent that can respond to the customer in a perfect way, but keep running on GPU with ton of energy consumption, 
-            and costs, it is not a good business. The cost of operation is crucial. The cost of operation is the cost of the energy consumed by the GPU together 
-            with all the other infra costs. 
+            However, being fast is not enough. The further AI being developed, the more tasks it will do, and the more energy it will consume. If I build an AI support agent that can respond to the customer in a perfect way, but keep running on GPU with ton of energy consumption, and costs, it is not a good business. The cost of operation is crucial. The cost of operation is the cost of the energy consumed by the GPU together with all the other infra costs. 
                     
             Hence, the crucial demand for scalable inference is to have a:
             * Fast Computation (driven by cloud/local-architecture, algorithm, and hardware)
             * Cheaper Operations (energy, infra, and maintenance)
             
-            So who runs a better game here?
+            So who do you think runs a better game here?
         """)
 
     with st.expander("The Economics of AI"):
         st.markdown("""
-            I was chatting with bria.ai, which is a visual generative AI platform for creators, and we got into this discussion about how much to train a model.
-            They have a multimodal model that is claimed to be trained from the ground up. For that, it took 280 A100 for 2 weeks to train the model. And if you go to 
-            lambdalabs.com to rent an A100, it will cost you $2.5/hr. So, the total cost to train the model once is $2.5/hr * 280 * 24 * 14 = $235k. 
+            I was chatting with bria.ai, which is a visual generative AI platform for creators, and we got into this discussion about how much to train a model. They have a multimodal model that is claimed to be trained from the ground up. For that, it took 280 A100 for 2 weeks to train the model. And if you go to lambdalabs.com to rent an A100, it will cost you $2.5/hr. So, the total cost to train the model once is $2.5/hr * 280 * 24 * 14 = $235k. 
                     
-            Let's say if you get a 10k users to use your model, and you charge them $10 per month. You will need 235k/100 = 2.3 months to break even for 
-            one the training cost only. And this is not considering the cost of the data, the cost of the employees, the cost of the marketing, and etc.
-            So what do you do?:
+            Let's say if you get a 10k users to use your model, and you charge them $10 per month. You will need 235k/100 = 2.3 months to break even for one the training cost only. And this is not considering the cost of the data, the cost of the employees, the cost of the marketing, and etc.
+            So what would you do?:
             1. Increase the price of the service, which will impede the growth and have you VC screaming at you
             2. Figure out more growth as MidJourney claim they have 1.5M-2.6M users, so we can do the same/better
             3. Use investor's money to hire talents to optimize the model, which will reduce the cost of training without sacrificing the quality
     
-            I could be naive but I'd bet option 2 is the easiest way to go now with the all AI hype that floods $$$ into the AI startups. But eventually, option 3 will be 
-            on the table to make the company sustainable in the long-run.
+            I could be naive but I'd bet option 2 is the easiest way to go now with the all AI hype that floods $$$ into the AI startups. But eventually, option 3 will be on the table to make the company sustainable in the long-run.
                     
-            We do see a pareto curve with the complexity of the task vs the value of AI. On the far end of the compleixty, it is in particularly easy jusify AI sicne it 
-            can handle creative jobs much better since regular code is mostly logical. But, when it comes to the simpleer tasks, it is harder to justify the cost of AI.
-            I'd consider it is not worth it to make 1+1=2 generative while you can do it using a utility function (as long as you are overpaying you SWE). Does that mean
-            AI is not worth it? No, what really matters is the value of customized automation. You'd hire 10 SWE to build a automated pipeline and spend some more maintaining
-            it as your customer demand changes. Your SWEs may be really good at abstraction and architecture and built the platform to be scalable and maintainable. However,
-            the AI can do the same job with less cost and less time. And this is where the value of AI comes in for even simpler tasks. Independently, simpler tasks are not
-            worth the cost of AI, but when you integrate them together, the table can be turned. 
+            We do see a pareto curve with the complexity of the task vs the value of AI. On the far end of the compleixty, it is in particularly easy jusify AI sicne it can handle creative jobs much better since regular code is mostly logical. But, when it comes to the simpleer tasks, it is harder to justify the cost of AI. I'd consider it is not worth it to make 1+1=2 generative while you can do it using a utility function (as long as you are overpaying you SWE). Does that mean AI is not worth it? No, what really matters is the value of customized automation. You'd hire 10 SWE to build a automated pipeline and spend some more maintaining. it as your customer demand changes. Your SWEs may be really good at abstraction and architecture and built the platform to be scalable and maintainable. However, the AI can do the same job with less cost and less time. And this is where the value of AI comes in for even simpler tasks. Independently, simpler tasks are not worth the cost of AI, but when you integrate them together, the table can be turned. 
                        
-            So, the economics of AI is not just about the cost of training the model, and the value of AI is not just about how AI can splendid did one thing. It is about how
-            to evaluate the sustainable costs of the AI (infra, maintainence, talent, etc.) and how to integrate the AI into the existing system for more customizable automation 
-            to create more value.
+            So, the economics of AI is not just about the cost of training the model, and the value of AI is not just about how AI can splendid did one thing. It is about how to evaluate the sustainable costs of the AI (infra, maintainence, talent, etc.) and how to integrate the AI into the existing system for more customizable automation to create more value.
         """)
 
     with st.expander("Long-context vs. RAG"):
-        assert True
+        st.markdown("""
+            Everyoen is doing RAG. Literaly, everyone. RAG is a model that is designed to retrieve the information from a long and dedicated context, then use it to generate the answer.Think of it as a open-book exam. You have a book that contains all the information you need to answer the question. You read the book, then you answer the question. 
+                    
+            In my opinion, the key to a successful RAG model is the quality of the context. And for a business model, it is about the proprietary data that each company has - the documentations. Documentation quality and quantitive is a necessary condition for a successful RAG. Sufficiently, you will also need a good generative algorithm to generate the answer, which incorporates the context retrival tuning, structured LLM prompt engineering, and strong validation schemas. There is no shortage papers on how to do this since the framework is cost-effective and easy to implement. In the technical talks, I have seen quite a few companies are trying to apply RAG internall. Companies like LlamaIndex, Perplexity, and Glen all builds part of their business pillars based on a RAG framework. I don't doubt the potential of RAG, but is RAG the only way to go?
+            
+            No. Long-context model stands as another viable option. Long-context is a model that is designed to take a long context and generate the answer (Google has the >1M token model). Think of it as a closed-book exam. You have a book that contains all the information you need to answer the question. You "memorize" the book, then you answer the question. As these model tend to be a lot harder and more to train, the key to a long-context model is the your machine learning engineers + enough capital. It can outperform RAG on certain tasks like handling complex queries and constructing detailed narratives.
+                    
+            Is it really an either-or situation? Not necessarily. There are studies that found RAG combined with a 32k-token LLM can outperform providing full context directly to the LLM. In my chat with few friends, all agreed that RAG is not going away any time soon. The undersanding for both RAG and long-context model is still early. The best track is to keep trying and learning.
+        """)
     
     with st.expander("Democratizing AI"):
         assert True
