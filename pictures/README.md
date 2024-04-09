@@ -13,7 +13,7 @@ This was convention center parking at 7:30 on the 18th (Note: Speaker Keynote is
 👋 Welcome to GTC24!
 
 <img src="images/IMG_0808.jpeg" width="50%">
-
+`
 ---
 
 I think I can safely claim that I was like roughly about 100 feet from "Taylor Swift"
@@ -76,9 +76,62 @@ Fireside Chat: Building Practical AI Agents that Reason and Code at Scale || [th
 
 ---
 
-This robot from Boston Dynamics moves fast 💨
+[![This robot from Boston Dynamics moves fast 💨]](https://www.youtube.com/shorts/ygx7smBj4eg)
 
-[![Watch the video]](https://www.youtube.com/shorts/ygx7smBj4eg)
+[![cutest thing in GTC 2024 A 😍]](https://www.youtube.com/shorts/TyH60gjPGTs)
+
+[![cutest thing in GTC 2024 B 😘]](https://www.youtube.com/shorts/4jj-g2GWza4)
+
+
+---
+
+These are actually created by language!
+
+<img src="images/IMG_0920.jpeg" width="50%">
+
+---
+
+I suppose where the $$$ is
+
+
+<img src="images/IMG_0926.jpeg" width="50%">
+
+---
+
+You can not stream Omniverse into Apple Vision Pro
+
+<img src="images/IMG_0933.jpeg" width="50%">
+
+
+---
+
+These cables can host the entire traffic of internet?!
+
+<img src="images/IMG_0935.jpeg" width="50%">
+
+
+---
+
+To be honest, I really enjoy the start-up pitches and especially this pitch about start-ups.
+
+
+<img src="images/IMG_0958.jpeg" width="50%">
+
+---
+
+DGX-H100 - $482k at release -please pay back with your $20 OpenAI subscription fee
+
+<img src="images/IMG_0970.jpeg" width="50%">
+
+---
+
+There is Kris Kersey - just in case you don't know him - he built some parts of Iron-Man already. I don't mind AVP hires this guy at all.
+
+<img src="images/IMG_0989.jpeg" width="50%">
+
+
+[![3D Printed Iron Man Helmet with Fully-Functional Heads Up Display! 😘]](https://www.youtube.com/watch?v=503SKHSzPWc&t=10s)
+
 
 ---
 

@@ -276,4 +276,4 @@ def notes_summary():
 def notes_pictures():
 
     with st.expander("Show me some pictures!"):
-        st.write("WIP")
+        st.markdown("[Sorry this webpage cannot host this much content...](https://github.com/jac0320/gtcsummary/blob/main/pictures/README.md)")
