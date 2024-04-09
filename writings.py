@@ -217,19 +217,34 @@ def notes_summary():
         """)
     
     with st.expander("Democratizing AI"):
-        assert True
+        st.markdown(
+            """
+            Ironically, the first person to mention the term "democratizing AI" was OpenAI's COO Brad Lightcap. He said emphasized the importance of enabling a wide range of users to leverage AI technologies for diverse applications. To me, that almost sound like "We should scoop more users from Google into our closed environment". On the other hand, Mistral, which company open-source a high-quality smaller talked about how to give AI to users hand without mentioning "Democratizing AI" once for 45 minutes.
+
+            Jokes aside, my takeaways on Democrtizing AI is about two things:
+            1. Enable more people to use and benefit from AI in a non-harms way
+            2. Don't have AI controlled by a few powerful entities
+            At least, I am convinced that these will be my mission in helping people build AI products.
+            
+            Often the time, I ran into such discussion on how can AI solve this question. And I'd always answer, it may not. But, let's think it through. What is the rule of thumb that you may consider AI:
+            1. **Does you problem have some sort of pattern?** For example, is your task somehow repetitive but not exactly the same everytime you do it. Like reply an email, or classify a document, or categorize a file into Box folder.
+            2. **Is your decision requires some logic that cannot be explicitly written?** For example, the email you are reading does not always follow the same pattern, but you can tell if it is a spam or not. Or, the document you are reading does not always have the same structure, but you can tell if it is a legal document or not.
+            
+            if you answer yes/maybe to both questions, then you may consider using AI. And if you don't know how to use it, I can help people learn about what AI can do and how to leverage it based on my knowledge and experience. I won't be able to solve all the problems, but I can help you think through the problem and see if you can build an AI solution. Maybe my future wish is to give people the platform to build AI without knowing how to code. But, that is a long way to go. Or is it?
+            """
+        )
 
     with st.expander("The World of Agents and Simulation"):
-        assert True
-
-    with st.expander("Don't Underestimate AI Robotics"):
-        assert True
-
-    with st.expander("Optimization and AI"):
-        assert True
-
-    with st.expander("The Interface for AI"):
-        assert True
+        st.markdown("""
+            Two days before I write this sentence down, this paper called [More Agents Is All You Need](https://arxiv.org/pdf/2402.05120.pdf) came out. Besides these, there are about 7 blogs in my reading list talking about Agents. There are also people using [AI agents build Operating Systems](https://github.com/agiresearch/AIOS). And I just finished talking to a start-up that leverage agents to automate website browsing flows. Last weekend, I boarde my wife to death on discussing how I am thinking about a critic agent that leverage bigger models to tame lower-level agents to prompt tasks success rate. Hopefully, you get the idea at this points.
+                    
+            But, interestingly, when you hop on perplexity and ask what is an AI agent it will tell you:
+            > Based on the search results, there does not appear to be a clear, defined "AI agent framework" being discussed. The sources cover various topics related to AI, intelligent agents, and their potential applications, but do not describe a specific framework or approach.
+            
+            My take on an AI agent is a inference unit that can perform one or a series of tasks subject to a pre-defined goal. Keeping it at a highlevel, the AI agent is a software that can do things for you. It can be as simple as a chatbot that can answer your questions, or as complex as a robot that can do your laundry. The key is to define the **goal** and **decompose** that goal into logical steps (note that the logical steps is not fixed, as there can be many ways to complet the goal. You can think of a agent is designed soly for generate a series of tasks. And this other agent is designed to attribute these tasks to dedicated agents. Then there are agents that is critical of the workflow and may ask certain part to be re-done and observe an alternative. And you have other agents helping you summarizing and validating the outcome. As the taks differs, the models/prompts/logics designed for each agent can be differet. Here, thee is your army of minions, please be the best villan and go dominate the world. 
+                    
+            At this point, you don't want all of your agents to sit on top of a OpenAI API as it can be $$$ when you turn on the machine. It becomes fancinating to leverage a variety of different models, fine-tuned/pre-trained on specific tasks, to really drive down your cost of operation. And to let this system run, you will also need scalable inference... wait a second... am I recalling my previous section now. It must be important.
+        """)
 
 
 def notes_pictures():
