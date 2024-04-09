@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-import time
 import pandas as pd
 import numpy as np
 
@@ -72,7 +71,7 @@ def ama_qa():
         st.session_state.ama_messages = [
             {"role": "agent", "content": "Hello! You can ask what else did Site learn from GTC 2024?"},
         ]
-        st.session_state.ama_chat_engine = None
+        st.session_state.chat_engine = None
 
     if 'ama_messages' not in st.session_state:
         reset_ama_messages()
@@ -88,7 +87,7 @@ def ama_qa():
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
         
-        response = st.session_state.ama_chat_engine.chat(query)
+        response = st.session_state.chat_engine.chat(query)
         st.session_state.ama_messages.append({"role": "agent", "content": response.response})
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(response.response))
