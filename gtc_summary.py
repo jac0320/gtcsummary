@@ -17,7 +17,7 @@ from chat_engine import qa_chat_engine
 from llama_index.core.embeddings import resolve_embed_model
 from llama_index.llms.ollama import Ollama
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -195,7 +195,7 @@ def main():
         keynote_qa()
 
     with tab_ama:
-        st.subheader("The Summary")
+        st.subheader("My Takeaways from GTC 2024")
         notes_summary()
         notes_pictures()
         st.write('---')

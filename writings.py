@@ -39,7 +39,7 @@ def intro():
 
 def keynote_perplexity_summary():
 
-    with st.expander("Perplexity's Summary of the Event News Resources 🗞️"):
+    with st.expander("Perplexity's Summary of the Event News Resources 🗞️ by AI 🤖s"):
         st.markdown("""
             Jensen Huang's GTC 2024 keynote highlighted several major announcements and developments from NVIDIA:
 
@@ -76,7 +76,7 @@ def keynote_perplexity_summary():
 
 def keynote_openai_summary():
 
-    with st.expander("OpenAI's Summary of the Keynote Transcript 📝"):
+    with st.expander("OpenAI's Summary of the Keynote Transcript 📝 [by AI 🤖]"):
 
         st.markdown("""
             The GTC 2024 keynote by Nvidia's CEO Jensen Huang covered a wide range of 
@@ -167,6 +167,8 @@ def notes_summary():
             3. Then I hop on perplexity.ai and asked the exact same questions, and I got the AI-generated answer in less than 5 seconds (with references).
             
             The context is diversified and apperantly the AI was able to "guess" what I was looking for. However, I still believe that there are high quality pre-recorded content that will be available. It is all about feeding the right info to the right user at the right context, and for that, I am putting my bets more on the generative AI.
+            
+            [Written by Human 🤓]
         """)
     
     with st.expander("The Need for Scalable Inference"):
@@ -186,6 +188,8 @@ def notes_summary():
             * Cheaper Operations (energy, infra, and maintenance)
             
             So who do you think runs a better game here?
+            
+            [Written by Human 🤓]
         """)
 
     with st.expander("The Economics of AI"):
@@ -203,6 +207,8 @@ def notes_summary():
             We do see a pareto curve with the complexity of the task vs the value of AI. On the far end of the compleixty, it is in particularly easy jusify AI sicne it can handle creative jobs much better since regular code is mostly logical. But, when it comes to the simpleer tasks, it is harder to justify the cost of AI. I'd consider it is not worth it to make 1+1=2 generative while you can do it using a utility function (as long as you are overpaying you SWE). Does that mean AI is not worth it? No, what really matters is the value of customized automation. You'd hire 10 SWE to build a automated pipeline and spend some more maintaining. it as your customer demand changes. Your SWEs may be really good at abstraction and architecture and built the platform to be scalable and maintainable. However, the AI can do the same job with less cost and less time. And this is where the value of AI comes in for even simpler tasks. Independently, simpler tasks are not worth the cost of AI, but when you integrate them together, the table can be turned. 
                        
             So, the economics of AI is not just about the cost of training the model, and the value of AI is not just about how AI can splendid did one thing. It is about how to evaluate the sustainable costs of the AI (infra, maintainence, talent, etc.) and how to integrate the AI into the existing system for more customizable automation to create more value.
+                    
+            [Written by Human 🤓]
         """)
 
     with st.expander("Long-context vs. RAG"):
@@ -214,6 +220,8 @@ def notes_summary():
             No. Long-context model stands as another viable option. Long-context is a model that is designed to take a long context and generate the answer (Google has the >1M token model). Think of it as a closed-book exam. You have a book that contains all the information you need to answer the question. You "memorize" the book, then you answer the question. As these model tend to be a lot harder and more to train, the key to a long-context model is the your machine learning engineers + enough capital. It can outperform RAG on certain tasks like handling complex queries and constructing detailed narratives.
                     
             Is it really an either-or situation? Not necessarily. There are studies that found RAG combined with a 32k-token LLM can outperform providing full context directly to the LLM. In my chat with few friends, all agreed that RAG is not going away any time soon. The undersanding for both RAG and long-context model is still early. The best track is to keep trying and learning.
+                    
+            [Written by Human 🤓]
         """)
     
     with st.expander("Democratizing AI"):
@@ -231,6 +239,8 @@ def notes_summary():
             2. **Is your decision requires some logic that cannot be explicitly written?** For example, the email you are reading does not always follow the same pattern, but you can tell if it is a spam or not. Or, the document you are reading does not always have the same structure, but you can tell if it is a legal document or not.
             
             if you answer yes/maybe to both questions, then you may consider using AI. And if you don't know how to use it, I can help people learn about what AI can do and how to leverage it based on my knowledge and experience. I won't be able to solve all the problems, but I can help you think through the problem and see if you can build an AI solution. Maybe my future wish is to give people the platform to build AI without knowing how to code. But, that is a long way to go. Or is it?
+
+            [Written by Human 🤓]
             """
         )
 
@@ -244,8 +254,24 @@ def notes_summary():
             My take on an AI agent is a inference unit that can perform one or a series of tasks subject to a pre-defined goal. Keeping it at a highlevel, the AI agent is a software that can do things for you. It can be as simple as a chatbot that can answer your questions, or as complex as a robot that can do your laundry. The key is to define the **goal** and **decompose** that goal into logical steps (note that the logical steps is not fixed, as there can be many ways to complet the goal. You can think of a agent is designed soly for generate a series of tasks. And this other agent is designed to attribute these tasks to dedicated agents. Then there are agents that is critical of the workflow and may ask certain part to be re-done and observe an alternative. And you have other agents helping you summarizing and validating the outcome. As the taks differs, the models/prompts/logics designed for each agent can be differet. Here, thee is your army of minions, please be the best villan and go dominate the world. 
                     
             At this point, you don't want all of your agents to sit on top of a OpenAI API as it can be $$$ when you turn on the machine. It becomes fancinating to leverage a variety of different models, fine-tuned/pre-trained on specific tasks, to really drive down your cost of operation. And to let this system run, you will also need scalable inference... wait a second... am I recalling my previous section now. It must be important.
+                    
+            [Written by Human 🤓]
         """)
 
+    with st.expander("What the heck is this NIM?"):
+        st.markdown("""
+            NIM is everythign you'd want to enterprise AI. It optimize a bunch of things for you. It is like a magic box that you can put your AI model in and it will run faster and cheaper.... as long as you buy the hardware from NVIDIA. Feel free to read below if you want ot continue [Written by Human 🤓 until now and summarized by AI 🤖 below):
+            
+            NIM is a powerful tool from NVIDIA that helps organizations accelerate their journey to production AI. It is designed to bridge the gap between the complex world of AI development and the operational needs of enterprises.
+                    
+            NIM provides optimized inference microservices that allow developers to access AI models through industry-standard APIs. This simplifies the development and deployment of AI applications, enabling rapid scaling within enterprises.
+                    
+            NIM packages domain-specific NVIDIA CUDA libraries and specialized code tailored to various domains like language, speech, video processing, healthcare, and more. This ensures the AI applications are accurate and relevant to their specific use cases.
+                    
+            NIM leverages optimized inference engines for each model and hardware setup, providing the best possible latency and throughput on accelerated infrastructure. This reduces the cost of running inference workloads as they scale. 
+
+            NIM is part of the NVIDIA AI Enterprise software platform, which provides enterprise-grade AI capabilities. It allows developers to experiment with NIM microservices and deploy production-grade NIM microservices on various NVIDIA-powered environments. 
+        """)
 
 def notes_pictures():
 
