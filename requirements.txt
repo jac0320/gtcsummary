@@ -109,7 +109,7 @@ packaging==24.0
 pandas==2.2.1
 pandocfilters==1.5.1
 parso==0.8.4
-perplexityai @ git+https://github.com/nathanrchn/perplexityai.git@b4eed9ff2522ffba5b671843a0f912d9024d99e5
+google-generativeai==0.5.0
 pexpect==4.9.0
 pillow==10.3.0
 platformdirs==4.2.0

@@ -39,7 +39,7 @@ def intro():
 
 def keynote_perplexity_summary():
 
-    with st.expander("Perplexity's Summary of the Event News Resources 🗞️ by AI 🤖s"):
+    with st.expander("Perplexity's Summary of the Event News Resources 🗞️ [by AI 🤖s]"):
         st.markdown("""
             Jensen Huang's GTC 2024 keynote highlighted several major announcements and developments from NVIDIA:
 

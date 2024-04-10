@@ -7,7 +7,7 @@ import numpy as np
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
 from llama_index.llms.openai import OpenAI
-from perplexity import Perplexity
+import google.generativeai as genai
 
 from writings import *
 from utils import collect_md_files, stream_data
@@ -145,14 +145,9 @@ def company_show():
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
         
-        perplexity = Perplexity()
-        answer = perplexity.search(query)
-        answer_str = None
-        for ans in answer:
-            if isinstance(ans, dict) and 'answer' in ans:
-                answer_str = ans['answer']
+        answer = st.session_state.google_gemini.generate_content(query)
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(answer_str))
+            st.write_stream(stream_data(answer.text))
 
 
 def show_summarized_notes():
@@ -170,6 +165,10 @@ def main():
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
+    
+    if 'google_gemini' not in st.session_state:
+        genai.configure(api_key=os.environ["API_KEY"])
+        st.session_state.google_gemini = genai.GenerativeModel('gemini-pro')
 
     st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], index=0)
 
