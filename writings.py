@@ -196,7 +196,7 @@ def notes_summary():
 
     with st.expander("The Economics of AI"):
         st.markdown("""
-            I was chatting with bria.ai, which is a visual generative AI platform for creators, and we got into this discussion about how much to train a model. They have a multimodal model that is claimed to be trained from the ground up. For that, it took 280 A100 for 2 weeks to train the model. And if you go to lambdalabs.com to rent an A100, it will cost you $2.5/hr. So, the total cost to train the model once is $2.5/hr * 280 * 24 * 14 = $235k. 
+            I was chatting with bria.ai, which is a visual generative AI platform for creators, and we got into this discussion about how much to train a model. They have a multimodal model that is claimed to be trained from the ground up. For that, it took 280 A100 for 2 weeks to train the model. And if you go to lambdalabs.com to rent an A100, it will cost you \$2.5 per hr. So, the total cost to train the model once is \$2.5 per hr x 280 x 24 x 14 = \$235k
             
             So, let's do some math. If you've got 10k users forking over $10 each month, you'd break even on just the training cost in a smidge over two months. That's not even touching the iceberg of data costs, salaries, marketing... you get the point.
                     
@@ -205,9 +205,9 @@ def notes_summary():
             2. Figure out more growth as MidJourney riding the AI hype with their 1.5M-2.6M active users. Tempting, with all that AI mania money floating around.
             3. Or maybe, just maybe, use some of that sweet investor cash to bring in the brainiacs who can fine-tune the model, cutting costs without skimping on quality. Sounds smart, right?
     
-            I could be naive but I'd bet option 2 is the easiest way to go now with the all AI hype that floods $$$ into the AI startups. But eventually, option 3 is the option that leads you into the final round of the sustainable business game.
+            I could be naive but I'd bet option 2 is the easiest way to go now with the all AI hype that floods \$\$\$ into the AI startups. But eventually, option 3 is the option that leads you into the final round of the sustainable business game.
                     
-            And let's not forget the AI value debate. Sure, for complex, creative tasks, AI's a no-brainer, outperforming traditional code by achieving something that regular logic just couldn't handle at scale. But for the simple stuff? It's a harder sell. Why go AI for a task as simple as 1+1 (using $$ inference) when a basic function would do the trick unless you're keen on splurging on software engineering talent?
+            And let's not forget the AI value debate. Sure, for complex, creative tasks, AI's a no-brainer, outperforming traditional code by achieving something that regular logic just couldn't handle at scale. But for the simple stuff? It's a harder sell. Why go AI for a task as simple as 1+1 (using \$\$ inference) when a basic function would do the trick unless you're keen on splurging on software engineering talent?
                     
             Yet, there's a twist. Even for these 'simple' tasks, when you bundle them up and look at the big picture, AI starts making a whole lot of sense. What matters is the value of integrated automation. Your SWEs built a good abstraction and architecture for a platform to be scalable. AI can help augment/maintain the system with less cost and less time from people. And this is where the value of AI comes in for even simpler tasks. Independently, simpler tasks are not worth the cost of AI, but when you integrate them, the table can be turned. 
             
@@ -258,7 +258,7 @@ def notes_summary():
             
             My take on an AI agent is an inference unit that can perform one or a series of tasks subject to a pre-defined goal. Keeping it at a high level, the AI agent is software that can do things for you. It can be as simple as a chatbot that can answer your questions, or as complex as a robot that can do your laundry. The key is to define the **goal** and **decompose** that goal into logical steps (note that the logical steps are not fixed, as there can be many ways to complete the goal. You can think of an agent designed solely to generate a series of tasks. And this other agent is designed to attribute these tasks to dedicated agents. Then some agents are critical of the workflow and may ask certain parts to be re-done and observe an alternative. And you have other agents helping you summarize and validate the outcome. As the tasks differ, the models/prompts/logic designed for each agent can be different. Here, there is your army of minions, please be the best villain and go dominate the world. 
                     
-            At this point, you don't want all of your agents to sit on top of an OpenAI API as it can be $$$ when you turn on the machine. It becomes fascinating to leverage a variety of different models, fine-tuned/pre-trained on specific tasks, to drive down your cost of operation. And to let this system run, you will also need scalable inference... wait a second... am I recalling my previous section now? It must be important.
+            At this point, you don't want all of your agents to sit on top of an OpenAI API as it can be \$\$\$ when you turn on the machine. It becomes fascinating to leverage a variety of different models, fine-tuned/pre-trained on specific tasks, to drive down your cost of operation. And to let this system run, you will also need scalable inference... wait a second... am I recalling my previous section now? It must be important.
                     
             [Written by Human 🤓]
         """)

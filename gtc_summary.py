@@ -33,6 +33,7 @@ SYSTEM_PROMPT = """
     Be patient with technical terms and always assume your audience is not familiar with the technical jargon.
 """
 
+st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
 
 def keynote_qa():
 
@@ -98,7 +99,7 @@ def ama_qa():
 
 def talk_show():
 
-    user_search = st.text_input("Search for a talk", key='talk_search')
+    user_search = st.text_input("Describe what you want to learn for a talk", key='talk_search')
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
     df = pd.read_json('notebooks/talk_cleaned_titles_full.json', orient='index')
@@ -109,11 +110,11 @@ def talk_show():
 
     embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
     df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
-
+    st.write("Talks ranked based on your search || Scrapped PDF + Title Extracted from PDF")
     st.dataframe(df.sort_values('distance')[['Title']], use_container_width=True, hide_index=True)
 
     titles = df.Title.tolist()
-    selected_title = st.selectbox("Select a talk to view PDF", titles, key='talk_select', index=None)
+    selected_title = st.selectbox("Select a talk to view/download PDF", titles, key='talk_select', index=None)
     if selected_title:
         selected_file = df.loc[df['Title'] == selected_title].index[0]
         filapath = f"talks/{selected_file}"
@@ -129,7 +130,7 @@ def talk_show():
 
 def company_show():
 
-    user_search = st.text_input("Descibe what you wish to know", key='company_search')
+    user_search = st.text_input("Descibe what company you wish to know", key='company_search')
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
     df = pd.read_json('notebooks/company_full.json')
@@ -138,6 +139,7 @@ def company_show():
 
     embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
     df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
+    st.write("Companies ranked based on your search || Extracted by AI from https://www.nvidia.com/gtc/sponsors/#/ ")
     st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
     
     st.write("---")
@@ -153,7 +155,7 @@ def company_show():
 def show_summarized_notes():
 
     md_files = collect_md_files('summarized_notes')
-    selected_md_file = st.selectbox("Select a summarized transcript to view", md_files, index=None)
+    selected_md_file = st.selectbox("Select a 🤖 AI summarized transcript to view", md_files, index=None)
     if selected_md_file:
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
@@ -161,7 +163,7 @@ def show_summarized_notes():
 
 def main():
 
-    st.title("GTC 2024 | A Summary")
+    st.title("GTC 2024 | AI Summit Summary 🤖📚🚀")
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
@@ -207,9 +209,7 @@ def main():
 
     with tab_companies:
         st.subheader("The Companies")
-        company_show() # https://www.nvidia.com/gtc/sponsors/#/
+        company_show()
         
-
-
 
 main()
