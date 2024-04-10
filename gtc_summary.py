@@ -147,6 +147,9 @@ def show_summarized_notes():
 
 def beta_viewagent():
 
+    st.warning("This is a beta feature. Please ask questions related to the conference. The agent is still learning.")
+    st.write("We wish to build this agent to actively plan and execute streamlit code to address user questions. Still WIP")
+
     if query := st.chat_input("Ask Anything!", key='beta_chat'):
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
