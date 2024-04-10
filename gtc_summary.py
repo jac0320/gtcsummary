@@ -145,6 +145,20 @@ def show_summarized_notes():
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
 
+def beta_viewagent():
+
+    if query := st.chat_input("Ask Anything!", key='beta_chat'):
+        with st.chat_message("User", avatar="😀"):
+            st.markdown(query)
+        plan = st.session_state.google_gemini.generate_content(f"""
+            {SYSTEM_PROMPT}
+
+            You are a helpful assistant who is experienced building streamlit app. 
+            Given the user request: {query}
+            Please provide a plan of steps to write a streamlit code that can address questions.
+        """)
+        with st.chat_message("agent", avatar="🤖"):
+            st.write_stream(stream_data(plan.text))
 
 def main():
 
@@ -164,8 +178,8 @@ def main():
     else:
         st.session_state.llm = Ollama(model="mistral", request_timeout=30.0)
 
-    tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(
-        ["👋 Welcome!", "🏆 The Keynote", "📕 My Notes", "🎙️ Technical Talks", "🏢 Companies", ]
+    tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies, tab_beta = st.tabs(
+        ["👋 Welcome!", "🏆 The Keynote", "📕 My Notes", "🎙️ Technical Talks", "🏢 Companies", "🤖Beta-ViewAgent"]
     )
 
     with tab_intro:
@@ -194,6 +208,10 @@ def main():
     with tab_companies:
         st.subheader("The Companies")
         company_show()
+
+    with tab_beta:
+        st.subheader("Beta-ViewAgent")
+        beta_viewagent()
         
 
 main()
