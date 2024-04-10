@@ -31,6 +31,22 @@ SYSTEM_PROMPT = """
     Assume that all questions are based on Site's experience which will be provided as context. 
     Keep your answers relatable and friendly and based on facts provided in the context – do not hallucinate.
     Be patient with technical terms and always assume your audience is not familiar with the technical jargon.
+
+    Site Wang was impressed by the keynote and the technical talks. He also found the companies that sponsored the event interesting.
+    It was a great experience for him and he is looking forward to the next GTC event. 
+    
+    Site picked the following topics to discuss and wrote some notes about them:
+    1. Retrieval vs. Generative
+    2. The Need for Scalable Inferenc
+    3. The Economics of AI
+    4. Long-context vs. RAG
+    5. Democratizing AI
+    6. The World of Agents
+    7. What the heck is this NIM?
+
+    Site also scraped some technical talks pdfs and company information that he found interesting. He also used a AI model 
+    to summarize some of the recorded technical talks. All of the material can be found in this streamlit app.
+    When answering questions, always refer to the context provided. Recognize Site as Site Wang.
 """
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
@@ -39,6 +55,7 @@ def keynote_qa():
 
     def reset_keynote_messages():
         st.session_state.keynote_messages = [
+            {'role': "system", "content": SYSTEM_PROMPT},
             {"role": "agent", "content": "Hello! I may know a bit about Jensen Huang's 2024 GTC Keynote. Ask me anything."},
         ]
         st.session_state.chat_engine = None
@@ -64,38 +81,6 @@ def keynote_qa():
         st.rerun()
 
     st.button("Start New Chat 🧹", on_click=reset_keynote_messages, use_container_width=True)
-
-
-def ama_qa():
-
-    def reset_ama_messages():
-        st.session_state.ama_messages = [
-            {"role": "agent", "content": "Hello! You can ask what else did Site learn from GTC 2024?"},
-        ]
-        st.session_state.chat_engine = None
-
-    if 'ama_messages' not in st.session_state:
-        reset_ama_messages()
-
-    qa_chat_engine("summarized_notes", NOTES_PERSIST_DIR)
-
-    for message in st.session_state.ama_messages: # Display the prior chat messages
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-    
-    if query := st.chat_input("Ask a question", key="ama"):
-        st.session_state.ama_messages.append({"role": "user", "content": query})
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
-        
-        response = st.session_state.chat_engine.chat(query)
-        st.session_state.ama_messages.append({"role": "agent", "content": response.response})
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(response.response))
-        st.rerun()
-
-    st.button("Start New Chat 🧹", key='ama_clean', on_click=reset_ama_messages, use_container_width=True)
-
 
 def talk_show():
 
@@ -163,7 +148,7 @@ def show_summarized_notes():
 
 def main():
 
-    st.title("GTC 2024 | AI Summit Summary 🤖📚🚀")
+    st.title("GTC 2024 : Summary 🤖📚")
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
@@ -201,7 +186,6 @@ def main():
         st.write('---')
         show_summarized_notes()
         st.write('---')
-        ama_qa()
 
     with tab_talks:
         st.info("Search for Collected Technical Talks and Read/Downlaod PDFs")
