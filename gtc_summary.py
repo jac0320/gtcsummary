@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import re
 import pandas as pd
 import numpy as np
 
@@ -25,17 +26,31 @@ KEYNOTE_PERSIST_DIR = ".keynote_storage"
 NOTES_PERSIST_DIR = ".notes_storage"
 NOTES_DAT_DIR = "summarized_notes"
 
+PLAN_STEPS_TEMPLATE ="""
+\{
+    "steps": \{
+        "1": "Step 1",
+        "2": "Step 2",
+        ...
+    \}
+\}
+"""
 
 SYSTEM_PROMPT = """
-    You are an helper to assis Site Wang who just attended GTC 2024 to answer questions related to the conference. 
-    Assume that all questions are based on Site's experience which will be provided as context. 
+    You are an helper to assist Site Wang who just attended GTC 2024. Your job is to answer questions related to the conference and answer
+    them on Site's behalf. Answer questions are based on Site's experience which will be provided as context. 
     Keep your answers relatable and friendly and based on facts provided in the context – do not hallucinate.
     Be patient with technical terms and always assume your audience is not familiar with the technical jargon.
 
     Site Wang was impressed by the keynote and the technical talks. He also found the companies that sponsored the event interesting.
     It was a great experience for him and he is looking forward to the next GTC event. 
+
+    Site watched the entire keynote presentation delivered by Jensen Huang. He recorded the audio and used an AI model to transcript 
+    and summarize it. Those note can be found under the strealit tab "The Keynote". He also built an AI agent to answer questions using
+    a basic Retrieval-Augmented Generation(RAG) model. A user can use the chat interface to ask questions about the keynote.
     
-    Site picked the following topics to discuss and wrote some notes about them:
+    Site wrote his own notes about following topics and those notes can be found under the strealit tab "My Notes". The source of those 
+    personal notes are in several markdown format under the folder "./summarized_notes/personal_notes/". The topics are:
     1. Retrieval vs. Generative
     2. The Need for Scalable Inferenc
     3. The Economics of AI
@@ -43,10 +58,19 @@ SYSTEM_PROMPT = """
     5. Democratizing AI
     6. The World of Agents
     7. What the heck is this NIM?
+    Under the "My Notes" tab, a user can also view the summarized notes of the recorded technical talks. Those transcripts were generated
+    using an Whisper AI and Otter.ai tools. The notes are stored under "./summarised_notes".
 
-    Site also scraped some technical talks pdfs and company information that he found interesting. He also used a AI model 
-    to summarize some of the recorded technical talks. All of the material can be found in this streamlit app.
-    When answering questions, always refer to the context provided. Recognize Site as Site Wang.
+    Site also put together a collection of technical talks that he found interesting. He scraped the titles and pdfs of the talks and
+    used an AI agent to scan the first slide of the pdfs to extract the title of the slide. A user can search for a talk and read/download 
+    the pdfs under the "Technical Talks" tab. The search is based on OpenAI embeddings. If a user wants to know more about a technical talk,
+    he can select to view or download the content. All these pdf files are stored under the "talks" folder. The file name is different from 
+    the title of the talk. You can find the mapping between pdf fileanmes to the talk title in the "./notebooks/talk_cleaned_titles_full.json".
+
+    Site also scrapped the companies that sponsored the GTC using an AI agent. All of these companies were at the GTC exhibitor hall. A user 
+    can search for a company and read a brief description of the company. If a user wants to know more about a company, he can ask more questions
+    about the company. The AI agent will give a brief description of the company with the most recent information. The AI agent is powered
+    by the most recent Google Gemini API. The companies data are stored under the "notebooks/company_full.json".
 """
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
@@ -151,17 +175,88 @@ def beta_viewagent():
     st.write("We wish to build this agent to actively plan and execute streamlit code to address user questions. Still WIP")
 
     if query := st.chat_input("Ask Anything!", key='beta_chat'):
+        
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
-        plan = st.session_state.google_gemini.generate_content(f"""
-            {SYSTEM_PROMPT}
 
-            You are a helpful assistant who is experienced building streamlit app. 
-            Given the user request: {query}
-            Please provide a plan of steps to write a streamlit code that can address questions.
-        """)
+        # Recover for production
+        plan = st.session_state.google_gemini.generate_content(
+            f"""
+                {SYSTEM_PROMPT}
+
+                Given the available information above. Now, a user sends request: {query}
+                Please provide a plan of steps to address the user question in the streamlit interface.
+
+                We will later convert these steps into code. Emit the steps in the following dict format:
+                {PLAN_STEPS_TEMPLATE}
+            """,
+            generation_config=genai.types.GenerationConfig(temperature=0.01)
+        )
+
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(plan.text))
+        
+        plan_dict = eval(plan.text.replace("`", ""))  # TODO add a post-processing step to ensure the string is cleaned
+
+        # plan_dict = {
+        #     "steps": {
+        #         "1": "Import the necessary libraries.",
+        #         "2": "Load the personal notes written by Site.",
+        #         "3": "Select a random note from the list of notes.",
+        #         "4": "Display the selected note in the streamlit interface as an info section."
+        #     }
+        # }
+        
+        # total_steps = len(plan_dict["steps"])
+        
+            
+        step_code = st.session_state.google_gemini.generate_content(
+            f"""
+                {SYSTEM_PROMPT}
+
+                Given the available information above. Now, a user sends request: {query}
+                We want to address the user question in a streamlit interface.
+                A plan has been generated:
+                {str(plan_dict)}
+                
+                Please provide the code to address the user question in the streamlit interface.
+                Strictly follow the plan layout. Directly emit executable python code.
+            """,
+            generation_config=genai.types.GenerationConfig(temperature=0.01)
+        )
+        with st.chat_message("agent", avatar="🤖"):
+            st.write_stream(stream_data(step_code.text))
+        print(step_code.text)
+        pattern = r"```python(.*?)```"
+        match = re.search(pattern, step_code.text, re.DOTALL)
+
+        try:
+            exec(match.group(1))
+        except Exception as e:
+            st.write(f"Error: {e}")
+            prompt = f"""
+                    {SYSTEM_PROMPT}
+
+                    Given the available information above. Now, a user sends request: {query}
+                    We want to address the user question in a streamlit interface.
+                    A plan has been generated:
+                    {str(plan_dict)}
+                    
+                    The following generated code snippet failed to execute to address the user question in the streamlit interface
+                    {step_code.text}
+                    Error: {e}
+
+                    Please provide a new code snippet that fix it. Directly emit executable python code.
+                """
+            print(prompt)
+            retry_code = st.session_state.google_gemini.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(temperature=0.1)
+            )
+
+            with st.chat_message("agent", avatar="🤖"):
+                st.write_stream(stream_data(retry_code.text))
+
 
 def main():
 
