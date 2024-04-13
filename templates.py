@@ -36,6 +36,11 @@ by the most recent Google Gemini API. The companies data are stored under the "n
 """
 
 
+BLOCK_TEMPLATE = """
+
+"""
+
+
 PLAN_STEPS_TEMPLATE ="""
 \{
     "steps": \{

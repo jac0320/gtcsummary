@@ -9,14 +9,16 @@ from jinja2 import Template
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
 from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
-from openai import OpenAI
+
 import google.generativeai as genai
 
 from constants import *
 from writings import *
 from templates import *
-from utils import collect_md_files, stream_data
-from chat_engine import qa_chat_engine
+from utils import *
+
+from rag import qa_chat_engine
+from code_gen import beta_viewagent
 
 from llama_index.core.embeddings import resolve_embed_model
 from llama_index.llms.ollama import Ollama
@@ -26,6 +28,7 @@ logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
+
 
 def keynote_qa():
 
@@ -58,6 +61,7 @@ def keynote_qa():
 
     st.button("Start New Chat 🧹", on_click=reset_keynote_messages, use_container_width=True)
 
+
 def talk_show():
 
     user_search = st.text_input("Describe what you want to learn for a talk", key='talk_search')
@@ -88,6 +92,7 @@ def talk_show():
             )
         pdf_viewer(filapath)
 
+
 def company_show():
 
     user_search = st.text_input("Descibe what company you wish to know", key='company_search')
@@ -111,6 +116,7 @@ def company_show():
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(answer.text))
 
+
 def show_summarized_notes():
 
     md_files = collect_md_files('summarized_notes')
@@ -118,85 +124,6 @@ def show_summarized_notes():
     if selected_md_file:
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
-
-def beta_viewagent():
-
-    st.warning("This is a beta feature. Please ask questions related to the conference. The agent is still learning.")
-    st.write("We wish to build this agent to actively plan and execute streamlit code to address user questions. Still WIP")
-
-    if query := st.chat_input("Ask Anything!", key='beta_chat'):
-        
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
-
-        # Recover for production
-        plan = st.session_state.google_gemini.generate_content(
-            f"""
-                {SYSTEM_PROMPT}
-
-                Given the available information above. Now, a user sends request: {query}
-                Please provide a plan of steps to address the user question in the streamlit interface.
-
-                We will later convert these steps into code. Emit the steps in the following dict format:
-                {PLAN_STEPS_TEMPLATE}
-            """,
-            generation_config=genai.types.GenerationConfig(temperature=0.01)
-        )
-
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(plan.text))
-        
-        plan_dict = eval(plan.text.replace("`", ""))  # TODO add a post-processing step to ensure the string is cleaned            
-        step_code = st.session_state.google_gemini.generate_content(
-            f"""
-                {SYSTEM_PROMPT}
-
-                Given the available information above. Now, a user sends request: {query}
-                We want to address the user question in a streamlit interface.
-                A plan has been generated:
-                {str(plan_dict)}
-                
-                Please provide the code to address the user question in the streamlit interface.
-                Strictly follow the plan layout. Directly emit executable python code.
-            """,
-            generation_config=genai.types.GenerationConfig(temperature=0.01)
-        )
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(step_code.text))
-        
-        pattern = r"```python(.*?)```"
-        match = re.search(pattern, step_code.text, re.DOTALL)
-
-        try:
-            exec(match.group(1))
-        except Exception as e:
-            st.write(f"Error: {e}")
-            prompt = f"""
-                    {SYSTEM_PROMPT}
-
-                    Given the available information above. Now, a user sends request: {query}
-                    We want to address the user question in a streamlit interface.
-                    A plan has been generated:
-                    {str(plan_dict)}
-                    
-                    The following generated code snippet failed to execute to address the user question in the streamlit interface
-                    {step_code.text}
-                    Error: {e}
-
-                    Please provide a new code snippet that fix it. Directly emit executable python code.
-                """
-            client = OpenAI(api_key=OPENAI_API_KEY)
-            retry_response = client.chat.completions.create(
-                model="gpt-4-turbo-2024-04-09",
-                messages=[{"role": "user", "content": prompt}],
-            )
-            retry_code = retry_response.choices[0].message.content
-            with st.chat_message("agent", avatar="🤖"):
-                st.write_stream(stream_data(retry_code))
-                
-            pattern = r"```python(.*?)```"
-            retry_match = re.search(pattern, retry_code, re.DOTALL)
-            exec(retry_match.group(1))
 
 
 def main():
