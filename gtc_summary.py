@@ -7,10 +7,12 @@ import numpy as np
 
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
-from llama_index.llms.openai import OpenAI
+from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
+from openai import OpenAI
 import google.generativeai as genai
 
 from writings import *
+from templates import *
 from utils import collect_md_files, stream_data
 from chat_engine import qa_chat_engine
 
@@ -36,42 +38,6 @@ PLAN_STEPS_TEMPLATE ="""
 \}
 """
 
-SYSTEM_PROMPT = """
-    You are an helper to assist Site Wang who just attended GTC 2024. Your job is to answer questions related to the conference and answer
-    them on Site's behalf. Answer questions are based on Site's experience which will be provided as context. 
-    Keep your answers relatable and friendly and based on facts provided in the context – do not hallucinate.
-    Be patient with technical terms and always assume your audience is not familiar with the technical jargon.
-
-    Site Wang was impressed by the keynote and the technical talks. He also found the companies that sponsored the event interesting.
-    It was a great experience for him and he is looking forward to the next GTC event. 
-
-    Site watched the entire keynote presentation delivered by Jensen Huang. He recorded the audio and used an AI model to transcript 
-    and summarize it. Those note can be found under the strealit tab "The Keynote". He also built an AI agent to answer questions using
-    a basic Retrieval-Augmented Generation(RAG) model. A user can use the chat interface to ask questions about the keynote.
-    
-    Site wrote his own notes about following topics and those notes can be found under the strealit tab "My Notes". The source of those 
-    personal notes are in several markdown format under the folder "./summarized_notes/personal_notes/". The topics are:
-    1. Retrieval vs. Generative
-    2. The Need for Scalable Inferenc
-    3. The Economics of AI
-    4. Long-context vs. RAG
-    5. Democratizing AI
-    6. The World of Agents
-    7. What the heck is this NIM?
-    Under the "My Notes" tab, a user can also view the summarized notes of the recorded technical talks. Those transcripts were generated
-    using an Whisper AI and Otter.ai tools. The notes are stored under "./summarised_notes".
-
-    Site also put together a collection of technical talks that he found interesting. He scraped the titles and pdfs of the talks and
-    used an AI agent to scan the first slide of the pdfs to extract the title of the slide. A user can search for a talk and read/download 
-    the pdfs under the "Technical Talks" tab. The search is based on OpenAI embeddings. If a user wants to know more about a technical talk,
-    he can select to view or download the content. All these pdf files are stored under the "talks" folder. The file name is different from 
-    the title of the talk. You can find the mapping between pdf fileanmes to the talk title in the "./notebooks/talk_cleaned_titles_full.json".
-
-    Site also scrapped the companies that sponsored the GTC using an AI agent. All of these companies were at the GTC exhibitor hall. A user 
-    can search for a company and read a brief description of the company. If a user wants to know more about a company, he can ask more questions
-    about the company. The AI agent will give a brief description of the company with the most recent information. The AI agent is powered
-    by the most recent Google Gemini API. The companies data are stored under the "notebooks/company_full.json".
-"""
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
 
@@ -136,7 +102,6 @@ def talk_show():
             )
         pdf_viewer(filapath)
 
-
 def company_show():
 
     user_search = st.text_input("Descibe what company you wish to know", key='company_search')
@@ -159,7 +124,6 @@ def company_show():
         answer = st.session_state.google_gemini.generate_content(query)
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(answer.text))
-
 
 def show_summarized_notes():
 
@@ -226,7 +190,7 @@ def beta_viewagent():
         )
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(step_code.text))
-        print(step_code.text)
+        
         pattern = r"```python(.*?)```"
         match = re.search(pattern, step_code.text, re.DOTALL)
 
@@ -248,14 +212,18 @@ def beta_viewagent():
 
                     Please provide a new code snippet that fix it. Directly emit executable python code.
                 """
-            print(prompt)
-            retry_code = st.session_state.google_gemini.generate_content(
-                prompt,
-                generation_config=genai.types.GenerationConfig(temperature=0.1)
+            client = OpenAI(api_key=OPENAI_API_KEY)
+            retry_response = client.chat.completions.create(
+                model="gpt-4-turbo-2024-04-09",
+                messages=[{"role": "user", "content": prompt}],
             )
-
+            retry_code = retry_response.choices[0].message.content
             with st.chat_message("agent", avatar="🤖"):
-                st.write_stream(stream_data(retry_code.text))
+                st.write_stream(stream_data(retry_code))
+                
+            pattern = r"```python(.*?)```"
+            retry_match = re.search(pattern, retry_code, re.DOTALL)
+            exec(retry_match.group(1))
 
 
 def main():
@@ -268,11 +236,11 @@ def main():
     if 'google_gemini' not in st.session_state:
         genai.configure(api_key=os.environ["API_KEY"])
         st.session_state.google_gemini = genai.GenerativeModel('gemini-pro')
-
+    
     st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], index=0)
 
     if st.session_state.llm_name == "OpenAI":
-        st.session_state.llm = OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=SYSTEM_PROMPT)
+        st.session_state.llm = llamaindex_OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=SYSTEM_PROMPT)
     else:
         st.session_state.llm = Ollama(model="mistral", request_timeout=30.0)
 
