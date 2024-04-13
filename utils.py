@@ -1,5 +1,7 @@
 import os
+import re
 import time
+
 
 def collect_md_files(folder_path):
     """
@@ -27,3 +29,15 @@ def stream_data(response):
     for word in response.split(" "):
         yield word + " "
         time.sleep(0.02)
+
+
+def extract_code_segments(response):
+    """
+    Extracts code segments from a given response using regex ```python ... ```.
+    """
+
+    pattern = r"```python(.*?)```"
+    matches = re.search(pattern, response, re.DOTALL)
+    if matches:
+        return matches.group(1)
+

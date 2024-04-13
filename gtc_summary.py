@@ -4,6 +4,7 @@ import sys
 import re
 import pandas as pd
 import numpy as np
+from jinja2 import Template
 
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
@@ -11,6 +12,7 @@ from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
 from openai import OpenAI
 import google.generativeai as genai
 
+from constants import *
 from writings import *
 from templates import *
 from utils import collect_md_files, stream_data
@@ -21,22 +23,6 @@ from llama_index.llms.ollama import Ollama
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-KEYNOTE_PERSIST_DIR = ".keynote_storage"
-NOTES_PERSIST_DIR = ".notes_storage"
-NOTES_DAT_DIR = "summarized_notes"
-
-PLAN_STEPS_TEMPLATE ="""
-\{
-    "steps": \{
-        "1": "Step 1",
-        "2": "Step 2",
-        ...
-    \}
-\}
-"""
 
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
@@ -160,20 +146,7 @@ def beta_viewagent():
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(plan.text))
         
-        plan_dict = eval(plan.text.replace("`", ""))  # TODO add a post-processing step to ensure the string is cleaned
-
-        # plan_dict = {
-        #     "steps": {
-        #         "1": "Import the necessary libraries.",
-        #         "2": "Load the personal notes written by Site.",
-        #         "3": "Select a random note from the list of notes.",
-        #         "4": "Display the selected note in the streamlit interface as an info section."
-        #     }
-        # }
-        
-        # total_steps = len(plan_dict["steps"])
-        
-            
+        plan_dict = eval(plan.text.replace("`", ""))  # TODO add a post-processing step to ensure the string is cleaned            
         step_code = st.session_state.google_gemini.generate_content(
             f"""
                 {SYSTEM_PROMPT}
