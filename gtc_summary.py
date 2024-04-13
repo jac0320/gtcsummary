@@ -120,7 +120,7 @@ def company_show():
 def show_summarized_notes():
 
     md_files = collect_md_files('summarized_notes')
-    selected_md_file = st.selectbox("Select a 🤖 AI summarized transcript to view", md_files, index=None)
+    selected_md_file = st.selectbox("Select a 🤖 AI summarized transcript to view", md_files, key="summarized_note_select", index=None)
     if selected_md_file:
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
@@ -137,7 +137,7 @@ def main():
         genai.configure(api_key=os.environ["API_KEY"])
         st.session_state.google_gemini = genai.GenerativeModel('gemini-pro')
     
-    st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], index=0)
+    st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], key="llm_select", index=0)
 
     if st.session_state.llm_name == "OpenAI":
         st.session_state.llm = llamaindex_OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=SYSTEM_PROMPT)

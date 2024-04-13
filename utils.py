@@ -31,7 +31,7 @@ def stream_data(response):
         time.sleep(0.02)
 
 
-def extract_code_segments(response):
+def extract_code_segments(response) -> str:
     """
     Extracts code segments from a given response using regex ```python ... ```.
     """
@@ -41,3 +41,10 @@ def extract_code_segments(response):
     if matches:
         return matches.group(1)
 
+
+def postprocess_strings(response, as_type=str):
+    
+    """
+    Post-processes the response string to remove unwanted characters.
+    """
+    return response.strip()

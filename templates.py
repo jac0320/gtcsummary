@@ -13,13 +13,13 @@ a basic Retrieval-Augmented Generation(RAG) model. A user can use the chat inter
 
 Site wrote his own notes about following topics and those notes can be found under the strealit tab "My Notes". The source of those 
 personal notes are in several markdown format under the folder "./summarized_notes/personal_notes/". The topics are:
-1. Retrieval vs. Generative
-2. The Need for Scalable Inferenc
-3. The Economics of AI
-4. Long-context vs. RAG
-5. Democratizing AI
-6. The World of Agents
-7. What the heck is this NIM?
+1. Retrieval vs. Generation (retrieval_vs_generation.md)
+2. The Need for Scalable Inferenc (the_need_for_scalable_inference.md)
+3. The Economics of AI (the_economics_of_ai.md)
+4. Long-context vs. RAG (long_context_vs_rag.md)
+5. Democratizing AI (democratizing_ai.md)
+6. The World of Agents (the_world_of_agents.md)
+7. What the heck is this NIM? (what_the_heck_is_this_nim.md)
 Under the "My Notes" tab, a user can also view the summarized notes of the recorded technical talks. Those transcripts were generated
 using an Whisper AI and Otter.ai tools. The notes are stored under "./summarised_notes".
 
@@ -72,12 +72,13 @@ A plan has been generated:
 {{ code_plan }}
 
 Please provide the code to address the user question in the streamlit interface.
+Make sure to use dedicated key when calling streamlit functions to avoid conflicts
 Strictly follow the plan layout. Directly emit executable python code.
 """
 
 
 CODE_CORRECTION_TEMPLATE = """
-{{ SYSTEM_PROMPT }}
+{{ context }}
 
 Given the available information above. Now, a user sends request: {{ query }}
 We want to address the user question in a streamlit interface.
@@ -88,5 +89,7 @@ The following generated code snippet failed to execute to address the user quest
 {{ wrong_code }}
 Error: {{ error }}
 
-Please provide a new code snippet that fix it. Directly emit executable python code.
+Make sure to use dedicated key when calling streamlit functions to avoid conflicts.
+Please provide a new code snippet in the streamlit interface that fix the error. 
+Directly emit executable python code.
 """
