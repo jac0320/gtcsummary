@@ -1,0 +1,1087 @@
+ - Good morning.
+ It's day, I hope GTC's been good for you.
+ (audience applauds)
+ Yeah.
+ - You don't want me to come in and help you.
+ - I know.
+ Is the coffee good here at GTC?
+ I don't want to have any.
+ - No.
+ (audience laughs)
+ - We better put that on the list, accelerated coffee.
+ - That's right.
+ - Fantastic.
+ Well, we're really excited to join you today
+ to talk about the future of AI agents
+ and how we think that agents are gonna change
+ the way that AI is built and deployed and used
+ and hopefully solving problems
+ for industries around the world.
+ So that's kind of the theme of our discussion today
+ and I'm really excited to be talking about this with Kanjun
+ because she's leading this amazing startup and view
+ that is building agents to try to help with this.
+ So that's what we're gonna be focused on today.
+ But maybe just to get started
+ 'cause some people may not have heard of MGU yet.
+ Tell us about the way that you're thinking about agents
+ and the problems that you'd like to solve.
+ - Yeah.
+ So I think when people talk about agents,
+ the image that we have in our head
+ is this personal assistant you delegate tasks to.
+ It'll go do stuff by itself in the background
+ and it'll be like something like Jarvis.
+ You can just tell it to do anything it wants.
+ It'll magically do that thing.
+ And many enterprises, as we talked about,
+ try to implement something like this and it doesn't work.
+ Hopefully, I encourage you all
+ to try some agent products out there.
+ And we--
+ - Can I just give an example?
+ - Yeah, please give an example.
+ - The other day, I was writing to work
+ and my schedule is a complete disaster.
+ I usually have five meetings scheduled at every hour.
+ I don't have an actual person
+ that is sorting through my schedule.
+ That's my job.
+ So I was driving and I wasn't,
+ I'm not supposed to be looking at my calendar.
+ So I asked my phone,
+ "Hey, what building should I drive to?"
+ Yeah, it was absolutely impossible.
+ - Not a good idea.
+ - There was no way for my phone to answer that question.
+ I feel like it should have,
+ I feel like with the way that AI's been developing--
+ - You should know.
+ Yeah, you should be able to answer that question.
+ - But there's a lot of ambiguity in this question, right?
+ Like one ambiguity is that,
+ like it needs to know that I'm talking about going to work.
+ It needs to know that my work calendar,
+ it needs to have access to my work calendar.
+ It needs to see that I have five different meetings.
+ They're all on different buildings.
+ Then it needs to ask me which meeting
+ I'm actually going to, you know?
+ And so there needs to be some sort of problem solving
+ that's really woven into the fabric of my life
+ that I get to sort of work with.
+ And the way that I need to do that
+ might be different than other people, right?
+ - Totally.
+ Yeah, and I think this actually goes to this idea that
+ this magical thing that magically knows everything about you
+ and will magically do the right thing,
+ it's not necessarily the right paradigm.
+ And actually, the way we think about agents,
+ this is actually, we started out thinking about agents
+ as assistants, and we built a bunch of them for ourselves.
+ We built a recruiting agent and one that synthesized
+ articles, long articles, and a bunch of other ones.
+ And what we realized is no one likes to delegate stuff.
+ Actually, delegation as a paradigm is really difficult.
+ When I'm delegating something even to a human,
+ I have to think a lot about, okay,
+ how exactly do I package this up
+ so that the person will do the right thing,
+ and how do I get it to a point where,
+ when do I check in, and 50% of the time,
+ I don't get what I expected back.
+ - You know, it's funny when a bad thing happens,
+ it's a common question that people ask,
+ what can I do to help?
+ But that actually causes work for the person.
+ - That's right, it puts more work on me.
+ - It causes work, because then you have to think,
+ what's the intersection of things I need
+ and things that's possible for you to do.
+ - Exactly.
+ - But it's also not too crazy to ask for.
+ - And then how do I scope it in my head up front
+ so that you can do it properly?
+ So this is like--
+ - Delegation is hard.
+ - Delegation is hard.
+ Delegation as a paradigm for agents,
+ not the most powerful paradigm.
+ Maybe there'll be some agents that are very limited
+ in scope that we can delegate to.
+ Instead, and in view, the way we think about what agents are
+ is, if you think about this magical Jarvis feature,
+ where you can tell your computer to do anything you want,
+ then you've got you telling your computer to do stuff,
+ and the agent is the middle layer.
+ You're telling the agent, okay, I wanna do X,
+ and it has to talk to you, we call that reasoning,
+ and it has to talk to your computer,
+ and we call that code, it does that by writing code.
+ And so a way to think about what agents are
+ is they are basically taking what you're interested in
+ and writing code to talk to your computer
+ to get your computer to do what it wants.
+ And so kind of taking that line of reasoning
+ down a little bit, a way to think about what an agent is
+ is it's basically an abstraction
+ on top of programming languages today
+ that allow me to write software programs
+ in natural language, and in a way that's interactive
+ and not just kind of like one-sided,
+ I tell it what to do, and it'll write the whole thing,
+ and then I'm done.
+ It's just kind of like back and forth.
+ And so we think about, so we train foundation models,
+ we optimize them for reasoning and code
+ to support this whole process,
+ and I actually think the abstractions that we choose
+ are really important on top of programming languages,
+ and whether we choose the right ones or not,
+ that's gonna make it much more or less usable,
+ and those are all things that we think a lot about.
+ - Wow, so in this vision,
+ the way that humans interact with computers through agents
+ is really about making everybody a programmer.
+ - Yeah, without thinking of ourselves as programmers.
+ - Yeah, what does the world look like
+ with eight billion programmers on it?
+ - Yeah, it's really interesting because, you know,
+ I think a lot of people, we talked about this briefly,
+ a lot of people feel very disempowered today,
+ especially when it comes to technology.
+ We're like mad at big tech.
+ I get mad at Facebook, and we're disempowered
+ 'cause we literally have no power.
+ Like, I can't change the technology around me.
+ I don't have the power to do that,
+ and I think there's a world in which,
+ when everyone is able to change our computing environment,
+ like computing is such a fundamental thing.
+ It's about information, it's about processing,
+ and encoding, and transforming information,
+ and that's like the fundamental to human existence.
+ - I think it's also about the search for meaning.
+ You know, when I sit down to write code,
+ often I have this brilliant idea.
+ I'm like so excited to write it down,
+ and I sit down and I'm like, "Import."
+ (laughing)
+ - Yes.
+ - What am I gonna import?
+ And then I'm like, I have to think through it.
+ It's like, well, I can import this thing,
+ or this thing, or this thing.
+ They're all different, and the reason I'm gonna make a choice
+ is because of the thing I'm trying to do.
+ The problem is that this is actually not
+ just a mechanical process of transcribing an idea.
+ It's actually, I don't understand my own idea very well.
+ - Yes, I don't understand what I want yet.
+ - I don't understand what I want,
+ and the act of programming is an exploration,
+ an elaboration, it's actually taking an ill-shaped
+ and malformed idea and then turning it into something
+ that's so concrete that it could be executed.
+ - Totally.
+ Actually, one thing that we've realized working on this
+ is the structure of code and the process
+ of writing a program basically maps,
+ it's like isomorphic to the structure of doing tasks
+ when accomplishing goals in the world.
+ If the same thing happens when I'm trying to do anything,
+ I don't know exactly what I want in the beginning,
+ and through creating the thing or through trying to do it,
+ I learn more and I figure out more about what I want,
+ and I break things down in a very similar way,
+ and I encode some processes very similar to code.
+ So to your question of what does the world look like
+ when we have eight billion software engineers,
+ that's like a totally different world
+ where basically a lot of technology modes
+ will be disrupted today.
+ But something I imagine is also something
+ that's kind of like a creator economy for software,
+ where today we have stuff stacked for writers,
+ and writers can write very niche things,
+ and there's this idea of a thousand true fans,
+ and you have your thousand true fans,
+ then you can make a living.
+ They each pay $10 or $20 a month.
+ And today, I think software is way underwritten.
+ We would probably write a million times as much software
+ if we could, but it's really expensive.
+ And if software, one of the ways we think about
+ what we're doing is we're making writing software
+ at zero marginal cost.
+ If software-- - Zero, that's a small number.
+ - Zero, zero, sorry. (laughs)
+ Eventually it'll be zero.
+ But if software were zero marginal cost,
+ then it would be much easier to make
+ all of this niche software for stuff that, you know,
+ I want like a research IDE where I can ingest papers
+ and like go through them and connect ideas
+ between different papers.
+ But you might want a slightly different research IDE.
+ And right now, these products are not worth building
+ 'cause they're too expensive to build for the value
+ that people are willing to pay for them.
+ But if the cost goes way down, then we get something
+ where all of these niche products are worth building.
+ And it's actually very similar to what's already happened
+ with manufacturing and the Industrial Revolution,
+ where, you know, it used to be really expensive.
+ Someone told me a story that the guy
+ who invented the steam engine took him like four years
+ to build a piston that seals.
+ And so like that's really important for a steam engine.
+ And today I can buy that off Amazon, it's like 50 cents.
+ And because our material environment
+ has become so cheap to produce,
+ now we can create these amazing things.
+ And I think that's also true of our digital environment,
+ which is at the very, very, very beginning.
+ So that's what agents are.
+ - Yeah, yeah, I love that vision.
+ I love the vision of empowering everyone around the world
+ to solve problems with computing.
+ And because I do think it's true that everybody exists
+ in a slightly different context
+ and has different goals and problems to solve
+ and giving people the power to do that.
+ Actually giving me, even with a lot of training
+ in software engineering, I still don't write
+ as much software as I'd like,
+ 'cause it's a lot of work, it's hard.
+ - It totally is a lot of work.
+ You could write 50x as much software.
+ - I would love to do that.
+ - A million times as much software, if we succeed.
+ - I would totally love to do that, awesome.
+ - You actually had a point about, actually let's keep going.
+ - Okay, well, I wanted to talk a little bit
+ about the gaps between the dream of generative AI
+ and all the promise of the technology that we see around us,
+ but then the real world usage of this technology
+ isn't nearly as broadly deployed as I would like it to be.
+ And so I was wondering what you think about that.
+ - Yeah, I think that's totally true.
+ What we observe in enterprises is they try to use generative AI
+ and there's a really interesting anecdote
+ from the Snorkel CEO where he's helping enterprises
+ train their own models using their own data.
+ They get to like 93% accuracy.
+ And I'm like, is that enough?
+ He's like, no.
+ For a lot of these use cases,
+ you need it to be like perfectly good.
+ So I know that you guys are also working on bridging the gaps.
+ How do you think about it?
+ - Yeah, I think that question of like, is it good,
+ actually makes me think about the agents
+ that we were talking about just a second before,
+ because I think that that's one of the fundamental questions
+ in using generative AI.
+ And it depends so much on the context
+ and the way that it's being used in an application,
+ the guardrails that are around it.
+ And also the way that the models are being used
+ against like databases and other sources of validated facts.
+ But the process of like how do all these things
+ get woven together seems right now so bespoke.
+ And I do think that's one of the reasons why it's so hard
+ to deploy generative AI right now.
+ And so I'm thinking based on what we were just talking about,
+ how could agents help us?
+ - A hundred percent, yeah.
+ When we started working on writing software,
+ we realized like, oh, well, sorry, writing agents,
+ we realized like, oh, this is like 99.9% writing software
+ and 0.1% figuring out what to write.
+ So yeah, I think making it much easier for people
+ to encode what they're trying to do in software
+ and to use them on, you know,
+ I kind of think of like software encodes hard logic
+ and encodes processes for information.
+ And knowledge work is just about processes for information.
+ Knowledge work is like transformation of information
+ encoded in people.
+ And the reason we as people can encode it
+ is because we can deal with a lot of ambiguity.
+ So not everything has to be hard coded.
+ And what AI lets us do is, okay,
+ it lets machines or software deal with this kind of ambiguity.
+ We still want to encode the processes,
+ so that's still software.
+ And there's this idea of like LLM core versus code core.
+ LLM core is this idea that you make a big LLM
+ or multimodal model, you pass in your input
+ and it magically gives you the answer.
+ And like, you know, you're writing an essay,
+ it'll magically give you the essay
+ or magically it'll talk to you to figure out the right essay.
+ And I don't know if this is realistic.
+ I think like we encode a lot of processes in our habits.
+ We also encode processes for transforming information
+ in our organization processes, so.
+ - Yeah, and I love the sort of empowerment
+ and diversity that could come from that.
+ You know, one of the challenges, you know,
+ of using language models to do knowledge work
+ is that they tend to be fairly smoothed over, right,
+ which they need to be in order to be aligned
+ and in order to be safe and so forth.
+ But because of that, there's the sameness to it, right?
+ Like, and people will notice like, oh.
+ - It's generic.
+ - Yeah, it's generic, it's not actually,
+ so there's a lot of like, you know,
+ it's kind of amazing that a model can say this thing
+ that's like interesting,
+ but it's also like way less interesting than it should be
+ because of this gloss that's kind of laid over it.
+ And you know, so what does the future look like
+ where, you know, people are expressing themselves
+ using language models, right?
+ And the sort of new perspectives, new ideas,
+ new ways of thinking that will come from that
+ are pretty profound because, you know,
+ I really do believe that pretty much,
+ I mean, all eight billion of us on the planet
+ have something to teach each other.
+ It's really difficult to do that for a lot of reasons,
+ but what if, you know, we were able to sort of,
+ each of us individuate and maximally explore,
+ you know, the things that we're interested in?
+ - Yeah, I agree, like, we don't even realize it
+ 'cause we live in this world,
+ but like, our lives are full of so much friction.
+ Like, we have to micromanage our computers
+ and like, make it do anything we want.
+ Like, you know, I sat down to build an idea,
+ import is the first thing I write.
+ Like, that's way too low a level of extraction
+ to be working at, and a way that a future could be
+ is like, every single person's vision can come to life.
+ This like, barrier between idea and execution
+ can be much smaller.
+ - Yeah. - Yeah.
+ To your point about language models being generic though,
+ I think there's some really interesting stuff
+ that we see internally where, if you break down the problem,
+ into, you know, we break down the problem
+ into thinking about how do we make code extractions?
+ How do we make it easier to write software
+ in natural language?
+ So if you break down the problem,
+ then you can actually call the language model
+ or whatever model you want in much more specific situations
+ and it performs a lot better
+ and it tends to be less generic because--
+ - Right. - Not trained on,
+ you know, maybe it's trained on the entire internet
+ but it's like, then fine tune and then RLHF,
+ RL*Fed for this particular situation.
+ - Yeah. - Yeah.
+ - Yeah.
+ Right, so how do we get to the future
+ where everybody's RL*Fing their own model,
+ you know, so they can learn how to do their own thing?
+ - Totally.
+ Well, I think actually that a lot of these tasks
+ are much more general than we think.
+ Like, I don't think you're gonna have to RL*F your model
+ after, like, no such program for me.
+ - Yeah. - Yeah.
+ - It's like, all of the programming abstractions
+ are actually pretty similar across different use cases.
+ For example, like a function.
+ We work a lot on generating and testing functions
+ and that's like a basic building block for programs.
+ Once you can generate and evaluate
+ whether a function's correct,
+ now you know, okay, you can automatically generate
+ infinite functions and figure out if it's correct,
+ like, if it does the behavior that you want.
+ - Yeah, if we know what we want it to do.
+ - If we know what we want to do.
+ - There's the search.
+ - But actually, what's interesting about this is like,
+ okay, you know, I'm using our system
+ and what it allows me to do is work at a higher level.
+ So instead of you starting with import,
+ you can start with, okay, I would want,
+ you know, one thing I wanted yesterday
+ was to, like, go through everyone I know
+ and find all the people in my network
+ that I can reach out to for user interviews
+ who are BizObs people.
+ It's like, okay, I'm, like, manually going through LinkedIn
+ and my email to do this, use clay.earth,
+ which is a product that kind of does this,
+ it's not perfect, and so if I wanted my agent to do this,
+ then the first step it would say is like,
+ okay, where do you want to go?
+ Where do you want to look for these people?
+ And I can be like, I want to look for people in my email
+ 'cause on LinkedIn it's not reasonable.
+ And then the next step, it can be like,
+ okay, well, I've gotten you some outputs,
+ like a list of people from your email.
+ Do these look right?
+ And now I can just work at this input/output level
+ instead of being so focused on
+ the exact implementation details.
+ And so it lets me work at that higher level,
+ lets you work at that higher level.
+ - Yeah, yeah, that makes sense.
+ So this vision that Indu has is a really broad vision.
+ It's so much bigger than a code assistant, right?
+ There's a lot of code assistants,
+ a lot of code models out there,
+ but I think what you're talking about
+ is so much more than that, right?
+ It's really about changing the way
+ that we think about problem solving, you know?
+ And what convinced you that now is the right time
+ to build a company to do that?
+ - Yeah, I've always been interested,
+ my co-founder and I, this is our third company,
+ and we'd always been interested in general agents,
+ systems that could make computers do this stuff.
+ You know, we've always felt like
+ we haven't found the full power of computing.
+ In the '70s, people were really excited,
+ and now we're 50 years later,
+ and we're still clicking around.
+ And in 2018, so the last company we started
+ was actually a very specific AI agent company
+ called SourceRisk.
+ It was applied to computing, started in 2016.
+ And we had a few million in revenue,
+ and did YC, and raised Series A,
+ and then in 2018, some of our housemates
+ started building GP3, actually Tom Brown and Ben Mann,
+ the first authors.
+ And we started to see a lot of scaling works.
+ That's crazy.
+ Maybe it doesn't work across all use cases,
+ and so, and all modalities,
+ but we thought if it works across all modalities,
+ if self-supervised learning,
+ where you can just give it any data,
+ and you don't have to label it,
+ if that can work across not just language,
+ not just text, but also images and video,
+ then maybe we have some fundamental learning mechanism here.
+ And in late 2019, that started to happen with SuperClear,
+ I think the first kind of fully self-supervised image
+ classification, beating supervised image classification.
+ So, at that time, we were like, okay, now's the time
+ to work on general agents.
+ And we actually started, when we first started,
+ we were very interested in decision-making
+ in reinforcement learning.
+ We thought decision-making was the hard part of the problem,
+ but it turns out, I don't think decision-making
+ is the hard part of the problem at third-level.
+ Once you have all the right context,
+ once you are able to robustly do things,
+ then the decision is relatively straightforward.
+ Lots of plans work,
+ but the execution needs to be quite precise.
+ - I think that we tend to underestimate
+ the things that we do naturally,
+ and overestimate the things that require cranking.
+ - Totally.
+ - One of the things that humans are just so amazing at
+ is dealing with ambiguity,
+ and this sort of implicit exploration of what we want.
+ It's happening all the time.
+ We have the subconscious that's working,
+ and we don't even know that it's happening,
+ but it's actually doing a lot.
+ - It's doing a lot, yeah.
+ - The way that I think about what we're doing is like,
+ reasoning is actually an easy problem.
+ What we want to do is not have a model reason
+ about everything and magically come to the answer,
+ but rather have the model pull reasoning out of humans,
+ because we're the ones who are, in the environment,
+ getting all this reasoning,
+ because we have some intuition for what we want.
+ What we want is for our systems
+ to pull that intuition out of us.
+ - Yeah, right, yeah, for sure.
+ Let's talk about the interface
+ for how people are going to work with agents.
+ I think a lot of the systems today are built around text,
+ whether that's typing into an IDE or typing into a chatbot.
+ How's that going to scale?
+ How are people going to work with these things?
+ - I'm going to turn the question back on you first.
+ You have interesting, I would say, crazy thoughts here,
+ which are really good, crazy thoughts.
+ (laughs)
+ I can answer briefly.
+ - Why don't you go first?
+ - Okay, so yeah, we think about interface a lot,
+ and the reason is because really,
+ in Vue has two main strategic focuses.
+ One is capabilities, which is like,
+ can we actually generate a function effectively?
+ Can we actually treat these building blocks for code?
+ And two is essentially how intuitive is it?
+ And the way we think about it is
+ there's kind of, the more intuitive you make the product,
+ the more people can use it.
+ So right now, if it generates code that's not very good,
+ I have to go in and edit the code
+ and figure out what's broken.
+ That means I have to be a software engineer
+ in order to work with the system and to make software.
+ But if we can make it so that, okay,
+ I can generate functions effectively,
+ then I can work at at least the input-output level.
+ I can like, architect the whole system
+ and be like, these are the inputs and outputs I want,
+ and here's how we connect the data together and how it flows.
+ Then I don't have to be a software engineer.
+ I can be a business analyst
+ and still be able to make that system,
+ but I still have to think in this system's way.
+ So it's not accessible to everyone.
+ Certainly not everyone's gonna do that.
+ Then you make it more intuitive
+ where the agent knows how to architect its own systems.
+ Then, and like, it doesn't get into these crazy messes
+ and it can make something future-proof.
+ Then, I can be more of a regular person.
+ Maybe I can be a general knowledge worker
+ and I can get it to do all of these business processes
+ that I've wanted to do.
+ And then eventually, one day,
+ if it's actually good at collecting context
+ from my environment and knowing what I want,
+ maybe then I can have like a magical general thing
+ that regular, like, normal people can use.
+ - Yeah. - Yeah?
+ - Yeah.
+ Yeah, I agree.
+ - Yeah, so I've always been interested by this question
+ of what is interesting to other people
+ because I think that kind of points the way
+ to how we're gonna want to interact.
+ And I think text interfaces,
+ most of us don't actually wanna read or write very much.
+ It feels like work.
+ It feels like work, and so when I think about
+ how are people gonna want to solve problems with agents,
+ I'm thinking an interface that's interesting,
+ like fundamentally interesting and engaging to work with
+ is gonna be a lot more accessible.
+ I do think that one of the barriers
+ to entry for programming, for example,
+ is that the IDE feels forbidding, right?
+ - Yeah, it's complicated.
+ - So in this vision of like eight billion programmers
+ working with agents, what does that interface look like?
+ I think if we look at what people actually enjoy
+ interacting with today, I think the most successful thing
+ is games, actually.
+ The way that people interact with virtual worlds
+ is very interesting.
+ In fact, some of us have to regulate
+ how much our children interact with those experiences
+ because they would prefer to just never leave.
+ And so I'm thinking about that, the engagement,
+ things that feel natural, things that feel interesting.
+ If we can make it feel interesting
+ to solve problems with an agent,
+ what kind of interface is that gonna have?
+ And I do think that virtual worlds
+ are gonna be a big part of that.
+ NVIDIA's been working on this thing called Omniverse
+ for a long, long time, starting with our roots in graphics
+ and sort of the idea that it's really important
+ to be able to simulate the world
+ and to interact with entities in virtual worlds.
+ And so I'm thinking about how these things come together
+ and I have come to the belief that AI needs virtual worlds.
+ I think the other side of virtual worlds need AI,
+ that it's kind of cumbersome.
+ That seems a little bit more obvious
+ because building virtual worlds is really hard right now
+ and it's actually the same problem.
+ We're just kind of going around with this loop
+ of it's really hard to build software
+ so you don't have enough of it
+ so that we don't solve the problems in the right way.
+ So I'm thinking about,
+ so it's like, I think pretty clear
+ that AI is gonna help build virtual worlds.
+ I think the maybe more controversial part
+ is that I think virtual worlds are gonna be necessary
+ for humans to interact with AI.
+ - I think this is actually really interesting
+ now that you say it, like, you know, operating systems,
+ new operating systems are really hard to build today
+ because it's like so many apps, so much software.
+ But in some future, I always think like in some future,
+ operating systems will be done in a dozen.
+ You can just pick the one you want.
+ So like our virtual world as operating systems
+ actually is pretty interesting for many people,
+ like a whole class of people.
+ How do you deal with knowledge work in virtual worlds?
+ Like, is it, 'cause text is efficient in a lot of ways.
+ It's like an impression, you can read a lot of it fast,
+ it's faster than speech, you can see all of it up front,
+ like, but virtual worlds may be not a good place
+ to have that much text.
+ - Yeah, I mean, I don't think text is going away.
+ I'm thinking more about the seven billion people
+ on the planet who aren't doing that.
+ - That's fair.
+ - Are they ever going, so is there a future
+ where AI is so useful that the seven billion people
+ that currently are not spending time reading and writing
+ decide, actually, this is the best way for me
+ to spend my time is reading and writing?
+ And I'm questioning that.
+ I just don't think that that's maybe as interesting.
+ Like, certainly, like when I look at my friends and family,
+ I have a lot of friends and family that would
+ much rather do something else than read and write.
+ But in this future where everyone's in the program,
+ where everyone's engaging with agents,
+ how are they gonna do that?
+ So that's kind of the way that I'm working.
+ - It's true, I totally agree with that.
+ Actually, maybe a lot of the knowledge
+ work we're doing today, the reading and the writing
+ AI systems will be pretty good at,
+ and so we can focus our time on discovering new things
+ or creating experiences for each other.
+ - Yeah, exactly.
+ - We know why much of it.
+ - Exactly, I have this belief that AI that solves
+ really important problems behind the scenes
+ is actually, it's very valuable in the sense
+ that it's practical, but it's not very valuable
+ in the sense of how's it gonna drive our economy
+ and our culture because it feels like infrastructure.
+ I always make the joke that one of the most important
+ companies in artificial intelligence
+ is Pacific Gas and Electric here in California
+ because there's definitely no AI that's happening
+ without Pacific Gas and Electric,
+ and they are doing actually really hard things.
+ It's like, do you know how difficult it is
+ to provide energy to millions of people
+ or billions of people around the world?
+ Like, it's super challenging work.
+ In fact, the work of providing energy is likely
+ to be one of the last things that gets automated,
+ I think, because it's actually just really hard.
+ And so, the thing is, though, about PG&E,
+ although I do think that there's a lot of foundations
+ that are just absolutely critical to the way
+ that we live today, because we're not thinking about them,
+ because we have delegated that and abstracted that away,
+ it just doesn't become the focus of our culture.
+ Now, it used to be actually the case that electrification
+ was the focus of the culture, like 130 years ago
+ or something like that, 100 years ago.
+ That was a thing where people were just obsessed about,
+ if only we could have electricity,
+ then we could have a well that brought up water
+ for our house, and we wouldn't have to walk so far.
+ So, there was this time when getting electricity
+ was a thing that really occupied the mind of our society,
+ and then once we solved that problem,
+ it became infrastructure, and nowadays people don't think--
+ - Totally, I agree, like foundation model companies today
+ will be boring in the future.
+ - Yeah, right.
+ - And also, another interesting thing
+ about the electricity example is,
+ electricity is now regulated as a public good,
+ because everyone uses it, and I think, actually,
+ there's something about foundation models
+ that probably will or should be regulated as a public good,
+ where it's providing this service to society
+ as an infrastructure layer, and then we can build
+ interesting stuff on top of it.
+ - It's an interesting idea.
+ Right now, I don't trust our legislature
+ to understand foundation models
+ all enough to regulate them, but maybe one day
+ they'll become more sophisticated there.
+ Yeah, so I think this interface question
+ is really interesting in this vision of agents
+ building a bridge between the capabilities of computing
+ and artificial intelligence and the people
+ that actually need to solve problems,
+ and then how do they go about accessing them?
+ I think it's a really important question.
+ - Yeah, I feel like there's gonna be a campaign explosion.
+ It's not a great analogy.
+ A campaign explosion of interfaces in the future,
+ where people can build all sorts of operating systems,
+ all sorts of interfaces.
+ Some of them will be virtual world,
+ some of them will be hardware that projects onto my,
+ I don't know, shirt, some of them will be speech,
+ and when it's easy to build software,
+ we can connect them all together much more easily.
+ I think importantly here, we're relying on humans
+ to make these decisions about how to connect them together.
+ I think this is a very different vision
+ than the classic AGI.
+ AGI will know all the answers, it will solve all the problems,
+ it will make all the decisions, and we're the ones who,
+ we're being told what to do, and it'll know what to do,
+ and once it tells us what to do,
+ we'll magically end up with a nuclear reactor.
+ That's a very disempowering future.
+ - It's a human-uncentered, the humans are peripheral.
+ - The humans are peripheral, the machine is in the center,
+ and I think this is totally wrong,
+ and also it's not a world that we want,
+ and we can choose what kind of future we want to build,
+ but I think this is the dominant narrative
+ when machines are at the center.
+ - Yeah, it's interesting.
+ Humans, we just generally are afraid of being displaced.
+ I think that's just, it's like a core fear,
+ probably has to do with tens of thousands of years of trauma.
+ - Evolution. - Yeah, exactly.
+ And so, this is a deeply embedded sphere
+ that we're gonna be displaced.
+ I think the human-centered AI that you're talking about
+ building is not displacing, it's augmenting.
+ - Exactly. - It's empowering.
+ It's like a thing that brings out the brilliance
+ of all the people on the planet in their different ways.
+ - Exactly.
+ Yeah, we think of the classic AGI vision,
+ this very disempowering vision,
+ things of machines as gods,
+ and we want to think of machines as tools.
+ Machines have always been tools.
+ They should continue to be tools.
+ We can choose what kinds of tools we make.
+ We can choose not to make tools that are conscious,
+ things like that.
+ So, yeah, I agree with you.
+ - Yeah.
+ Great, well, what?
+ - Should we open up?
+ - Yeah, we've got just a few more minutes.
+ I guess, where do we want to take this?
+ Where does the view want to take this?
+ What kinds of exciting things are you envisioning
+ that you're gonna be providing?
+ - Well, I think we talked about a lot of it,
+ but there's kind of these stages of,
+ we want to make it much easier
+ for relatively technical people to make software,
+ and then much easier for non-technical people
+ to make software, and then eventually much easier
+ for everyone to make software,
+ and we won't be thinking about what we're doing
+ as making software, and kind of more and more
+ of the reasoning and understanding the world
+ will be encoded into the agent,
+ and where we land is kind of a world
+ where anyone can really take a vision that they have
+ that they want to create.
+ My research ID, your virtual world,
+ and it's fairly straightforward to create.
+ You know, some things will be much harder than others.
+ Maybe virtual worlds are still hard,
+ you still have to build all the apps from scratch,
+ but that's a world in which basically all of us
+ can shape our digital environments
+ the way we have the power to shape
+ our physical environments.
+ Right now, I can buy a plan off Amazon,
+ I can manufacture some things in the house,
+ my house will look different than your house,
+ but today, all of our houses look the same,
+ except maybe our tables are different colors or something.
+ - Well, there's a little box that I can click
+ on my Facebook feed that says show more like this.
+ - Right. - Show less.
+ - Yes, so we've got different trinkets in our drawers.
+ - Right. (laughs)
+ But yes, one day, I think of it as really being able
+ to totally control our information environments,
+ and I think we're actually pretty early
+ in the study of information,
+ and in a hundred years, we'll really understand
+ how information is very core to life,
+ and all life, not just human life.
+ And people, I think, once we have more control
+ for our information environments,
+ we'll feel a lot more empowered to do the things
+ that we want to do in the world.
+ - Yeah.
+ - Yeah.
+ I hope we can figure out how to use that
+ in ways that connect us as well.
+ One of the challenges, I think,
+ of individualized information is disconnection,
+ and sometimes people will ask me,
+ Brian, what do you think about virtual worlds
+ where everybody gets to play their own game?
+ You just talk to the computer,
+ you're like, hey, I wanna play a game,
+ it's kind of like Call of Duty,
+ but it's set on Mars or whatever,
+ and then the computer thinks about a plot line
+ and characters and populates it
+ and makes missions to go.
+ And it's interesting, I don't think
+ that everybody playing their own games
+ and everybody living in their own worlds
+ is actually very interesting or maybe even sustainable
+ because-- - Or what people want.
+ - It's not really what people want.
+ I think what people, one of the things
+ that's really important to us is how we share ideas
+ and what kind of culture we build,
+ and how are agents gonna bring us together?
+ How are people gonna use agents to connect with people
+ maybe that they wouldn't have been able to connect with
+ otherwise to share ideas, to build new forms
+ of expression and culture?
+ That's a really interesting question for me.
+ - Yeah, I think this goes back to information
+ in a lot of ways.
+ Often, maybe we fail to connect because
+ I don't understand what you're saying.
+ We're speaking a slightly different conceptual language
+ and maybe there's a translation where.
+ Also think about democracy.
+ There are these larger social institutions
+ that often, a lot of us don't feel like
+ we have very much power in,
+ or to change large organizations, democracy.
+ And what's interesting about this is
+ democracy is just an algorithm.
+ It's like, but right now the inputs are binary.
+ You can either vote or don't vote.
+ It's like a terrible input to an algorithm.
+ We can actually greatly improve the inputs of this algorithm
+ and get a lot more information out of it.
+ And this is a way in which people can shape the collective
+ that they're a part of much more than they can today,
+ just because today we're not able to take in
+ all the complex nuance in every person's mind.
+ And so I do see this improved ability
+ to work with information as a way to
+ help people contribute to the collective
+ and help the collective understand the individuals in it.
+ - Yeah, great.
+ Awesome, well we should wrap up.
+ Thank you so much for joining us today.
+ We're gonna have a few minutes for questions and answers.
+ If any of you wanna go to the microphones,
+ there's one over here and then one over there.
+ - Hi there, thank you for the talk.
+ I really enjoyed it.
+ Now I'm an AI engineer so I have a more technical question
+ and I'm hoping for a more technical answer.
+ In your example with your AI agents,
+ you're not just having, you're not telling it what to do
+ and it goes to do it like what we have GP for, right?
+ Write a program immediately, you'll have a back and forth.
+ What do you want, what are some clarification?
+ So how can you train foundation models to do that
+ as opposed to the immediate,
+ here's exactly what you want right away.
+ This is what you're thinking of.
+ - Yeah, it's a great question.
+ So without getting too much into the details
+ of exactly what we do,
+ there's a high level, when I'm trying to do a task,
+ if the task is fully specified, like click on this button,
+ then I can do the task.
+ But then sometimes there's ambiguity in the task.
+ For example, figure out which of my friends
+ are BizOps people so I can reach out to them
+ for user interviews.
+ It's like okay, well where should I look
+ to find these friends?
+ What counts as a BizOps person?
+ What we want is models that detect ambiguity,
+ and some of what we do internally is ambiguity detection.
+ That's actually a big part of refining exactly,
+ helping the user refine exactly what they're trying to do,
+ figuring out where are there edge cases
+ that are not captured in the original spec,
+ and where's their ambiguity in the original ask,
+ and then using that to give more information from the user.
+ So basically the answer is train models
+ to specifically detect ambiguity.
+ - All right, thank you.
+ - Insightful conversation, thank you.
+ I can understand agents working with APIs.
+ There's lots of applications that don't have APIs.
+ How do you think about agents working with that?
+ Is that like bringing in pixels,
+ or are you kind of ready for that world?
+ - Yeah, so a way that we think about it
+ is like a thing that navigates the web is also software.
+ So if you can write software, you can also navigate the web.
+ That said, I don't think we're gonna have to build
+ that part from scratch.
+ I think the way we think about it is
+ core programming and reasoning,
+ that's a very hard problem to solve,
+ and the most important problem to solve.
+ The other stuff like web navigation
+ or clicking around on the computer,
+ there are gonna be SaaS products, many of them.
+ I think a lot of people are working on those.
+ SaaS products that allow you to take some instruction
+ and then figure out where to click.
+ And that's a fairly straightforward problem to solve,
+ and we'll just use those.
+ - Hi.
+ Okay, thanks.
+ - Thank you, your mic's not on, Barbara.
+ Go ahead.
+ - We've got a question from online.
+ Barbara, why don't you just read it out
+ and we'll answer it,
+ and then we'll go to the person with the microphone next.
+ - Yeah, they were asking, what are the barriers
+ preventing AI agents to work from potential health?
+ What are the barriers preventing AI agents
+ from achieving their full potential now?
+ Really, it's everything we talked about,
+ but the biggest, from our perspective,
+ the biggest things we've seen by building them ourselves
+ is, as a user, I don't trust it to do the things I want.
+ And there are a bunch of reasons why I don't trust it.
+ One is, it's not reliable,
+ so it's not actually capable
+ of doing the thing I wanted it to do.
+ Two is, it didn't understand what I wanted it to do,
+ so this is why, like, clarifying ambiguity,
+ surfacing edge cases, et cetera,
+ it's really important, the back and forth.
+ The reasoning back and forth is really important.
+ And then three is, the interface to agents,
+ a lot of them today, it's like a chat interface.
+ Chat is not a very good interface in a lot of ways.
+ It's very restrictive, it's single-threaded,
+ and so there are much better ways
+ of kind of working with these systems
+ that, one day, we'll share more about.
+ - I would also add to that,
+ and this is a little controversial,
+ but I feel sometimes, as a community,
+ we over-index on general intelligence,
+ and sort of this idea that, like,
+ if we achieve general intelligence,
+ then all problems get magically solved.
+ And I feel like that idea in itself
+ is an obstacle for making usable systems,
+ because it's kind of assuming that
+ the big problems will just solve themselves someday, somehow.
+ - Yeah.
+ - And, by the way, I love research towards AGI,
+ so I'm not trying to say that research towards AGI is bad.
+ I just feel like this quest of how do we,
+ I feel like the framing of AGI sometimes creates adaptability.
+ - That's totally true, yeah.
+ Actually, I think it's very confusing
+ what a general intelligence is in a lot of ways.
+ Humans are a specific intelligence.
+ - Right.
+ - And so, a general app, what?
+ And I think, like, training the whole internet
+ still helps us write better code.
+ Well, a filtered version of the whole internet.
+ But it's kind of like the model only has so much
+ computing, processing power in it,
+ and ability to learn representations,
+ and so choosing what data we train them on
+ is really important.
+ And there's no such thing as fully general data.
+ - Yeah.
+ - Yeah.
+ - Yeah.
+ - Thank you.
+ Next question.
+ - Hi, great talk, by the way.
+ So, I have a bit of trouble pinning down the question.
+ It seems like the last person.
+ - Oh, so you're giving us an ambiguous question.
+ (laughing)
+ - Let's see.
+ Okay, so--
+ - I need an agent to understand it.
+ (laughing)
+ - Well, it's kind of towards the point of the question.
+ So within the last years, the last days, sorry,
+ there's been a few talks where the topic
+ of simulated worlds versus AI agents has surfaced.
+ And from a business standpoint, from an industry standpoint,
+ there are a lot of business processes
+ that are complex interactions between users and systems,
+ but they're not very complex.
+ The domain of alternatives is constrained.
+ But today, when I see examples of the simulated worlds,
+ I see Minecraft, and the motivation of the peak
+ is not that, right?
+ But the motivation of users within these systems
+ is maybe I'm an ignorant user about asking
+ for a purchase order to be admitted,
+ but I don't have the information and I need assistance,
+ or I do have the information and I need this fast track,
+ et cetera.
+ So, is there a place where you see the simulated worlds
+ converging towards these more complex AI agents,
+ where you can pre-test them, right?
+ You can see the work before rolling them out,
+ which is kind of the big stopper for industry.
+ - Yeah, yeah, absolutely.
+ I mean, that's why we were talking earlier
+ about the omniverse.
+ I mean, I fully believe that a lot of agents
+ need a playground to learn and to test,
+ and I think that was like the omniverse.
+ - I think that's interesting.
+ I don't know, maybe more pragmatically
+ before we have the omniverse.
+ I think when we write software, we already test it.
+ We test it by trying out inputs and see what happens.
+ We have test environments and stuff for it,
+ and so thinking of agents as building software,
+ we get the testing kind of for free.
+ Maybe I'll build this process that figures out
+ purchase orders that I want and puts them somewhere,
+ then I can test it like I test a normal software program.
+ I don't have to rely on the agent to map.
+ I think there's a model of agents
+ where you rely on the agent to magically know
+ how to deal with the situation,
+ and that's not realistic for a while.
+ So you don't need simulated worlds.
+ Just write software and make a test environment.
+ - There we go.
+ Awesome, well, we're gonna have to stop with questions
+ just because we're running out of time,
+ but we can follow up with a few people offline.
+ But thanks again for coming this morning
+ and being here for this discussion about agent size.
+ and I'm really excited to see where this goes.
+ - Thanks, Maya.
+ (audience applauds)

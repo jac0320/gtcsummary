@@ -6,7 +6,7 @@ def intro():
             👋 Hi there! This is a simple app that summarizes my GTC-2024 conference experience.
 
             NVIDIA GTC 2024 was NVIDIA's flagship annual conference focused on the latest advancements 
-            in AI and other cutting-edge technologies. The 5-day event took place from March 17th-21st, 
+            in AI and other cutting-edge technologies. The 5-day event took place from March 17th - 21st, 
             2024 in San Jose, California, marking the first in-person GTC since 2019.
 
             * March 18
@@ -14,11 +14,8 @@ def intro():
             * March 18-21
                 The main AI Conference and Expo will take place over these 4 days from March 18 to March 21
             
-            The conference will feature over 900 sessions, 300 exhibits, and 20 technical workshops covering 
-            a diverse range of topics related to AI, accelerated computing, data science, and more. 
-            Attendees will have the opportunity to interact with NVIDIA experts during the "Connect With the Experts" 
-            sessions and learn about the latest NVIDIA technologies, including generative AI, deep learning, 
-            robotics, and cloud computing.
+            The conference will feature over 900 sessions, 300+ exhibits, and 20 technical workshops covering 
+            a diverse range of topics related to AI, accelerated computing, data science, and more.
         """
         )
 
@@ -30,10 +27,11 @@ def intro():
         learning of the AI technologies, I have built this app to summarize the conference.
         
         Feel free to explore the tabs for:
-        * 🏆Keynote: learn more about the Jensen Huang's keynote.
-        * 🎙️Technical Talks: explore the technical talks (that I attended).
-        * 🏢Companies: learn about the companies that participated in the conference.
-        * 👂Ask Me Anything: Any other question? This AI chatbot will try, on my behave, to answer it.
+        * 🏆 The Keynote: learn more about the Jensen Huang's keynote.
+        * 📕 My Takeaways: explore my personal notes on the conference.
+        * 🎙️ Technical Talks: explore the technical talks transcript summaries + PDFs.
+        * 🏢 Companies: learn about the companies that participated in the conference.
+        * 🤖 NOT-EVEN-ALPHA-ViewAgent: a Alpha feature to ask questions about anything (if it works).
     """)
 
 
@@ -153,31 +151,31 @@ def keynote_openai_summary():
 def notes_summary():
 
     with st.expander("Retrieval vs. Generative"):
-        with open(str('summarized_notes/personal_notes/retrieval_vs_generation.md'), "r") as file:
+        with open(str('personal_notes/retrieval_vs_generation.md'), "r") as file:
             st.markdown(file.read())
     
     with st.expander("The Need for Scalable Inference"):
-        with open(str('summarized_notes/personal_notes/the_need_for_scalable_inference.md'), "r") as file:
+        with open(str('personal_notes/the_need_for_scalable_inference.md'), "r") as file:
             st.markdown(file.read())
 
     with st.expander("The Economics of AI"):
-        with open(str('summarized_notes/personal_notes/the_economics_of_ai.md'), "r") as file:
+        with open(str('personal_notes/the_economics_of_ai.md'), "r") as file:
             st.markdown(file.read())
 
     with st.expander("Long-context vs. RAG"):
-        with open(str('summarized_notes/personal_notes/long_context_vs_rag.md'), "r") as file:
+        with open(str('personal_notes/long_context_vs_rag.md'), "r") as file:
             st.markdown(file.read())
     
     with st.expander("Democratizing AI"):
-        with open(str('summarized_notes/personal_notes/democratizing_ai.md'), "r") as file:
+        with open(str('personal_notes/democratizing_ai.md'), "r") as file:
             st.markdown(file.read())
 
     with st.expander("The World of Agents"):
-        with open(str('summarized_notes/personal_notes/the_world_of_agents.md'), "r") as file:
+        with open(str('personal_notes/the_world_of_agents.md'), "r") as file:
             st.markdown(file.read())
 
     with st.expander("What the heck is this NIM?"):
-        with open(str('summarized_notes/personal_notes/what_the_heck_is_this_NIM.md'), "r") as file:
+        with open(str('personal_notes/what_the_heck_is_this_NIM.md'), "r") as file:
             st.markdown(file.read())
 
 def notes_pictures():

@@ -1,27 +1,28 @@
 import streamlit as st
 
 TEST_CODE = """
+import json
+import random
 import streamlit as st
 
-# Step 1: Add a sidebar with a "My Notes" tab
-st.sidebar.title("My Notes")
+# Load the JSON file containing the sponsor company data.
+with open("notebooks/company_full.json", "r") as file:
+    sponsor_companies = json.load(file)
 
-# Step 2: List the topics that Site wrote notes on
-topics = ["Retrieval vs. Generation", "The Need for Scalable Inference", "The Economics of AI", "Long-context vs. RAG", "Democratizing AI", "The World of Agents", "What the heck is this NIM?"]
-for topic in topics:
-    st.sidebar.markdown(f"- [{topic}](#{topic.replace(' ', '-')})")
+# Generate a random number between 0 and the number of sponsor companies.
+random_index = random.randint(0, len(sponsor_companies) - 1)
 
-# Step 3: Display the notes for the selected topic
-if "topic" in st.experimental_get_query_params():
-    topic = st.experimental_get_query_params()["topic"][0]
-    notes = st.markdown(f"## {topic}")
-else:
-    notes = st.markdown("## My Notes")
+print(sponsor_companies)
+# Use the random number to index the sponsor company data and retrieve the name of the company.
+company_name = sponsor_companies[str(random_index)]["name"]
+
+# Display the name of the randomly selected sponsor company to the user.
+st.write(f"A randomly selected sponsor company is: {company_name}")
 """
 
 def main():
 
     st.code(TEST_CODE, language="python")
-    exec(TEST_CODE)
+    exec(TEST_CODE, globals())
 
 main()

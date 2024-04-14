@@ -1,0 +1,548 @@
+ [ Inaudible Remark ]
+ So thank you all, and I'll turn it over to you.
+ >> All right, thank you.
+ Thank you very much for the introductions.
+ So I'm pleased to be here to present Petrobras
+ and this work that we have done in collaboration
+ [inaudible]
+ So the presentation, all the work was prepared by many hands.
+ This is the whole team of Petrobras and SESA
+ that could not be here today for the session.
+ And we will introduce a little bit the workload
+ of who are you guys that we are working.
+ Most of the audience here that already know
+ about the internals of reservoir simulation,
+ but for the ones that are not very familiar,
+ we will give five minutes just to introduce you
+ about the problem.
+ We will dig into the solar VR,
+ the algorithm that we ported to R.
+ We will talk about this journey,
+ and we will dig into the details that everyone here
+ can see that are the results of the performance.
+ So just to start, Petrobras
+ is the Brazilian energy company.
+ We are still transitioning for new energies,
+ but our business is still the exploration
+ and production of oil and gas.
+ So we are happy for deep water exploration.
+ We can have 7 kilometers deep.
+ And to do this kind of exploration
+ is a very costly operation.
+ So according to our business plan,
+ we want to drill more than 300 wells,
+ and just a single well of this result
+ can cost between 70 to 100 million.
+ So it's a very deep pocket operation.
+ And to handle this, we use exact HPC
+ to reduce the uncertainty
+ and improve the success of these operations.
+ To handle these operations,
+ we have nowadays the biggest HPC infrastructure
+ in Latin America,
+ according to top 500 and 3,500 lists.
+ And what we can see inside these big machines
+ is exactly two, workloads and disciplines.
+ We have the seismic processing
+ for digging for the geophysics,
+ and we have reservoir simulation
+ for the reservoir engineers,
+ and that's exactly where I will be focusing
+ this presentation.
+ So just a 30-second introduction
+ for the ones that doesn't know
+ about these disciplines.
+ The seismic processing helps to answer
+ the question of where.
+ Where we will find the disorders.
+ So we have some source of shock wave
+ that will be reflected by the rocks,
+ and we will collect these back with headphones
+ to generate some indirect image like this one.
+ But the final objective is to have 3D models
+ that the engineers and all the geophysicists
+ will work that way.
+ HPC enters exactly here to do all this processing.
+ This is the biggest workload
+ in all the industry of oil and gas.
+ But it's exactly followed by the reservoir simulation
+ that will help to answer the question of
+ how we will export the reserves.
+ So the engineers need to answer a series of questions
+ like how many wells they will put over this field
+ that they will be exploring,
+ what types of wells,
+ which kind of injection,
+ the controls of the wells,
+ even the cash flow plan
+ that they will be performing.
+ So all that we will come to this extractive
+ of the extraction strategy
+ that the engineers need to do.
+ And they use exactly simulations of the field
+ to try to understand these behaviors,
+ compare different scenarios,
+ compare with the actual data
+ that is being collected from the reservoirs.
+ And these two workloads are way different.
+ I will not go into much into the details here,
+ but seismic processing is basically
+ the most GPU-intensive workload in the industry
+ for the oil and gas industry.
+ We can use for several weeks hundreds
+ or even thousands of GPUs at the same time
+ for a single job.
+ On the other hand, for reservoir simulation,
+ it's a different problem.
+ It's more important for us than double precision.
+ It's more basically on CPU workloads.
+ We are still, even in the market,
+ not only internally on the company,
+ but in the whole market,
+ moving forward for GPU acceleration.
+ But the jobs are quicker.
+ It can take hours.
+ Usually we only use one single load.
+ But the problem is that we have
+ anything CPU workflows that requires
+ hundreds or thousands of different jobs
+ that will be running at the same time.
+ This could be for optimization problems
+ or reverse problems, such as a common filter
+ to do the history matching of the problem.
+ So this put the pressure,
+ it's more like a bag of text problem,
+ but it's very intensive in the number
+ of simulators that will be running.
+ Of course, we have other relevant workloads.
+ Machine learning is growing a lot,
+ even inside these two disciplines.
+ But these two are the biggest ones
+ in the company and in the industry.
+ So looking for the reservoir simulators,
+ the Solvo VR project was born
+ exactly by the need that we have
+ to accelerate the reservoir studies.
+ This simulation time is always a limiting factor
+ for the engineers.
+ They always want bigger models
+ for better fidelity.
+ And we have a problem shown here
+ from different studies that the linear solver
+ is the most expensive part of these simulators.
+ So we started this project to try to
+ optimize a little bit this time
+ and try to speed up the biggest problem
+ that we had at the time.
+ So we started this project in collaboration
+ with different institutes in Brazil.
+ The ones that have seen yesterday
+ the talk about the global problem,
+ Otavio talked a little bit that we need
+ to invest in Brazil in different universities.
+ One percent of our revenue is to invest
+ in research in the country.
+ We have this signature to do research.
+ We have the biggest research center in Brazil.
+ So we're always seeking research projects
+ and ways to improve.
+ So we created this project to exactly
+ focus in our problems, in our matrix,
+ specifically for the result,
+ and ways to speed up this linear solver
+ that is the worst part.
+ So this project is developed over C++.
+ It's a project that took a while
+ to enter into production.
+ Not only because the guillotine is very small,
+ but also because we need to have all the features
+ that the different geomechanics
+ or full simulations require to enter into production
+ and even more to ensure that the results
+ will not be different.
+ The simulators are used to predict
+ and to certify the reserves of the company.
+ So the company has stocks,
+ and the value of the reserves of the company
+ are based from these simulations.
+ So we need to ensure that the results
+ are very accurate.
+ So we integrated it with different simulators,
+ the two simulators, the full simulator
+ and the geomechanical one that we have.
+ It has different algorithms.
+ Some were cited for one or for other disciplines.
+ We have several storage matrix formats.
+ We have several real-life solvers.
+ We worked mostly with the universities
+ into these preconditions,
+ more specifically for our problems.
+ And we have the flexibility to combine
+ and list the different solvers and preconditions
+ for the better product.
+ So the first integration was with the geomechanics simulator.
+ We advanced these over the time
+ to even include other preconditions
+ that could accelerate the deep end work.
+ But the more interesting that we were bringing to here
+ was the integration that we have done with CMG.
+ CMG is the Computing Modeling Group.
+ It's a software company specializing in reservoir simulation.
+ It has a wide suite of leading reservoir simulations
+ in the market, such as these three IMAX GEMISTARS.
+ And we integrated into the company
+ with IMAX and GEM
+ that are the two most used for our problems,
+ specifically GEM because it's all the pre-solved reserves
+ required with the composition simulation.
+ Our partnership with them is for over 40 years,
+ and we are very pleased to have this collaboration with them.
+ So we integrated the data solver with this simulator.
+ And just more context about history,
+ last year we started as well a project with another university
+ to reduce our outposts.
+ And during this work, it was worth to consider also
+ some alternative instances and alternative architectures.
+ And ARM exactly was gaining many attention during the recent years.
+ And we by demonstrating different data price performance
+ for various applications.
+ So we thought that this could be a very good opportunity
+ for this application that we are developing.
+ So the opportunity here was exactly to port
+ and investigate the numerical codices that we have for ARM-based.
+ We want to understand that and this price performance
+ that we can see here.
+ This is just an overall demonstration
+ of the price performance.
+ Of course, if you enter here into the details,
+ maybe it's not completely fair comparison
+ because we are talking about the VCPUs.
+ If we compare with the 32X large,
+ it could be even more expensive, it could be more comparable
+ with the ARM ones.
+ But we will talk later about this thing.
+ So we started in 2003 a Blue Sky project.
+ We didn't have much hopes that we could reach to good performance.
+ We were really just to explore a little bit
+ and check the accuracy of the ARM,
+ if we can rely on them to move our workload.
+ But as you can see later, it was a good surprise to work with them.
+ So I will pass now to JP to talk a little bit about the journey
+ and soon we will return to the results.
+ Thank you, Felipe.
+ So we want to talk about the journey to porting
+ sober PR to ARM in general.
+ Interesting that we are focusing on race,
+ but when you go to the basics, to the fundamental process
+ of porting the code, we are seeing that we are going to maintain
+ the multi-platform ecosystem for ARM, which is pretty good
+ because you can have single code, you can have a single building system
+ that is going to work for all of the ARM platforms.
+ And environment for testing is also pretty interesting.
+ I'm going to show some details about that.
+ Well, our target as NVIDIA, collaborating with Petrovas,
+ is for sure to explore the performance of Nuke and Grace.
+ Grace is a NVIDIA CPU, high-performance architecture
+ defined for really high-tensive applications.
+ We've studied two new world scores.
+ V2 and V9 with a really high bandwidth between memory
+ and also a great general architecture distribution for cache,
+ which gives a really, really interesting high performance.
+ It gives a really high performance with balanced memory consumption,
+ which is actually a really interesting and important fact about Grace.
+ We're going to see some theoretical and predictive energy efficiency,
+ which really reaches the results.
+ So, Grace is packed into two different modules.
+ I'm not going to go into too much details of that.
+ We have lots of sessions here in GTC,
+ and previous ones were talking about the details of the architecture,
+ but the main takeaway here is the core of the superchip,
+ which is the interconnect between both sockets.
+ So, we're talking about C2C, a chip-to-chip interconnection
+ that can reach up to 900 megabytes per second called data transfer,
+ which is pretty good for most of the applications
+ that really demand memory access and coordination, right?
+ Okay, great.
+ Let's talk a little bit about the best practices regarding V2 Grace.
+ Well, we can use any portable platform that we want.
+ We can use NVIDIA compilers.
+ You can work with GTC. You can work with LLVM compilers.
+ And, well, interesting to notice and to say that,
+ important to focus in most recent one, Grace is a really new architecture,
+ so we need to focus on the latest version that also packets all the optimizations
+ for the platform itself, right?
+ Well, be aware of no standard built systems.
+ This is one thing that we learn along the way that when it's specialized too much,
+ you may have some problems reporting to other platforms.
+ And as we go to C, we're just using plain GCC for this compiling procedure.
+ And performance out of the box was kind of really, really good.
+ Yeah, also be aware of non-standard default compilers
+ and, well, be 100% sure that you're working with the compiler
+ that you are supposed to use, actually,
+ because you can have multiple compiling platforms inside your environment
+ and make sure using, for example, some type of login to understand that key
+ to check that you're actually using the correct version of the compiler that you want, right?
+ And no cross-compiler, right?
+ So GCC and LLVM are kind of excellent ARM compilers.
+ And it is cooperating strongly with the community to inject and put all the optimizations
+ that we believe that's important for the whole ecosystem today.
+ It has some specificities for Grace as well.
+ And, well, all major build systems and tools work with ARM, in particular in the case of Sovereign VR,
+ using CMake, so just some lines of change into the CMake files
+ that was enough to assure that we're able to compile and run the code in a really performatic way, right?
+ And in terms of compiling performance,
+ it's kind of keeping the same as other x86 compilers running the processor ship, right?
+ Okay, any other adjustments that you need to do with the code, right?
+ Initially, first, you need to remove everything that's not ARM, right?
+ Like MADX, and also, it's interesting to say that NUR and Ntune on ARM has a different meaning,
+ so we need to take this away as well.
+ And what I recommend is to use the ncpu-native, right?
+ With the ncpu-native, you're going to be able to work forward your application,
+ which means that you can take it, put it behind your ARM, and not your, probably your ARM, right?
+ Yeah, so other instances, pretty quickly, same binary, going to work.
+ Probably, we had some, we're going to have some presentations here at GTC this year,
+ talking about these, Charlie Forkrom is talking about this,
+ and he's kind of a master on explaining better this type of system of ARM, which is pretty interesting.
+ And try to avoid this type of specifications on the flag, like University2, as I said,
+ so you can work forward, so you can take your binary with you for different platforms,
+ and the code just works, right, actually the binary.
+ On the things that may, oh, regarding the old flags and old tree flags,
+ also important for automatic vectorization and auto-parallelization of the code,
+ depending on what they're doing.
+ So, in our situation, we decided to not test using old flags,
+ because it's a more, I could say, aggressive type of automatic optimization,
+ and requires a little bit more testing before actually have 100% sure that can be used.
+ In particular, for SolidVR, they have a really nice and big suite of tests,
+ you need to test for accuracy, and we didn't have too much time to validate everything so we can use.
+ But I did some previous, kind of some previous experimentations,
+ and didn't saw too much results, so we stayed with the old tree, right.
+ So, basically, that's it.
+ I mean, the difference, of course, we're not working here specifically with any particular architecture flags,
+ for example, ICC is not here, we did some tests on ICC,
+ and the performance on the box didn't match the GCC, right,
+ so we decided to keep it blank.
+ This is the same environment for all the tests that we're going to show.
+ And, yeah, I'm saying this because we're not going to see any particular Intel flags here, for sure.
+ And, as I said, just using MCPO Native,
+ so we're going to run the code on the machine that we're going to run the code,
+ we're going to grab here the latest, all the latest two-chains,
+ and everything that we need to run the code.
+ Okay, regarding the platforms, and sorry, the software stack that we have used,
+ we impacted this into containers using GCC 12.3,
+ one more modern version that we have, already have some nice ARM optimizations.
+ And, yeah, I have lots of impact, maybe if you have time, I can explain a little bit more,
+ we can get back to this topic finally, we didn't try to change for, for example,
+ MDPL and the performance library or RBL at this moment, right?
+ Okay, so the code adjustments that have been performed was basically to remove all the dependence from other platforms.
+ We removed the intrinsics from the code and started to evaluate some other ARM options, right?
+ But, well, interesting that the Intel part that was there, the intrinsics,
+ was just for creating memory blocks that were aligned, that are aligned.
+ So the impact on the performance wasn't that significant.
+ Okay, some other minor changes on the code, and some adjustments in terms of synchronization to make,
+ and then we assured that the ARM version was kind of matching all the accuracy numbers
+ that Petrobras stipulated as their baseline to accept a new compiled platform in a newer architecture, right?
+ Oh, and this is one of my favorite parts. Sorry.
+ Well, we have worked with containerized environments because we did a bunch of tests,
+ at least seven different architectures, I'm not showing everything that we did here.
+ So this is beautiful, single definition file, multiple runtime containers, and that's it.
+ So, of course, the singularity file, it's bigger than this, I'm going to show just a snippet of what it is,
+ but the thing is, we're just using the same components for all the tests that we have performed, and it just works, right?
+ Yeah, I feel almost emotional about that, because as a developer, you know,
+ we don't have multiple platforms, we just start getting crazy about how complex it can be.
+ And, yeah, trust me, we did the same singularity file, run everything,
+ and when you build your singularity image inside a host, they're going to get the target architecture
+ and go and automatically grab from the source all the binders already compiled for that platform.
+ That's it, right? And, well, as you see, so there's no kind of special sauce for NVIDIA at all.
+ We're just working with community compilers.
+ We just work with kind of multi-platform and singularity, singularity containers.
+ And, yeah, well, the only limitation that we have is for sure you need to build it, ideally, inside a host machine that will perform the test.
+ Maybe some sort of limitation, depending on what you're doing, but for our situation, we would find that.
+ Okay, now we're going to finish it.
+ So let's go into the interesting part that are the results. So as JD mentioned, we tested with different environments.
+ The research center have a more or less young goal, the machine that we use as the baseline
+ because it's the cluster that we have there into the research center.
+ We use it as well some new SAPI-REP instances because it's the same as the ones that we have in production for Tecobraiz.
+ We explored using AWS because we don't have at the beginning of this development any ARM instance inside the company.
+ So we could have access to AWS-REP3. That's our ARM-V8.
+ And later on we moved it to NVIDIA-Grace.
+ We decided also all the data base of Tecobraiz for reservoir simulations, based on Intel.
+ But as we are doing this work and to explore exactly other architectures, we also explored vision-ola.
+ That's a more recent high-performance chip from the game.
+ So we worked with five different reservoirs.
+ We selected them and three different five-steps.
+ We will explain about the issue of the five-steps in the next slides.
+ SP10 is a very well-known case for the industry for benchmarking.
+ We use a resource that is responsible nowadays by 20% of the production of the company.
+ So it's a very relevant field for us to be analyzing the performance.
+ And we chose some other new add-ons of the reservoir and we have these two SIGDAP models that we use to explore them to evaluate different reservoir simulations in the market.
+ So it's the same case, all of them based on a real result case, just changing the resolution of the cell.
+ So as we go with a smaller cell, the volume is much smaller and we have more challenges for the simulator to solve the problem.
+ You can see how the number of active cells broke from 7,000 to 6 million.
+ So what about the thing of the time steps?
+ We are porting just the linear solver, if you remember, that's responsible for 60% or less of the time.
+ So what we have done, we run the full simulator of these models in our on-premise machine with the default configuration.
+ And we stop at the simulator at different times over the simulation and we dump the matrix that we choose to solve by the linear solver.
+ And we use exactly this matrix to do the evaluation that we will see later.
+ So it's five models times the three matrix that we are exporting.
+ The dumps are a little bit arbitrary, but with all the careful that should have been taken here.
+ So for instance, we simulated with our on-premises using the 20 cores.
+ We checked the time step size and we fixed that time step size for all the other configurations that we are using because otherwise we would be solving a different problem.
+ So we tried to have all this careful and this is a huge problem.
+ We have more than one terabyte of data here exploring to move these around.
+ So it was a very tough work.
+ This is a little bit some characterizations of the matrix just to give an insight for the ones that are more know about the residual simulation, the challenges that these models could have.
+ A high number of total fully based equations that will be represented by the number of components that the compositional simulation will have will lead to the challenge a little bit that these models could have.
+ It's not in that, but this could have to give us a little bit of insight of the challenge with actually speaking about these models.
+ Talking about the hours, I mentioned that SolarBR support a wide range of hours and we played just with two sets of configurations.
+ For all the real and this model categorized we used one set of configurations and for SPE10 another one.
+ We just played with these two as I mentioned in the conclusions.
+ We need to explore and evaluate all the other hours that we support, but it's a time box issue and we just evaluated two so far.
+ So digging into the interesting part that are the results.
+ As I mentioned, our Xeon goal is the baseline here that we consider for all the models.
+ The first one that we would like to compare with was exactly with the Xeon that we have in production.
+ And the results here matched what we could see with the full model when we run the full model in the research center with a more older version or in the production machines with the new one.
+ So the results here show it to us that what we are doing with this thing of exporting the matrix, et cetera, and this is the mean of the three time steps.
+ It's correct and that we can follow.
+ So the next comparison was with the newer AMD processor and the Genoa one and the results were pretty impressive for us.
+ We enjoyed a lot to see how the speed up that this processor could bring to us.
+ All these I should make the remark that we are doing a single socket comparison.
+ And we are using the next count of each of these processors.
+ So in the next slide, you will see that part of these results also is affected exactly by the scalability of the models.
+ And if we change a little bit this max counted, they will show different results.
+ So the next step is exactly comparing with the first arm.
+ The first arm that we used was the one of AWS, the Graphcom 3, and the performance in most of the cases also, it's even with Intel in some cases and in others it's even better with the ones that we have in production.
+ So this was a very good surprise the first time.
+ But an even more glad surprise that we had was when we started to work with Wraith and the results were amazing.
+ So it's really good.
+ This we should note that was out of the box.
+ We didn't perform any optimization.
+ So the PR for the simulation, we have a lot of optimizations over Intel Xeon using ICC as JP mentioned it.
+ And we are comparing here just with the standard out of the box using ICC to have a fair comparison among all.
+ Of course now the idea is also to do and try to do fine-tuning of all that models.
+ And we didn't perform any fine-tuning here for Wraith.
+ So these results are really just out of the box.
+ So also it's important to mention that this is the average of all this.
+ We ran each of these matrix 150 times to do an average of them considering the three-time step.
+ So when we look for the variance is very low.
+ So I think just one result in terms of one of the models that is more relevant for us.
+ And we can see that the scalability also matched when we compare the full simulation.
+ We are looking just for the scalability here for the linear solver.
+ But it matches exactly what we can observe when running a full simulation.
+ And for Wraith the results also were pretty impressive.
+ Worth to mention as well that we can explain sometimes the performance by the number of iterations.
+ Many cases have 0% variation.
+ We have the same number of iterations among all the different domains that we executed.
+ In many cases we have just one iteration of changing.
+ The worst case was 15%.
+ So the performance here is really explained by the architecture and not by a different model that we are running.
+ So we moved to a different operation that's considering the best form for each process.
+ So as you saw before, we have the scalability variation.
+ For some models like Búzios we don't have any kind of variance.
+ You can see it's all with 0%.
+ So it's exactly the same as before.
+ But for some other models like Resolve 200 or DSP-10, if we use a lower number of cores we can increase the performance.
+ This is reasonable.
+ The engineers already know about this kind of scalability issues.
+ And sometimes they don't use the full number of cores in our clusters.
+ They use like half to put two models in the same.
+ So this is something natural and also could be explained if we do some time planning of these models later on.
+ But it's an interesting way also to compare all the processors and see that it's fair because we have a different core count.
+ We are going from 96 to 24.
+ So it's a wide range.
+ So it's important to see which is the best scalability for each core.
+ JP, if you want to mention about the performance evaluation?
+ Yes, sure.
+ Well, we did some tests regarding actually an experiment to understand what could be the potential max win for working with particularly with grays here.
+ So we need some stuff in terms of the theoretical order to make the energy that we can reach, using the max load of all CPU in the round.
+ And as we can see the performance, the energy features for grays are kind of really high, which kind of surprised us a little bit because we already expected to be good but not that high initially.
+ And for this reason we need to test, we need to handle the problem to understand.
+ Well, and how do we get to this number?
+ So we have some explanation.
+ We're not going into too much details, but basically we just consider the time to complete the full solver and then multiply it by the amount of energy used.
+ So TP for CPU and some particular measurements on for each server.
+ So getting this number in real time and actually the actual numbers are pretty complex.
+ We need to have more access to the service, which we don't have working on cloud has some restrictions that can measure some of the things that are kind of important.
+ But we need to look at the system as a whole.
+ So it's kind of really complicated to have energy just separated from CPUs and neurons because we have lots of energy in there.
+ So this is just an exercise.
+ I think that one of the key takeaways for us, right, is to well, the performance when actually going back to that probably we probably may have a similar might have a similar result, right.
+ That we can place in the proportions.
+ But from the NVIDIA side, it's also important to mention that this is not only because of R, right.
+ This is also because of the engineering of the NVIDIA has been throughout the way to develop the design grace.
+ So we can have a kind of a really low consumption of memory and record the way that that internally distributed the way that it was designed.
+ Right.
+ Oh, there's also a really interesting result that we we did some tests for for the grace.
+ Grace and Grace Hopper will have different SQUs and also we have different memory bandwidth for each one of them.
+ And well, for resource availability, we have more access to GH200 machines.
+ So we use it as a baseline for tests.
+ But of course, not using the GPU, just a course, right.
+ And we have an SQ that we have more bandwidth than other.
+ So we can go to there depending on the NGX platform that you're going to put it, not going to dig into the details of that.
+ But what we need to do is exactly the expected memory bandwidth for three of us have some more information in our grace tuning guide.
+ And when we measure actually the algorithm, we can see the difference, right.
+ And it's somehow proportional in terms of how much more or less we have in terms of the memory bandwidth and the performance achieved.
+ It's basically because we work with more and more servers, like codec and GMRS.
+ So it's interesting to see actually the theory compatible with the practice here.
+ And also, I don't think that as we have discussed, they didn't have this type of test before.
+ And it's actually. Yeah.
+ And with this information as well, we return it back to the instance that we have performance.
+ But first, we started with the computing instances at AWS.
+ And we move it for the R instances that are more for memory intensive.
+ And we rerun it. And of course, we have gained some performance there.
+ And the results that we present is already with these better instances that we could have for this sort of problem that they have solved.
+ Yeah. We just using the best instance as possible in terms of memory bandwidth as well to have a better, if you have a person.
+ Yeah. So as you could saw in the plot, this is just like a summary of what you have seen.
+ We ran all the reservoirs for each of the processors. And we came up with this. We have just a small relationship here around the Graphcom 3 and Xeon Platinum.
+ Worth to mention that the Graphcom 3 is also a little bit more older version.
+ In other words, they announced that it's releasing a Graphcom 4 and we are expecting to have more close results or better results at least over the Graphcom 3 and more close to what the AMD is performing.
+ So with that, we came up with this. Grace was the best processor for it, specifically for this problem of linear solver.
+ We are willing to see how these results will be kept when we run a full simulation because we are dealing with other problems.
+ So the performance will not be kept that way or at least with these feedbacks that I have seen here.
+ But it's a very interesting result at all.
+ So talking about the conclusions and about this future work, we were glad and surprised with the better performance. We started the project more with the intentions to compare their currencies and to have maybe a cheaper process that we can run in the cloud.
+ And then we have any work that we had over the seven years that we had solver VR to speed up, we could very easily just out of the box have a very good performance.
+ And VitaGrace gives the best of all the out of the box results among all the processors that we have tested.
+ And of course, we are now in the work of converting the geomechanics simulator of ZetaGrace to have a full simulator and run again all these kind of experiments that we have to perform here.
+ We want, of course, to start evaluating more code optimizations, doing some profiling.
+ All this work is out of what we presented here. These results here were just out of the box results. And we want also to move towards a different architecture like the GraceFocker.
+ All the problems in the simulation nowadays are more CPU only and will be great to see a supersheet like the GraceFocker in the evaluation.
+ We have other ideas also to explore, like exploring how precision, mixing precision calculations and things like that.
+ But this is the general message. They are surprised that we have a very good performance and GraceFocker is the best of all the performances.
+ So we would like to thank the Cesarianos and the NVIDIAs that helped us into this journey. They really gave very good advice and these guys here helped us with all the code movement to our.
+ And we have just as I have heard some, oh sorry, people are taking photos. Some conference is here and we are open to any questions that you may have.
+ [Applause]
+ We have about ten minutes for Q&A, so please go ahead and line up at the microphone.
+ Thank you. Great talk. I have two questions. The first question is about, so you showed those and my understanding is you are assessing the performance of the space and space vector that's what it is.
+ Which is inherently memory down. One thing that I feel is missing is the perspective on the performance of flying model. How much bandwidth are you actually extracting from those hardware?
+ I think it's something important to give a better perspective on how much, to give a perspective on the speed up that you are reporting.
+ So I don't know if this is something that you have already or you plan to do. I think it's very interesting to have that speed up with how much bandwidth are you extracting on each of those platforms.
+ The second question is a more general question. I'm not from the oil and gas field. Is on reservoir, are you typically, are you planning or are you using generally this step of asynchronous solver where you iterate for several iterations to get the benefit of asynchronous execution.
+ And then eventually you have to look for the numerics whether you converge or not. Is this something used in oil and gas for reservoir simulation?
+ Thank you. Alright thank you. So regarding the bandwidth, we did some string evaluation. We, regarding the time at the end, we could not bring the results here.
+ It's something that, part of this work we have the deadline of the GTC so we could not explore more of the exercise that we are waiting. We perform even with other architectures as well but at the end we need to run all the experiments in all.
+ So this is kind of hard to bring but it's an important question even more because it's a memory value problem. So yes, it's planned. We did some string evaluation that compared and exactly brings the best performance for the things that we just figured but I don't have the results here to show you.
+ And regarding the second part of the question, we are inside the solver VR. We implemented that kind of data flow implementation to try to solve this problem of synchronization of the data computational that we have here.
+ And this is one of the innovations that we implemented inside of the solver. I'm not sure if these answers exactly what you were asking but we can talk about them later.
+ Thank you for your talk. I really hate results, especially since I'm from computer modeling which creates a jam solver. So the question is simple and maybe difficult for me.
+ Why do you use GTC instead of NVC compiler?
+ Oh great. So basically because we want to create a baseline of comparison for every platform initially but it definitely can be easily ported to NVC. It's on the roadmap to perform this experimentation and check.
+ So we're going to expect some gains but marginally, depending on what type of extra tuning you're going to do. Out of the box, maybe not that great performance uplift but after moving for example using auto strategy tuning, particularly the code can have better results.
+ So it's quite simple. Just the same GTC for everyone so it can have a baseline comparison name. Now start to understand the code for data profiling, checking what are the optimization opportunities and maybe attaching one another.
+ And one thing more was historical because we started with the AWS processors that we have available at the time. So when we started the project, we didn't have access to the media race and even if you notice here we did just that comparison with a single socket.
+ We have the internal operations already and even the AWS with two chips but not here because we didn't have access to a race at the time.
+ So moving forward into the optimization that we're really probably will compare if using a specific compiler will bring it anywhere. Thank you.
+ Hi, thank you for the like amazing insights from industrial software using solvers. I'm a student working on optimization for linear solvers especially for physical simulation.
+ And I kind of have a similar question. I saw you have access to gray CPU and also Hopper GPU. What's your concern of choosing between the CPU solvers and GPU solvers because from the tests that I get sometimes GPU solvers yield a better performance.
+ So I want to know what's your debate over these two things. All right. Actually, the industry of reservoir simulators, the problems that we need to solve and specifically for some preconditions is hard to have a good performance in using GPU.
+ So it's a problem. We already have some companies that are moving towards that direction and could have done this very good. They're great. But at least the simulator that we are using solely CPU based.
+ So the natural move that we had when we started developing software was to tune because we are just doing part of the simulator.
+ We are not converting everything. So we start doing for optimizing it for in case you can process. So all this over here, our project that I present here was a project to fine tune and to optimize.
+ And we could have gains of more than 30% or more just in that architecture. When we started moving this project last year to explore our architectures.
+ The natural move was if we have all our environments nowadays, let's try and advance into the just greats. So just arm. So what was the first step?
+ But you've seen the plan exactly as one of the future works to try to move forward. Thank you.
+ So I guess I was trying. I tried and failed to understand from the slide.
+ Whether and how we have pivoted from the X and send the instructions that support the X86. Are you using neon on the arm? And if so, what program model? Do you have something that extracts the two?
+ All right. The SS to email that we use it was just a replacement for the intrinsics that we had here. But it's not tied to any performance because we use it only for needs that memory.
+ So nowadays C++ more recently already have these natives. So it's probably we will remove this from the future.
+ So the C++ compiler can just factorize your code.
+ Exactly. Sorry, as you used that CQ flag to find the best strategy. Oh, and also regarding the programming models. So most of the color running top of an empty, right? And NPI is it's a case that they have implemented, but just for a multi location.

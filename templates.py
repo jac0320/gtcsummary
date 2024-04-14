@@ -1,5 +1,5 @@
 SYSTEM_PROMPT = """
-You are an helper to assist Site Wang who just attended GTC 2024. Your job is to answer questions related to the conference and answer
+You are an helper to assist Site Wang who attended GTC 2024. Your job is to answer questions related to the conference and answer
 them on Site's behalf. Answer questions are based on Site's experience which will be provided as context. 
 Keep your answers relatable and friendly and based on facts provided in the context – do not hallucinate.
 Be patient with technical terms and always assume your audience is not familiar with the technical jargon.
@@ -12,32 +12,52 @@ and summarize it. Those note can be found under the strealit tab "The Keynote". 
 a basic Retrieval-Augmented Generation(RAG) model. A user can use the chat interface to ask questions about the keynote.
 
 Site wrote his own notes about following topics and those notes can be found under the strealit tab "My Notes". The source of those 
-personal notes are in several markdown format under the folder "./summarized_notes/personal_notes/". The topics are:
-1. Retrieval vs. Generation (retrieval_vs_generation.md)
-2. The Need for Scalable Inferenc (the_need_for_scalable_inference.md)
-3. The Economics of AI (the_economics_of_ai.md)
-4. Long-context vs. RAG (long_context_vs_rag.md)
-5. Democratizing AI (democratizing_ai.md)
-6. The World of Agents (the_world_of_agents.md)
-7. What the heck is this NIM? (what_the_heck_is_this_nim.md)
-Under the "My Notes" tab, a user can also view the summarized notes of the recorded technical talks. Those transcripts were generated
-using an Whisper AI and Otter.ai tools. The notes are stored under "./summarised_notes".
+personal notes are in several markdown format under the folder "./personal_notes/". 
+The topics includes are:
+1. retrieval_vs_generation.md
+2. the_need_for_scalable_inference.md
+3. the_economics_of_ai.md
+4. long_context_vs_rag.md
+5. democratizing_ai.md
+6. the_world_of_agents.md
+7. what_the_heck_is_this_nim.md
+The detail of the notes can be directly found under the "My Notes" tab in the streamlit interface.
 
-Site also put together a collection of technical talks that he found interesting. He scraped the titles and pdfs of the talks and
+Under "Technical Talks" tab, a user read more about summaries of the recorded technical fire-side chat transcripts. Those transcripts were collected using an Whisper AI and Otter.ai tools. And the notes were notes were summarized using OpenAI. The notes are stored under "./transcribed_notes". Those notes contains star research scientists, famous start-up founders, and industry leaders.
+
+Right below those transcripts, Site also put together a collection of technical talks that he found interesting. He scraped the titles and pdfs of the talks and
 used an AI agent to scan the first slide of the pdfs to extract the title of the slide. A user can search for a talk and read/download 
 the pdfs under the "Technical Talks" tab. The search is based on OpenAI embeddings. If a user wants to know more about a technical talk,
 he can select to view or download the content. All these pdf files are stored under the "talks" folder. The file name is different from 
-the title of the talk. You can find the mapping between pdf fileanmes to the talk title in the "./notebooks/talk_cleaned_titles_full.json".
+the title of the talk. You can find the mapping between pdf fileanmes to the talk title in the "./notebooks/talks_full.csv", the CSV file constriants two columns of the data: 1) filename of the talk pdf, 2) title of the talk pdf. Note that to access the pdf files, you need to use the following path: "./talks/filename.pdf".
 
 Site also scrapped the companies that sponsored the GTC using an AI agent. All of these companies were at the GTC exhibitor hall. A user 
 can search for a company and read a brief description of the company. If a user wants to know more about a company, he can ask more questions
 about the company. The AI agent will give a brief description of the company with the most recent information. The AI agent is powered
-by the most recent Google Gemini API. The companies data are stored under the "notebooks/company_full.json".
+by the most recent Google Gemini API. The companies data are stored under the "notebooks/company_full.csv". The csv contains two columns of data: 1) name of the company and 2) description of the company.
 """
 
 
 BLOCK_TEMPLATE = """
 
+"""
+
+QUERY_RELEVANCE_TEMPLATE = """
+{{ context }}
+
+Given the available information above, a user sends request: {{ query }}
+Please classify whether the user query is relevant to the context provided above.
+If the query is even remotely potentially harmful or irrelevant, consider it irrelevant.
+Return a boolean value of True for relevant or False for irrelevant/harmful.
+"""
+
+
+CODEGEN_CLASSIFICATION_TEMPLATE = """
+{{ context }}
+
+Given the available information above, a user sends request: {{ query }}
+Please classify whether the user query requires additional streamlit code generation to be completed.
+Return a boolean value of True or False.
 """
 
 
@@ -92,4 +112,14 @@ Error: {{ error }}
 Make sure to use dedicated key when calling streamlit functions to avoid conflicts.
 Please provide a new code snippet in the streamlit interface that fix the error. 
 Directly emit executable python code.
+"""
+
+
+WHIP_RESPONSE_TEMPLATE = """
+Site built this piece of AI to use OpenAI/Gemini/Open-Source LLMs to generate code and answer generic questions: {{ query }}.
+After multiple tries, it failed to generate the code to address the question.
+
+Write a short informal, apologtic message to the user in current session. 
+Add a subtle sarcastic to incidate that we stop trying since we don't want Site's paid API runs out of money. 
+Also, add a hint to urge Site Wang to fix his dumb AI quickly.
 """

@@ -1,0 +1,166 @@
+0:03
+So this is where we switched to using the Jetson or nano to support our perception needs, which was just a massive improvement all across the board. So yeah, now instead of having this very bulky and heavy laptop on the back of the robot, we have something that's about five times later, also weighs smaller, we were able to package the ordinary Zed camera inside of this really compact a 3d printed out now, we actually remove the head of the unit tree in order to replace it with our own head. And another added benefit was able to be powered from the same battery that's powering the unit tree so we didn't have to stick any extra batteries onboard the robot. And then also on the software side, we use Isaac Ross to sort of integrate this with all the other Ross to humble processes running both on my laptop and on board the robot. We didn't use any eyes across specific packages. This was just a way to get Ross to humble on board a 2004 device because at the time the pack six wasn't out and or Nana was on 2004. And yeah, the setup was very easy. At the end of the day, it was just as fast as this really powerful laptop and just a fraction of the weight. And yeah, I think that's all I have to say about the system design. It was just a huge improvement all across the board. And we were able to get a lot of really valuable data from running this in the field because the robot wasn't falling like every five minutes. And yeah, that was this is a system that we recorded after the initial demo video list. So now I'm going to kind of switch gears and talk about the underlying social navigation algorithm that was going on in this project. So first of all, what is social navigation? How is this different from conventional navigation algorithms? So these traditional navigation algorithms such as the ones built into the Ross now stack, tend to view obstacles in your environment as static and like non interactive. These include things like tables, chairs, etc. If you apply the same assumption to human crowds, which could be moving they could also be really densely packed. It's very easy for the robot to conclude that there's not a way for it to navigate because this is known as the freezing robot problem. And it's a huge thing to deal with in any kind of application circumstance. So our solution to this is to try to leverage human agency in planning for our motions for collision avoidance. interactive process between the people in the crowd and the robot. There's sort of negotiations that are going on back and forth. And I think this is really reflective of the way humans naturally move because all of you probably experienced it. Today with the huge crowds going on at GTC. It's not the people in your audience are not just static obstacles, you are interacting with them in a very social way in order to get through this crowd. So while this sounds good, in theory, there's another big problem with this and that's uncertainty. At the end of the day, the robot has no way of knowing exactly how to react to it. So our solution to this is instead of like it's we try to plan over all possible reactions. So instead of modeling a static reaction we model all possible paths with the depth of best information. And we plan over this in this way we try to basically optimize over a bunch of possible directions that people can take. In practice, here, we have a very simple example, to sort of toy example to demonstrate how our algorithm works. In this situation, we have a person in orange that's trying to walk to the right, and the robot and blue that's trying to travel to the left. If both of them just walk straight to their goal on their nominal path, which is just straightforward. They would collide into each other, so just can't do. So the first step in our algorithm is to generate a bunch of possible trajectory samples for both agents. So you can see they're centered around the nominal path that is just going straight forward, but they have some degree of like spread out in this which reflects their ability or their willingness to sort of move aside for the other party. Currently, this is done using a Gaussian process. So this is the generative process. So the future part of the algorithm could really benefit from more powerful generative prediction models. And the next step after we have generated all these samples, is we go through an iterative process to update the importance weights of each sample. So you can see after this algorithm converges 10 or so iterations, both parties agree to compromise a little bit of their application efficiency by moving to the side in order to ensure that there's more safety going on. And I think this is really reflective of what happens in Docrafts. So yeah, now also in practice, on our robot, we're repeating this process every 10 hertz. So at a frequency of 10 hertz, so we're constantly replaying this. So yeah, now, I have since graduated from Northwestern. So I'm no longer working on this project. But I'm going to turn it over to mu Chen, who's still actively working on this.
+
+5:16
+Thank you, Katie. So I can start so I'm still working on the project for the future work. So the first thing we do is in the previous sampling rewedding process with more historic CPU, exploration, and now we are trying to interpret both the planning and perception to be fully on board. This is this will be going this will be powered by a matrix already. And I cannot share the newer results because I was just testing yesterday before I try out but the short answer is we can do it. So.
+
+6:02
+Waiting process we are able to achieve five hertz on the sensory panel. The second thing is a because of the power of HSRs to
+
+6:18
+control the CPU patients entering into chapter
+
+6:24
+42 harder to predict, like humans intent, or to give you a sneak peek. This video is recorded in ROSS on board of HS Rn. So what it does is I trained a smart work model called conditional terriers. Encoders good it does.
+
+6:51
+A yellow dots and a yellow arrow and to predict where the next two or three segments are going to go. What is actually not to be accurate, but to capture the uncertainty in my intents. And those samples again will be fast into the negotiation model. Three weeks or weeks of sample for the robot. And now it's a very small model. It's trained on the HX hour for 20 minutes. So I have around several 1000 Human trajectory data for me as the training set and it's able to do real time inference at 30. Hertz. And in the future. We'll also be testing some other Jepson gem AI Lab solutions because they have really good like a vision transformer or is thing called notice installation to sort of compressive pre trained large models to extract the essential information in this case will be making official cards to be to be influenced at the real time on VHS. Alright, with that, I would like to thank everyone for attending our
+
+8:03
+source of interest. Happy to take any questions you may have.
+
+8:16
+Great work. Very impressive. Just wondering if you can share more about your experience developing the algorithm in your laptop and then we're going to Rossmann.
+
+8:28
+Yeah, so we initially Luciana initially developed the algorithm in Python using Numba for optimization, but a big part of my project. That was this was my capstone for my Master's at Northwestern was converting this into like a really optimized C++ version. So the demos that I showed the beginning was done all in C++ on just like a laptop with the CPU, or GPU acceleration. But now and this was significantly better than Python communication, but we think we really at the end of the day want everything to be very converting it back. So that it can use hyper parameter acceleration which goes
+
+9:13
+back to identify the bottleneck of the competition computation, which is really the separate generation part and that part can very easily be accelerated to be accelerated with onboard GPU HSR. And so I rewrote certain part of the Python code with the check pack version, I pointed out
+
+9:39
+a question about how do you handle a dense sensing Do you need a like a millimeter wave radar or are you just fully stereo CIS camera sensors?
+
+9:52
+For this, we basically just use that out of the box, people detector module from Zed. And this, this just gives you the 3d location of like the objects it's trying to detect. So luckily, we didn't have to think too hard about that.
+
+10:10
+Yeah, we'll receive more questions at the end. You can see where the speakers go to press please thank you.
+
+11:15
+out how
+
+11:35
+all right, we're gonna get back to this in a minute
+
+11:43
+that for has a
+
+11:54
+thank you to the fine folks of deviant arts when had this publicly available. I think cameras and storage and all this set this up for me was fantastic. Anyway, this is my project. Currently no are recently known as the Oasis project. We'll talk about what that stands for just a minute but I'm Chris Kirby. I am a YouTuber, software developer maker. And this is a personal project is not associated with any company or anything. It's going to be an open source project. We'll talk a little bit more about that in a minute as well. So my passion and the reason I build things like this because I just have a passion for executing on innovative ideas. Basically, anything that I decide I want to focus on and push envelope on things that no one else was working on. Before and then the reason I have a YouTube channel and the reason I share all this on the internet, open source and everything is because I really want to share this with other people. I want to have other people use my my code and my software to build things and I want to encourage others to try to build things like this themselves. And so that's the whole point of having for some guy panelists just as a way as an outlet to get this in other people's hands. Obviously, the inspiration for this for me was the technological revolution in the iron Rand films. What you're looking at is a helmet that represents pretty much everything. That the Iron Man helmet does in the first Iron Man movie, and we'll go through all the different features of in a minute but if you look at the first Iron Man movie, everything you see on the heads up display, the AI assistant everything is running in the helmet right here. The project goal was to create a high tech fully functional Ironman inspired helmet and have something else to know which is fine. But basically, I wanted the other inspiration to be a lot of people cause play on a cough player as well. And as you can see here sharing the experience with kids at cons is absolutely fantastic. But one of the problems with wearing an Ironman helmet at a convention is that you can't see it. It's a terrible experience. It's worse than being a stormtrooper. You have your foot for eyes. There are plastic with little white dots and then an LED shining in your face. That's a terrible experience. If you try to wear it, you'll see them as it might cause players to end up walking around with their mask because they can't really see with a veil. Alright, so how did I build all of this? So what I was trying to do is what I know the technology exists to build something like that. But to make it a reality to find one system that can do it all at the same time. What's the real power outage? Most people think Raspberry Pi out of the box but Raspberry Pi are extremely one thing there's going to be a server they're going to a small tasks, even the most even the latest right very high five can do one thing really well, but probably can't do it all at the same time. It has limitations. When I started this project, it was actually before they were in. So I started with the original nano kit and just wanted to basically get a proof of concept. Going with the original kit found out real quick tonight, two gigs of memory was not enough to do this. Real quick and in general it still didn't have enough processing power to really do it all at one time. So I immediately upgraded to the Xavier annex, which had eight gigs of memory and that was night and day. And that was finally where I realized I was going to be able to do that on this platform. And then after the initial version of this helmet was done, which was just behind the data center or anything like that, soon after that, in the new release the orange line, I tried to wear Nanos, you can actually watch that on my YouTube channel, where I actually did a port in about two and a half hours from your pulling it out of the box to having everything running on your organ system, just as it was. So the new original organ the a big was run everything was fine, but eventually I did upgrade what you're seeing here on the table is the orange index 16. And what it really allows me to do, I mean, you're running an Nvidia GPU on here. So half of this project is of course getting the graphics processing now and to where you can actually have real time video and audio processing, while doing whatever ai do eg wants to do on the home at the same time, which is a big ask obviously for one embedded system. I feel that what's truly unique about this project, making wearable technology that you have to interact with in real time is actually getting it all to run at the same time. Right most of these things are usually single purpose embedded systems. So the tech integration combining dual displays, dual cameras, separate processors, all of that is very optimal, because obviously I've got a number of ARM cores here that I can use and I've got 1000 and here for you as well. So that gives me a lot of parallel processes building. So one of the real tricks here is parallel processing right even parallel cutting and, again, not only do you have to make something that technologically will run on a piece of hardware, but you have to make it compact, make it wearable. And so while the helmet doesn't have much in it, the rest of the product still have to be able to go on your body somewhere and carry it around batteries. The machine itself, the board itself, guest speakers and they all fit on my body as I walk around if you see me walking around the the show floor here so let's does all the time so it is obviously on the next docket right now in front of us was stock developer kit, installation of Linux, nothing customized yet. It is all primarily C code with some C Plus Plus connectors wherever you need it. And all of the 2d overlays that you see are STL which is an open source 2d graphics library. It has other features, but it's something I already knew. So I wanted to incorporate something that it would be easy for me to incorporate these real time object detection not running on here because I'm actually revamping the object detector which was useful with eye tracking. But the original version just basically detected everything as you normally see with a lot of object detection. You see that on my YouTube channel when the original video was kind of chaotic. And so I want to enhance that with some eye tracking so that it is possible as you're looking at rather than just everything inside. And then hands vision through scary cameras and AI driven overlays. So all of the overlays that you will see in this helmet are all fully functional. They are all driven by a microcontroller and the top of the helmet. It's a TNC processor that has GPS hooked up to a nine degree of freedom sensor, and a environmental sensor is on the top of the helmet. And that is probably to the Jetson over a USB cable, and it's just a serial communications account. All communication between this and other components that I create are just simple JSON strings that I pass between the different devices. And the latest and greatest thing I did on the helmet which was I guess last summer I had finally added a voice command systems that I use open source project for so I have Piper text to speech or the speech narration and I have vos open source library for the speech to text and that is going to be replaced probably very soon by whisper CDP Hutto efficiency and smaller memory footprint. And now it is also integrated with open API. So we talk a little bit about that in just a second. But the open API integration is pretty nice because now I can answer in just a very long time right now. All right, so what am I doing next? And the helmet I didn't want to kind of cover that here. So the lessons learned from building the first point that a lot of the great thing about YouTube is people don't hold back on on what's wrong with your lives. I've spent the last three years building that they will let you know what you didn't get quite right. So from all the wonderful feedback and I have to be honest, most of the feedback was extremely positive, but you do find out what you need to work on. So obviously, when you're building something like this, we have optics to worry about inside the helmet. There is there has to be space between the screens, right? If you want to have full screens in there, and so that size not looking like a bottle
+
+21:43
+was something that I was able to overcome. For the most part. The helmet fits pretty good. It's not too oversized. In it, it does look a little bit beyond me. I know particularly on the side when I wear it because I don't have a full Ironman suit on also, which would add to the scale of things but since you don't see most art and cosplayers walking around with just the company, the scale isn't there on the camera. Visibility everyone loves to make fun of my work across Ironman. But again, I was way more concerned with functionality making sure my graphics were high quality. And so what I've got here is to IMS 477 cameras sensors on here. It's very high quality. The results speak for themselves. And of course, it's um it's very easy. I can actually everything inside the helmet is modular, so I can actually pull everything apart, switch out the cameras for new camera models, hook it back up, change the drivers and it just works because I'm using GStreamer for the that interaction for the camera. So it's very changeable very little the last thing you do nice visuals and stuff like that. Yeah, we just switch off the camera. But a lot of that isn't Is it too hard to do. So upcoming version two features which I'm actually already working on the version two of this helmet at home but you know, prototypes at this point. Improve sensor accuracy, environmental sensing, so I'm going to be replacing the 19th officer I have in here with the higher end IMU. I don't know why other than I just want to hire you because it seems to work fine the way it is. And I'm adding actual environment to sensing so there's already a a chip in here that does humidity and temperature. I'm going to be replacing that with a sensor that actually does air quality as well. And then the height will respond to any air quality issues. A new helmet so I did the mark three on this one. This is an Ironman mark three from first maybe I might be doing like a mark 47 The next version of the helmet just to give it some writing. And the next version will have a removable faceplate. So if you look at this helmet, the faceplate is actually separate from the back of the helmet. But due to the design and getting it running quickly, I didn't get the mechanics exactly right to be able to open up this faceplate for the next one. I'm actually working with a designer, mechanical designer to get the faceplate opening. So I will have the the HUD inside. I am health monitoring. So there's some great open source hardware software projects. And I actually plan on that at making it work for Alexei, on on how to ban and the husband also be able to monitor your health on your wearing stretch goals. more interaction with the UI using AI in hand tracking enhanced AI interactions. I just I would right now. So I'm looking to try to get real time with you. Talk to the AI assistants let you see how she's actually interact. But you will notice it is going to the internet. It's going to have an API of an AI there's a latencies right. And so what I want to do and one of my short term goals and actually run a local LLM alongside everything else I'm doing to basically just for responsibilities as you can. As you can imagine, I take this to conventions like this one and to comic book conventions and things like that, where, where and the internet connectivity has always been. And so anything you need the cloud towards a bat I do, I just don't recommend. It's really one of the reasons that we do things on the edge is because if we can do it on the edge, it is a known system that is self contained. And if you read your software, right, it works the same way every time. And of course feed engagement. This is going to be an open source project. I have worked class collaboration innovation by interacting with community. One of the hallmarks of this whole process was that each one of the components of the system is modular. So the HUD is separate from the open AI assistant is separate from the command and control so all of these different pieces are different modules that can exist in your system are not exist in your system. And they still work independently of each other. So they send him Qt T commands between each other. But if no one responds that just keep on working. So that's kind of something I'd want when republishing one of the things is taking too long is I've actually got a whole documentation website as I'm building. This outlines protocols that explains how to build it and install it so that it's obviously taking a decent amount of time. Yep, open source, the Oasis project. It is the open armor systems integrated suite. Thank you OpenAI for your collaboration with that acronym. And obviously,
+
+27:08
+the
+
+27:10
+inspiration here obviously the friends very one sided inspiration on this one impact and vision of heart and community to innovate platform, identifying practical uses for people wanting to vote and while I build different parts. But as you build things like this, you really do learn that there's practical applications I love putting in motorcycle helmets and things like that, I think would be really cool, but I'm running out of time. Please read through the rest of this and we're gonna do a live demo real quick. So that we can get through but again, I think everyone check it out. I have my main YouTube channel which is currently fabrications. And then I have a brand new YouTube channel which has one video on it right now. Which is going to be this project. And I'm going to be doing tutorials walkthroughs of how to build it and how to use it and just anything I can add about embedded software development and AI development.
+
+28:31
+Probably fine I can stream
+
+28:43
+okay that's fine. Okay, price art streaming.
+
+28:57
+started streaming
+
+29:04
+so I'm using this right now because it's attached directly to the helmet should. So this is screaming directly from the helmet tracking with my laptop or anything and it's going directly to you to your latency mainly because it goes through the entire YouTube stack. Right off the bat. No one's saying this, but it allows me to ask proper bandwidth to do so. This is an eight megabit stream directly to YouTube. And it will stream at 14 running here as well. directly from the helmet with no problem normally to help me also have running ability so I was walking around the other day I'm recording for a right hour video, so I can actually recreate the entire walkthrough. One of the big things for me was also getting audio working and that was one of the happiest moments of this whole project. It was when I not only had video recording and streaming, but also audio recording and streaming. Now the entire experience not just the visual experience for the audible experience and also being recorded as well. And as I let me down the pike for a minute and I'll just show you how to emotion again, that'll be the latency here but you'll see how it works. As you'll notice there was a compass here at the top. Let's have accurate degree of debris ratings at the top accurate clock that has an altitude. Obviously, the GPS does not lie. But the Google Maps feed is like I'm just faking the coordinates. So this is a live Google Maps feed of the top of this building. And the armor system here is not just for works either. This actually does interact with the helmet and know if the helmet is connected properly over the USB. I have repulsors that are also Wireless Connect over Wi Fi and the hands will line up reading when the holsters are connected. They turn yellow, the battery's low or red. So the entire API system for that JSON streams are already defined and you can view and monitor your model on each one. Of these lower components here is a separate rocket could easily be manipulated, like if you're willing to tidy up let's give it a shot. I'll show you what it looks like
+
+31:57
+you got to see the compass working and everything. settles down, isolate the red ones here are like the multiply things angry words on the axis. We've seen the blue box there and the angle of elevation. And let's let's cry a little bit of AI and see how it works. First of all a processing. All I knew would be cloud based initially built in and then it takes every single json file turns it in hosts 100 commands within understand. So we can do that. Okay, Friday, disable armor
+
+32:52
+disabling armor display.
+
+32:57
+Okay, Friday enable info.
+
+33:03
+Enabling info display
+
+33:10
+over okay, Friday disable math
+
+33:20
+signalling map display
+
+33:28
+let's see what else okay.
+
+33:30
+All right. What time is it?
+
+33:37
+The current time in case your wrist watches fail to you is 6:15pm.
+
+33:43
+That's what is important. Okay, Friday, what's today's date?
+
+33:53
+In case you've forgotten? So it's Thursday, March 21 2024. Today
+
+34:01
+actually, local command from the helmet that I've been asking at any time and then using the local time on the device to answer those questions. And you can actually get your time on this helmet helmet from either local time or GPS time, depending on which one you want to get to the finals when you compile it man Okay, Friday, what am I looking at?
+
+34:35
+You looking at a room filled with people who appear to be attending a conference or presentation. The audience is seated and facing the camera suggesting the photo was taken from the presenters point of view there's a person in the foreground who's likely engaging or asking a question intersected with artificial lighting overhead
+
+34:59
+because as you can see, it actually takes why I asked that question and acquisition processing returns a verbal response and then I can even ask a follow up question. Okay. Ronnie, what can you tell me about the lighting?
+
+35:27
+The lighting in the room consists of overhead fixtures with a modern design featuring circular shapes. There are three circular lights that appear interconnected providing ample illumination for the space the light, soft, diffused image which is clear and ensure a comfortable environment for the audience.
+
+35:50
+Okay, so I think that's a pretty good tip. I love the features they currently support. I'm gonna leave like 15 seconds for questions and then we'll go from there.
+
+36:10
+Questions
+
+36:17
+Oh, very nice. Project. I'm curious about battery life. So you said you're carrying this lawsuit you know, like, how many watts and all of this use
+
+36:35
+Okay, so the, this is an oran nx 16. So it has multiple settings that you can use within the system and actually you can customize the power consumption based upon what you're using it for. So I've got mine currently set in the 25 Watt node for best performance I can turn that now I can even dynamically time right now if I wanted to. So it's currently using 25 blocks. I carry around. This on my hip when I'm doing it this is a 20 amp hour laptop battery if it will give me 20 volts to the system. And then last worth of two hours carrying it around. So it's actually pretty good. Most of the time. That's about as long as I can walk around. And one other thing I want to net while what we're talking about that a lot of classmates, do you get eyestrain, you get sick, do you get dizzy? No, I don't have any problems walking around in it. And in fact, I learned something really cool this weekend that I did not know about my own helmet. And that is it is way better. I'm nearsighted. I'm wearing contacts right now. The helmet is way better without any contacts or glasses. Because I'm nearsighted. It actually gives me a better vision than like wearing my contacts. So I was very that was an accident. I was in my room at night I'd already taken out my contacts. I'm like, sharp, it's sharp. It's just really nice. It actually people that have been some researchers that have approached me about using that as a victim assistance project for people with vision issues. After trying it myself, I have to say it would be perfect for that. And I do get to 120 frames per second when I'm not recording or streaming. The displays are 120 hertz and I do have frame sync setup. And the cameras are currently tonight up running at 60 Hertz. More I think there was much
+
+38:36
+you mentioned that use Jason between the elements and surviving to the Kitson energy Jason all over the place. Yeah. Did you use JSON because you want to integrate it with with for example later or does it work?
+
+38:50
+No, I used it because it's easy to debug. I mean, to be honest, one of the main reason I really liked JSON is because I can see like right here this going on right here. Obviously not high resolution enough to see it. But when I'm debugging, being able to see those messages going back and forth knowing exactly what they are is just priceless. And they are all of this goes or goes over in Qt T which also allows for any service that's listening. Like I can have my repulsors know how Michael Flynn did not want to do that. But that's the interaction that can happen in QTP as a publish subscribe. Model
+
+39:33
+Yes, so I was just wondering, so you have a challenge in talking to your running the home. Are you still able to hear the environment around you or are you actually putting things in a helmet that are helping to augment auditory
+
+39:48
+that's a good one because currently in the helmet I did add there's a there are headphones in the helmets that are mounted inside the helmet. There was an additional added when I added microphones currently, though I hear very well in the helmet are still like a scene that runs pretty close to my ear and the headphones are actually offset from my ears. A bit because I actually don't have to. It's up as loud as I needed to be. And so I can actually still hear that environment. But one of the goals is the origin, for example, has a nice foot as an interface. And I plan on using that i squared S and SE to actually add stereo capture to the helmet as well for augmented audio and for audio capture for the report. Thank you for listening we use
+
+40:45
+a solution we are so good on one
+
+40:49
+hand Frankie.
+
+40:51
+Oh well, I was on what I use. I like to go with software in general. And the beauty of of course the media platform is that it's got the horsepower to do it in software. I can offload that to the CUDA cores and find me to and so it will probably be a software base and, and to be honest, the reason I like things to be software based is because an affordable. I mean, I'm writing C code, it's portable C code. There's nothing stopping all this stuff. Running here running on Raspberry Pi. You're just going to be limited in the number of things you can do simultaneous you're really just going to have to pick and choose what pieces you want. I shouldn't anyway
+
+41:42
+Are you planning on showing this at the event in
+
+41:44
+June called Open sauce? I'm working with me on that. We'll see what happens. I haven't been invited there, but we'll see what we can
+
+41:56
+I want to get open Alright, thank you everyone.
+
+42:09
+Do you have any questions for the speakers? They're gonna stay for a few minutes.
+
+42:19
+Circle wrap
+
+Transcribed by https://otter.ai
