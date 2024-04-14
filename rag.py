@@ -1,6 +1,9 @@
+import streamlit as st
 import os
 
-import streamlit as st
+from constants import *
+from utils import stream_data
+from templates import SYSTEM_PROMPT
 
 from llama_index.core import (
     ServiceContext,
@@ -11,8 +14,8 @@ from llama_index.core import (
     Settings
 )
 
-from llama_index.core.embeddings import resolve_embed_model
 from llama_index.llms.ollama import Ollama
+
 
 def qa_chat_engine(doc_dir, persist_dir):
     
@@ -35,3 +38,37 @@ def qa_chat_engine(doc_dir, persist_dir):
 
     if 'chat_engine' not in st.session_state or st.session_state.chat_engine is None:
         st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question")
+
+    
+def keynote_qa():
+
+    def reset_keynote_messages():
+        st.session_state.keynote_messages = [
+            {'role': "system", "content": SYSTEM_PROMPT},
+            {"role": "agent", "content": "Hello! I may know a bit about Jensen Huang's 2024 GTC Keynote. Ask me anything."},
+        ]
+        st.session_state.chat_engine = None
+
+    if 'keynote_messages' not in st.session_state:
+        reset_keynote_messages()
+    
+    qa_chat_engine("keynote", KEYNOTE_PERSIST_DIR)
+
+    for message in st.session_state.keynote_messages: # Display the prior chat messages
+        if message["role"] == "system":
+            continue
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+    
+    if query := st.chat_input("Ask a question"):
+        st.session_state.keynote_messages.append({"role": "user", "content": query})
+        with st.chat_message("User", avatar="😀"):
+            st.markdown(query)
+        
+        response = st.session_state.chat_engine.chat(query)
+        st.session_state.keynote_messages.append({"role": "agent", "content": response.response})
+        with st.chat_message("agent", avatar="🤖"):
+            st.write_stream(stream_data(response.response))
+        st.rerun()
+
+    st.button("Start New Chat 🧹", on_click=reset_keynote_messages, use_container_width=True)

@@ -1,24 +1,22 @@
 import logging
 import os
 import sys
-import re
 import pandas as pd
 import numpy as np
-from jinja2 import Template
 
 import streamlit as st
 from streamlit_pdf_viewer import pdf_viewer
 from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
-
+from openai import OpenAI
 import google.generativeai as genai
 
-from constants import *
 from writings import *
 from templates import *
 from utils import *
+from constants import OPENAI_API_KEY
 
-from rag import qa_chat_engine
-from code_gen import beta_viewagent
+from rag import keynote_qa
+from view_agent import not_even_alpha_viewagent
 
 from llama_index.core.embeddings import resolve_embed_model
 from llama_index.llms.ollama import Ollama
@@ -29,37 +27,6 @@ logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
 
-
-def keynote_qa():
-
-    def reset_keynote_messages():
-        st.session_state.keynote_messages = [
-            {'role': "system", "content": SYSTEM_PROMPT},
-            {"role": "agent", "content": "Hello! I may know a bit about Jensen Huang's 2024 GTC Keynote. Ask me anything."},
-        ]
-        st.session_state.chat_engine = None
-
-    if 'keynote_messages' not in st.session_state:
-        reset_keynote_messages()
-    
-    qa_chat_engine("keynote", KEYNOTE_PERSIST_DIR)
-
-    for message in st.session_state.keynote_messages: # Display the prior chat messages
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-    
-    if query := st.chat_input("Ask a question"):
-        st.session_state.keynote_messages.append({"role": "user", "content": query})
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
-        
-        response = st.session_state.chat_engine.chat(query)
-        st.session_state.keynote_messages.append({"role": "agent", "content": response.response})
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(response.response))
-        st.rerun()
-
-    st.button("Start New Chat 🧹", on_click=reset_keynote_messages, use_container_width=True)
 
 
 def talk_show():
@@ -119,8 +86,13 @@ def company_show():
 
 def show_summarized_notes():
 
-    md_files = collect_md_files('summarized_notes')
-    selected_md_file = st.selectbox("Select a 🤖 AI summarized transcript to view", md_files, key="summarized_note_select", index=None)
+    md_files = collect_md_files('transcribed_notes')
+    selected_md_file = st.selectbox(
+        "Select a 🤖 AI summarized transcript to view",
+        md_files, 
+        key="summarized_note_select", 
+        index=None
+    )
     if selected_md_file:
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
@@ -128,7 +100,7 @@ def show_summarized_notes():
 
 def main():
 
-    st.title("GTC 2024 : Summary 🤖📚")
+    st.title("GTC 2024 : Learning Notes 🤖📚")
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
@@ -136,8 +108,19 @@ def main():
     if 'google_gemini' not in st.session_state:
         genai.configure(api_key=os.environ["API_KEY"])
         st.session_state.google_gemini = genai.GenerativeModel('gemini-pro')
+
+    if 'openai_client' not in st.session_state:
+        st.session_state.openai_client = OpenAI(api_key=OPENAI_API_KEY)
     
     st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], key="llm_select", index=0)
+
+    st.session_state.code_generation_retry = st.sidebar.slider(
+        "Code Generation Retry", 
+        min_value=0, 
+        max_value=3, 
+        value=1, 
+        key="code_genneration_retry_limit"
+    )
 
     if st.session_state.llm_name == "OpenAI":
         st.session_state.llm = llamaindex_OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=SYSTEM_PROMPT)
@@ -145,7 +128,7 @@ def main():
         st.session_state.llm = Ollama(model="mistral", request_timeout=30.0)
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies, tab_beta = st.tabs(
-        ["👋 Welcome!", "🏆 The Keynote", "📕 My Notes", "🎙️ Technical Talks", "🏢 Companies", "🤖Beta-ViewAgent"]
+        ["👋 Welcome!", "🏆 The Keynote", "📕 My Takeaways", "🎙️ Technical Talks", "🏢 Companies", "🤖NOT-EVEN-ALPHA-ViewAgent"]
     )
 
     with tab_intro:
@@ -160,14 +143,13 @@ def main():
         keynote_qa()
 
     with tab_ama:
-        st.subheader("My Takeaways from GTC 2024")
         notes_summary()
         notes_pictures()
-        st.write('---')
-        show_summarized_notes()
-        st.write('---')
 
     with tab_talks:
+        st.info("Select a transcribed talk to view summaried notes")
+        show_summarized_notes()
+        st.write('---')
         st.info("Search for Collected Technical Talks and Read/Downlaod PDFs")
         talk_show()
 
@@ -177,7 +159,7 @@ def main():
 
     with tab_beta:
         st.subheader("Beta-ViewAgent")
-        beta_viewagent()
+        not_even_alpha_viewagent()
         
 
 main()

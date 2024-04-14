@@ -1,0 +1,300 @@
+ I've been doing this stuff some time, so very excited to be here.
+ Let's dive right into it.
+ Jim Fan is a research scientist and co-leader of a body of AI here at NVIDIA.
+ His primary focus is developing generally capable autonomous agents.
+ To tackle this grand challenge, his research spans foundation models,
+ policy learning, robotics, multimodal learning, and large scale systems.
+ He obtained his PhD in computer science from Stanford.
+ I'm going to keep it short so you can get straight into it.
+ So without further ado, please welcome Jim Fan.
+ Thanks everyone for coming so early in the morning.
+ I was a bit too early for Bay Area time, so thanks everybody.
+ So I want to tell you guys a story about the spring of 2016.
+ When I was taking a class at Columbia University, I wasn't actually paying attention to the lecture.
+ Instead, I was watching a board game tournament on my laptop.
+ It wasn't just any tournament, but a very special one.
+ The match was between DeepMind, Arthur Goh, and Lee Sin Oh.
+ The AI just won 3 out of 5 games and became the first ever to beat a human champion at a game of throw.
+ So I still remember the adrenaline of seeing history unfold, the moment of glory when AI agents finally enter the mainstream.
+ But when the excitement fades, I realize that as mighty as Arthur Goh was, he can only do one thing and one thing alone.
+ He is not able to play any other games like Super Mario or Minecraft.
+ And he certainly cannot do your dirty laundry or dishes.
+ But what we truly want are AI agents as versatile as Wolby, as diverse as all the robot forms on the audience in Star Wars,
+ and works across infinite worlds, virtual or physical, as in ready player work.
+ So how do we get there in possibly the near future?
+ So this is your hitchhiker stuff to general public AI agents.
+ Most of the ongoing research efforts can be laid out across these three axes.
+ There are no skills an agent can do.
+ The embodiments it can control, and the realities it can master.
+ And this is where Arthur Goh is, but the upper right corner is where we all want to go.
+ So I've been thinking for most of my career about how to travel across this galaxy of challenges towards this upper right corner.
+ And earlier this year, I had the great fortune to establish GEAR Live with transcendent support and blessing.
+ And I'm very proud of the name.
+ GEAR G-A-R stands for Journalist Involvement Research.
+ I'm co-leading this initiative with Yuka Zhu.
+ And this is a picture that we took seven years ago at Stanford, where Yuka and I were both the PHD students at BigBuddy's group.
+ And we did robotics hackathons all the time, because, you know, especially before deadlines, we were the most productive.
+ And here, Jay on the left is from DS Group, also at NVIDIA Research, working very closely with GEAR.
+ And all three of us basically moved from Stanford to NVIDIA.
+ And man, we were so young at that time, look at what PHD did to us.
+ You know, the quest for EGI is a lot of pain and suffering.
+ So let's go back to the first principles.
+ What essential features does a journalist agent need?
+ And I would argue three things.
+ First, it should be able to survive, navigate, and explore an open-ended world.
+ And our goal has a singular goal, and it's simply not open-ended.
+ And second, more knowledge. The agent should have a large amount of written knowledge, instead of knowing only a few concepts in the document.
+ And third, as a journalist agent, the name implies, it must be able to perform more than a few tasks, ideally infinitely multitasking.
+ You prompt it with any reasonable language, and the agent should be able to complete that mission for you.
+ So what does it take?
+ Correspondingly, the environment needs to be open-ended enough, because the agent's complexity is upper bounded by the environment's complexity.
+ And planet Earth that we live on is actually a perfect example, because the Earth is so open-ended that it enables an algorithm, a natural evolution, to produce all the diverse behaviors of life on this planet.
+ So can we have a simulator that is essentially above Earth, or can we still run on lab computers?
+ And second, we need to provide the agent with massive pre-training data, because exploration from scratch in such an open-ended world is simply intractable.
+ And this data will be a reference manual on how to do things, and more importantly, what are the interesting things worth doing.
+ And finally, we need a foundation model that's scalable enough to convert this large-scale data into actionable insight.
+ And this general thought lands us in Minecraft, the best building video game of all time.
+ And for those who are not familiar, Minecraft is this procedurally generated world of 3D consoles, and in this game, you can do whatever your heart desires.
+ So what's special about the game is that Minecraft defines no particular score to maximize, and no objective to fall.
+ And that makes it very well suited as a truly open-ended environment.
+ And as a result, we see some very impressive creations, like someone built the Hogwarts cast of Love and War in Minecraft.
+ And someone else, apparently with nothing better to do, built a functional neural network.
+ Because Minecraft has logical games, and it's apparently too incomplete.
+ I want to highlight a number here.
+ Minecraft has 140 million active players, and just to put this number into perspective, this is more than twice the population of the UK.
+ And it just so happens that gamers are generally happier than PhDs, so they love to play and share their journey online.
+ So this huge human mass of gamers produce a lot of data every day.
+ And the question is, how can we tap into this treasure trove of data?
+ So we introduce Minecraft Dojo, a new open framework to help the community develop general public agents using Minecraft as a kind of primordial suit.
+ So Minecraft Dojo has three parts.
+ A simulator, a database, and a model.
+ A similar API we built unlocks the full potential of the game for AI research.
+ And we support observation space like RGB, and also GPS, and two levels of action space.
+ And Minecraft Dojo can be customized at every detail, such as terrains, weathers, and monsters spawning.
+ And it also supports creative tasks that are freeform and open-ended.
+ So for example, let's say we want the agent to build a house. Or what makes a house a house?
+ It's very difficult to implement this kind of success criterion in simple Python code.
+ And the only way is to use foundation models trained on international knowledge so that the abstract concept of a house can be captured.
+ And next, we collected an international knowledge base of Minecraft to help the agent lift off the ground, because it's really hard to explore from scratch.
+ And this database has three parts. The first is video.
+ We find that Minecraft is among the most streamed games online, and gamers just like to talk about what they're doing.
+ So we collected more than 300,000 hours of videos with more than two billion words in transcript.
+ And the second is Minecraft Wiki, with 7,000 multi-modal pages of images, tables, and diagrams.
+ And the third is the Minecraft subreddit, which we found that people use as a kind of step overflow when they need some help on Minecraft.
+ So here's a peek at our Minecraft Dojo Wiki dataset.
+ And can you believe that someone listed all the crafting recipes, thousands of them, and explains all the monsters?
+ And basically every possible game mechanic you'll ever see in every version of Minecraft.
+ So one thing I learned is that gamers just got a lot of time to show up.
+ Well, I'm not complaining, right? Thanks for the data. Please do more.
+ Now, what to do with the database? It's time to train a foundation model.
+ Here the idea is very simple. For our YouTube database, we have time aligned video clips and transcripts.
+ And these are the real tutorial bits, like here in the text box 3.
+ As I raise my eyes in front of this pig, there's only one thing you know it's going to happen.
+ This is actually from a YouTube tutorial.
+ We then can train a pair of employers to map the video and the transcripts to a vector embed.
+ And then embeddings can be trained by a process called contrastive learning,
+ which essentially pulls together video and text that match and pushes apart those that don't match.
+ And this pair of encoders is called the mineclip model.
+ And intuitively, mineclip learns the association between the video and the transcript that describes action in the video.
+ It outputs a score between 0 and 1. And 1 means perfect description,
+ and 0 means that the text has nothing to do with the video.
+ So this effectively becomes a language condition foundation in the work model
+ that understands the nuances of forest, animal behaviors, architectures, you name it in my product, all the abstract concepts.
+ Now, how do we use mineclipping option? Here, an agent interacts with our micro simulator,
+ and the task is in English "share sheep to obtain wool."
+ So as the agent explores, it generates a video snippet, which can be encoded, in fact, to mineclip.
+ And then it computes the association. The higher the score is, the more the agent's behavior is aligned with the text model.
+ And that becomes the reward function to any reinforcement learning algorithm that you like.
+ So this looks very familiar, because it's essentially reinforcement learning from human interaction, or ROI tracking.
+ And ROI tracking is important to know how to track video, and I believe it's going to play a critical role in embodied agents as well.
+ And here are some demos of our learned agent behavior on various tasks.
+ So, let's put mineclip on this h-hydro step. It's able to do a lot more tasks than article.
+ But the limitation is that you have to manually decide a task prompt, and my training will just give you.
+ And the agent isn't really able to discover new things by itself.
+ But this all changed in 2023, when a model called GP4 came.
+ That's a language model so powerful at coding and planning, and so we built Voyager, an agent that massively scales on the number of skills.
+ And when we see Voyager lose in Minecraft, it's able to play the game for hours on end without any human interaction.
+ And the videos I show here are snippets from a single episode, where Voyager just keeps going.
+ It explores the terrains, milestones, all kinds of materials, fight monsters, craft hundreds of recipes, and unlocks an ever-expanding tree of skills.
+ So what's the magic behind it? The key insight is coding as action.
+ We convert this real world into a textual representation, thanks to an open source Minecraft mod called mineclear,
+ and Voyager involves GP4 to generate code snippets in JavaScript.
+ And each snippet becomes an executable skill in the game.
+ And just like in engineers, the program that Voyager writes wouldn't always be correct on the first try, so we have a self-reflection mechanism to help it improve.
+ And self-reflection relies on three sources, the JavaScript execution error, the agent's current state, like hunger and health,
+ and the world state, like the landscape for the monster standpoint.
+ And the agent takes an action, observes the consequence of this action on the world and on itself,
+ reflects on how it could do better, try out more actions, and brings in a repeat.
+ And once the skill becomes mature, Voyager stores the program into a skill library.
+ You can think of it as a code library, authored entirely by trial and error by GP4.
+ And the agent can retrieve the skills from the library when it sees a similar situation in the future.
+ And in this way, Voyager boosts stress, its own capabilities, recursively as it explores and experiments in Minecraft.
+ So let's quickly go through Antartica.
+ Here the agent's hunger bar has dropped very low, so it needs to find food.
+ And the census war and peace nearby. A cat, a villager, a pig, and some weed seeds.
+ So it starts, and in the model, do I kill the cat for the villager for food?
+ That sounds like a bad idea. How about the seeds? I can grow a farm.
+ It's going to take too long. So, really sorry, Billy, you are the chosen one.
+ And then it checks the inventory and retrieves an old skill from the library to craft an iron sword,
+ and then starts to learn a new skill called hunt pig.
+ And now we also know that Voyager, unfortunately, isn't vegetarian.
+ So questions go against. How does Voyager keep exploring indefinitely?
+ We gave Voyager a high level directive that is to obtain as many available items as possible.
+ And Voyager implements a curriculum to find progressively harder and novel challenges to solve.
+ And putting all these together, Voyager is able to master and also discover new skills along the way.
+ And we didn't reprogram any of this.
+ What you see here is called life of learning, where an agent is forever curious and forever pursuing new adventures.
+ And these are two bird's eye views of a Minecraft map.
+ The biggest orange circles are the distances that Voyager travels.
+ The agent explores so much because it has to move around to obtain as many novel items as possible.
+ And because it loves traveling, so that's why we call it Voyager.
+ Now, compared to Minecraft, Voyager is able to pick up a lot more skills by itself.
+ But it still knows how to control only one body in Minecraft.
+ But can we have a single model that works across different body forms?
+ Enters Metamorph.
+ It is a project that I co-developed with Stanford researchers.
+ We created a foundation model that works on not just one, but thousands of robots with different arm and leg configurations.
+ And Metamorph has no problem adapting to extremely varied kinematic characteristics of different bodies.
+ So here's the intuition.
+ We developed a vocabulary to describe robot parts.
+ And then each body is basically a sentence written in the language of this vocabulary.
+ And more specifically, each robot can be expressed as a block of joints or a kinematic tree.
+ And you can convert a body to a sequence of tokens by traversing this kinematic tree by left or search.
+ And each token here represents some physical properties of the joint.
+ And a sequence describes the morphology of the robot.
+ And different robots may have different numbers of joints and configurations, but a tokenizer doesn't care.
+ It's all converted to sequences of different lengths, just like text screens.
+ And what do we do with sequences?
+ As AI researchers, our major reaction is to apply a transformer, and that's exactly what we did.
+ So instead of writing out text, Metamorph writes out motor controls.
+ And because we want to learn a universal policy that works across morphologies,
+ we batch together all of the robot sentences and train a big, multi-task neural network, just like Tachypti.
+ And no matter what a robot looks like, it's all the same.
+ It's all just sentences to the AI of Metamorph.
+ And we can scale it up by training all the environments in parallel with reinforcement learning.
+ And in our experiments, we showed that Metamorph is able to control thousands of robots
+ with extremely varied kinematic properties to walk up stairs, across irregular terrains, or avoid obstacles.
+ And we also made a fascinating discovery.
+ We found that Metamorph can even generalize zero-shot to a morphology that has never seen before,
+ which means that transformers are able to transform crossing volumes as long as they speak the right language.
+ And let's extrapolate a bit into the picture.
+ If we expand the robot body vocabulary even further,
+ I envision that one day Metamorph 2.0 can generalize to robot arms, dogs, different types of human noise, and even beyond.
+ So compared to Voyager, Metamorph takes a big stride towards multi-body control.
+ And it's now time to take things to the next level and transfer skills and bodies across realities.
+ Enter ISAACSIM and BDS Simulation Initiative.
+ So ISAACSIM's greatest strength is to run big simulations at a thousand times faster than real time.
+ For example, this character learned impressive martial skills by going through ten years worth of virtual training,
+ with only three days of simulation time on the GPU.
+ So it's very much like the virtual sparring dojo in the movie.
+ And this race-cross scene is where simulation has crossed in kind of value, thanks to hard-wired sub-radiation scene.
+ We can render very complex worlds with breathtaking levels of details.
+ And photorealism here can help us train computer vision models that will become the eyes of in-body intelligence.
+ And what's more, in ISAACSIM, we can procedurally generate infinite worlds, and no two will look the same.
+ So here's an interesting idea. If the agent is trained on 10,000 different simulations,
+ they may as well just generalize to our physical out-of-box, which is simply the 10,000th first reality.
+ So let that sink in.
+ So what new capabilities can ISAACSIM unlock?
+ This is Eureka, an agent that achieves robot dexterity at superhuman level.
+ Well, maybe not all humans, at least better than myself.
+ Because I had given up pen spinning a long time ago since childhood, and finally I have my AI avenge my poor skills.
+ So here's the idea. ISAACSIM has a Python API to construct training environments, such as creating a five-finger head to interact with a pen in a simulation.
+ We also assume that the human-written code specifies a success criteria.
+ For example, if the pen reaches certain 3D orientations consistently.
+ And this success criteria not only tells you what to do, but not how to do it with the finger joints.
+ So the first step of Eureka is to pass the environment code and task description as context to GP4.
+ And the task here is to make a shadow pen spin a pen to a target orientation.
+ And then Eureka samples a reward function. And it is a very fine-grained signal that shapes the behavior of the neural network controller towards a good solution.
+ And only expert human genius will hand you this reward function, which is often a very tedious and difficult process.
+ It takes a lot of iterations and also a lot of expertise. Not every engineer can do it if you're not familiar enough with the physics simulation.
+ So let's automate it.
+ Once we have a reward function, we can run reinforcement learning to maximize it through lots of trial and error.
+ It only takes about 20 minutes to train a full run for Eureka, or one of the reward functions, instead of X, thanks to the massively parallel simulation in I6M.
+ And when the training loop finishes, it returns an automated feedback report that tells Eureka how well it does.
+ And it also breaks it down to details like different components in the reward function, such as the velocity reward and the posture reward.
+ And putting it together, GP4 generates a bunch of reward function candidates, and each perform a full reinforcement learning training program. Eureka would pass on the automated feedback and ask the language model to do a self-reflection on the results.
+ And then the language model will reason about where to improve and propose the next generation of reward function candidates and raise the repeat.
+ So it's kind of like an in-context evolutionary search.
+ And compared to expert humans, Eureka is able to find much better reward functions for each task, like spinning the pen along different axes.
+ They actually require different reward functions for each configuration to work on. And that would be a nightmare for roboticists to just do it one by one by hand. And trust me, I have tried it before. I wanted to pull my hair out. GP4 just has a lot more patience than any of us.
+ So it's worth noting that Eureka is a general purpose method that bridges the gap between high-level reasoning and low-level motor control.
+ Eureka uses a new paradigm that I call hybrid gradient architecture, where a black box inference-only large-language model instructs a white box learnable neural network. So the other loop is gradient-free and runs GP4 to refine the reward function in a coding space.
+ And the inner loop is gradient-based and trains a reinforcement learning controller to achieve the skill that you want. And you must have both loops to succeed.
+ But the question is, why stop at just a reward function? If you stare hard enough, everything in the robotic stack looks like code. Like the task spec, robot hardware spec, and simulation environments themselves, all can be implemented by code. Is that right?
+ So for example, instead of MetaMorph's special language to describe the body, Harvard is using something off the shelf like URDF, which people typically use in simulation stacks. And URDF is nothing but an XML which can describe the body morphology for humans.
+ So in the future, I envision that Eureka++ can be a fully automated robotics developer, writing the infrastructure to train better agents and doing so iteratively.
+ So my dream is that one day I can take a very long vacation, and Eureka will just keep reporting progress to me while I'm on the beach. So let's see how far away is that.
+ So in this sense, Eureka isn't really a point on the map, but rather a force vector that can push the frontier along any axis.
+ And as we progress through the map, we will eventually reach a single model that generalizes across all three axes. And that upper right corner is the foundation agent.
+ So I believe training foundation agents will be very similar to chat GPT. All language tasks can be expressed as texting and text out, be it writing poetry or doing translation or doing math. It's all the same.
+ And training chat GPT is simply scaling this out across lots and lots of text data.
+ And very similar, the foundation agent will take as input an involvement prompt, an instruction prompt, and output actions, and will simply scale it up massively across lots and lots of realities.
+ So the foundation agent is the next chapter for GearLab.
+ And yesterday, Jensen announced Project Root in his keynote, a cornerstone initiative on our roadmap. The mission is to create a foundation model for humanoid robots.
+ And why humanoid? Because it is the most general form factor. Because the world that we live in is customized for humans and human habits.
+ And everything that we can do in our daily lives can, in principle, be implemented on an advanced enough humanoid hardware.
+ So I'm very excited to work with multiple leading humanoid companies around the world so that Root may transfer even across environments.
+ And this is one of my favorite pictures from our GDC preparation taken in front of NBS Halfwater. Actually, the building behind that is called Boettcher.
+ And here we see our electronic Fourier agility and imagery, and just look at how happy they are at the hardware.
+ So on a high level, Root takes multimode instructions, such as language, video, and demonstration, and develops skills in simulation as well as the real world.
+ So here's an example of a video instruction.
+ The general robot here, computer intelligence, learns to mimic human dance moves from a video.
+ And Root can also learn from human teleoperated demonstrations, such as Apollo's cold press using skills.
+ So for this demo, we actually bought a lot of fruit, I hear that. Got them all reimbursed.
+ Thanks, Jess. And then the next one is from Xiaowen, also playing the drum, following a human teacher's motion.
+ So Root is born on Osmo, a new compute orchestration system to scale up models on DGX and simulation on OPX.
+ And we used Isaac Lab to run lots of different algorithms for human noise, hoping that the model would generalize to a variety of skills and environments,
+ and transfer zero-shot across the sim-to-real gap, so that we can scale up the training massively on fast simulation powered by computers.
+ And now zooming out, I believe in a future where everything that moves will eventually be a homeless.
+ And Project Root and humanoid robots are only the first chapter.
+ One day we'll realize that the agents across Wolmi, Star Wars, and Ready Player One, no matter if they're in the virtual or physical world,
+ will just be different props to the same foundation agent. And that, my friends, is North Star, our request for AGI.
+ And please join us on our journey to the future. Thanks.
+ [applause]
+ Alright, thanks Jim for that. We're going to open up for Q&A here in this session.
+ So there's a... I'm over here. If anyone has a question, they can please let them have it. We'll just let them have it.
+ Alright, I really appreciate this talk here, Jeanette. I'm excited about the stuff to come.
+ Now, when I look at say something like Minecraft, you have your Voyager, which is using GP4 to get all this stuff.
+ And then the opposite way of using, say, Dreamer V3 to do this stuff where it's learning completely from scratch using green course learning.
+ For this foundation agent, which of those two kind of have to think is going to be, or maybe some combination of stuff?
+ I think that's a good question. And I believe it has to be a kind of combination.
+ Because you all have this separation between like system one and system two. And even humans have that.
+ So system two is like this slow, deliberate, and high-level thing. And system one is more like fast, instantaneous, and like mode of control.
+ And I think Eureka is one example, right? You have kind of a slow part of the brain that writes a rule of function,
+ or some day writes kind of just a full simulation of all the environments.
+ And then you have a fast part of it using green course learning that controls something like Dexter's hand,
+ which is almost impossible to control directly by something like GP4.
+ How can you control that hand using text-only output? And it's also very slow. You have to do it at hundreds of hertz.
+ So I think there's going to be this separation. And they will also do inference at different frequencies.
+ Like system two will do inference at a lower frequency, and system one much higher frequency. And I feel that's also how humans work as well.
+ We think of all sorts of things. You kind of plan on a global level. And then that planning propagates to your lips.
+ And you don't really think, when I pick up this bottle, you are not really thinking about exactly how you orient each finger,
+ and how you're feeding the tactile feedback. You don't think about it. And that is another kind of low-level neural network actually doing the job.
+ Okay. Thank you very much. Thanks.
+ Hi, Jim. Thank you so much. This is mind-blowing. I'm Lei Yu, Vice President of Data Science and AI at Expression.
+ I have a question on the first part of when you had this mind-link as the feedback in that framework called this green course learning.
+ I have a thought about whether this is anything related to the GAN framework where you use the mind-link as the right feedback.
+ As a discriminator. And then you are a generator, generating the actions. Could you please clarify?
+ Yes. I think there are definitely connections here. I think the closer analogy would be to ROI trap, where we are doing green course learning from human feedback.
+ And the human feedback part is learned by human preferences. And here it's actually the same.
+ Except that human preference is not labeled by hiring contractors to do the job, but by learning from lots and lots of videos.
+ Because the gamers online are already narrating what they're doing. So you have this kind of match between the text and the video.
+ And you can use this as a kind of signal to make sure that whatever the agent is doing, the video that it generates matches the text prompt by optimizing for this rule of function.
+ So I do think this functions a little bit like a discriminator. But the difference is now it is language-conditioned. So it's a much more powerful kind of reward model, a much more powerful discriminator.
+ So can you say that your discriminator is a language-conditioned discriminator?
+ I think so. It's kind of a language-conditioned, ranking the videos, and all of your actions are put on the ground. So it is a kind of discriminator. Thanks.
+ Thank you. I'm a researcher from UC Berkeley, and I think this is great work. We do need GPU accelerator. So the question is, what's the biggest long-term take on this gear lab?
+ Do you guys want to do research and provide an accelerator infrastructure for researchers and industries that are just embodied in SC4? Do you guys aim to produce a high-level solution to humanoid robots in general?
+ That is a great question, because I thought about this a lot at the founding of gear. So the way I position here is three words, mission-driven research. So I think gear fundamentally is still a research lab.
+ Because unlike our ones, which do have a mature recipe now, robotics does not have a mature recipe. And no one in the world really knows what's the best way to skill up the robotics and actually have it generalized across systems.
+ No one has figured that out yet. And by that, it's by definition like a research project. But at the same time, right, like Jensen announced not just Google this time, but a few things along with Google.
+ One is OSMO, which I also mentioned in my slides here. So it is this compute orchestration system as a heterogeneous compute framework to schedule DGX and OBX, one for training, larger models, one for simulation.
+ OSMO comes with root, because root requires this kind of very special infrastructure to do. And in our ones, you don't have this problem, you don't have a simulator. But once you have a simulator, the computation graph becomes very complicated.
+ And you will need something like OSMO, which can be offered as a call service. And then the Jensen store, which one day will power root on edge computing devices or on every humanoid, every deployment.
+ So it's really an ecosystem that we're doing here. And I see root as kind of playing a fundamental role in this ecosystem where you need a foundation model that's actually working to make the humanoid robots useful.
+ Right now, humanoid robots, they're more of a curiosity. They're not useful. Like no one really has at their home a humanoid that can do all their dirty housework for them, which is, by the way, my dream. But still, I'm trying, I'm very lazy and I'm trying to make sure I will stay lazy. So that's what I've been researching on.
+ But no humanoids work on that level yet. So we first need to make sure that these robots work. And then we can deploy them. And then we can deploy them massively. And we can ship compute with these models.
+ We can ship computing infrastructure with these models. We can even open up APIs for people to deploy, to customize root on their own robots. But it's not there yet. So it's more like mission driven research.
+ Thank you. One more quick question. I see Jason mentioned that you guys partnered with some of the big robot companies, right? What about startup companies or research groups?
+ So many of the humanoid companies are startups by themselves. And of course, we welcome researchers and students like yourself to join. You have the link here. If you're a little bit hiring, you have the link here. Please feel free to apply. And I would love all the best talents in the world to join here and work with us on this workshop.
+ Sorry, I mean this is a clear time question. Like for a research lab to embrace this infrastructure, do you think that's going to be good?
