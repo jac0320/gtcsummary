@@ -3,8 +3,8 @@ import os
 import sys
 import pandas as pd
 import numpy as np
-
 import streamlit as st
+
 from streamlit_pdf_viewer import pdf_viewer
 from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
 from openai import OpenAI
@@ -25,8 +25,11 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
-st.set_page_config(page_title="GTC 2024", layout="centered", initial_sidebar_state="collapsed")
-
+st.set_page_config(
+    page_title="GTC 2024", 
+    layout="centered", 
+    initial_sidebar_state="collapsed"
+)
 
 
 def talk_show():
@@ -46,7 +49,13 @@ def talk_show():
     st.dataframe(df.sort_values('distance')[['Title']], use_container_width=True, hide_index=True)
 
     titles = df.Title.tolist()
-    selected_title = st.selectbox("Select a talk to view/download PDF", titles, key='talk_select', index=None)
+    selected_title = st.selectbox(
+        "Select a talk to view/download PDF", 
+        titles, 
+        key='talk_select', 
+        index=None
+    )
+
     if selected_title:
         selected_file = df.loc[df['Title'] == selected_title].index[0]
         filapath = f"talks/{selected_file}"
@@ -79,7 +88,7 @@ def company_show():
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
         
-        answer = st.session_state.google_gemini.generate_content(query)
+        answer = st.session_state.gemini_client.generate_content(query)
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(answer.text))
 
@@ -98,6 +107,10 @@ def show_summarized_notes():
             st.markdown(file.read())
 
 
+def clean_agent_session():
+    st.session_state.agent_session = {"query": {}, "plan": {}, "response": {}}
+
+
 def main():
 
     st.title("GTC 2024 : Learning Notes 🤖📚")
@@ -105,15 +118,22 @@ def main():
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
     
-    if 'google_gemini' not in st.session_state:
+    if 'gemini_client' not in st.session_state:
         genai.configure(api_key=os.environ["API_KEY"])
-        st.session_state.google_gemini = genai.GenerativeModel('gemini-pro')
+        st.session_state.gemini_client = genai.GenerativeModel('gemini-pro')
 
     if 'openai_client' not in st.session_state:
         st.session_state.openai_client = OpenAI(api_key=OPENAI_API_KEY)
-    
-    st.session_state.llm_name = st.sidebar.selectbox("LLM Model", ["OpenAI", "Ollama"], key="llm_select", index=0)
 
+    if 'agent_session' not in st.session_state:
+        clean_agent_session()
+    
+    st.sidebar.button(
+        "Clean Agent Session", 
+        on_click=clean_agent_session,
+        use_container_width=True
+    )
+    
     st.session_state.code_generation_retry = st.sidebar.slider(
         "Code Generation Retry", 
         min_value=0, 
@@ -122,13 +142,34 @@ def main():
         key="code_genneration_retry_limit"
     )
 
+    st.session_state.llm_name = st.sidebar.selectbox(
+        "RAG LLM Model", 
+        ["OpenAI", "Ollama"], 
+        key="llm_select", 
+        index=0
+    )
+
     if st.session_state.llm_name == "OpenAI":
-        st.session_state.llm = llamaindex_OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=SYSTEM_PROMPT)
+        st.session_state.llm = llamaindex_OpenAI(
+            model="gpt-3.5-turbo", 
+            temperature=0.5, 
+            system_prompt=SYSTEM_PROMPT
+        )
     else:
-        st.session_state.llm = Ollama(model="mistral", request_timeout=30.0)
+        st.session_state.llm = Ollama(
+            model="mistral", 
+            request_timeout=30.0
+        )
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies, tab_beta = st.tabs(
-        ["👋 Welcome!", "🏆 The Keynote", "📕 My Takeaways", "🎙️ Technical Talks", "🏢 Companies", "🤖NOT-EVEN-ALPHA-ViewAgent"]
+        [
+            "👋 Welcome!", 
+            "🏆 The Keynote", 
+            "📕 My Takeaways", 
+            "🎙️ Technical Talks", 
+            "🏢 Companies", 
+            "🤖NOT-EVEN-ALPHA-ViewAgent"
+        ]
     )
 
     with tab_intro:

@@ -38,8 +38,11 @@ by the most recent Google Gemini API. The companies data are stored under the "n
 """
 
 
-BLOCK_TEMPLATE = """
+GENERAL_AGENT_TEMPLATE = """
+{{ context }}
 
+Given the available information above, a user sends request: {{ query }}
+Use the information provided to generate a response to the user query.
 """
 
 QUERY_RELEVANCE_TEMPLATE = """

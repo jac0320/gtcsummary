@@ -1,10 +1,8 @@
 import streamlit as st
-import re
 from jinja2 import Template
 
 import google.generativeai as genai
 
-from constants import OPENAI_API_KEY
 from templates import (
     SYSTEM_PROMPT, 
     PLAN_STEPS_TEMPLATE, 
@@ -13,10 +11,10 @@ from templates import (
     CODE_CORRECTION_TEMPLATE,
     CODEGEN_CLASSIFICATION_TEMPLATE,
     QUERY_RELEVANCE_TEMPLATE,
-    WHIP_RESPONSE_TEMPLATE
+    WHIP_RESPONSE_TEMPLATE,
+    GENERAL_AGENT_TEMPLATE
 )
 from utils import extract_code_segments, stream_data
-
 
 
 def boolean_classification(prompt, model='gpt-3.5-turbo', show_output=False, show_prefix=""):
@@ -61,7 +59,7 @@ def generate_code_plan(query: str, llm="gemini", model='gpt-3.5-turbo'):
         )
         plan = response.choices[0].message.content
     elif llm == "gemini":
-        response = st.session_state.google_gemini.generate_content(
+        response = st.session_state.gemini_client.generate_content(
             prompt, 
             generation_config=genai.types.GenerationConfig(temperature=0.01)
         )
@@ -87,7 +85,7 @@ def generate_and_execuate_code(query: str, code_plan: str):
         code_plan=code_plan
     )
 
-    code_blob = st.session_state.google_gemini.generate_content(
+    code_blob = st.session_state.gemini_client.generate_content(
         code_prompt,
         generation_config=genai.types.GenerationConfig(temperature=0.01)
     )
@@ -96,34 +94,36 @@ def generate_and_execuate_code(query: str, code_plan: str):
         st.write_stream(stream_data("Here is the generated code:  \n\n" + code_blob.text))
     
     code = extract_code_segments(code_blob.text)
-
     if code is None:
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data("No code snippet was extracted in generation. Please try again."))
-        return
+        
+        return ""
     
     try:
         exec(code, globals())
-        return
     except Exception as e:
         code_error = str(e)
         retry_cnt = 1
         with st.chat_message("agent", avatar="🤖"):
-                st.write(f"Oops! Error: {e} when executing generated code. Let me try again...")
+                st.markdown(f"Oops! Error: {e} when executing generated code. Let me try again...")
 
         while retry_cnt <= st.session_state.code_generation_retry:
             code = correct_code(query, code_plan, code, code_error)
             try:
                 exec(code, globals())
-                return
+                return code
             except Exception as e:
                 code_error = str(e)
                 with st.chat_message("agent", avatar="🤖"):
-                    st.write(f"Oh no... Error: {e} when executing re-generated code. Let me try again...")
+                    st.markdown(f"Oh no... Error: {e} when executing re-generated code. Let me try again...")
 
             retry_cnt += 1
         
         show_give_up_message(query)
+
+    st.write(code)
+    return code
         
         
 def correct_code(query: str, code_plan: str, error_code_blob: str, error: str, model="gpt-4-turbo-2024-04-09"):
@@ -168,7 +168,26 @@ def show_give_up_message(query):
     )
 
     with st.chat_message("agent", avatar="🤖"):
-        st.write(stream_data(give_up_response.choices[0].message.content))
+        st.write_stream(stream_data(give_up_response.choices[0].message.content))
+
+
+def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
+
+    prompt = Template(GENERAL_AGENT_TEMPLATE).render(
+        context=SYSTEM_PROMPT,
+        query=query
+    )
+    
+    response = st.session_state.openai_client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.01,
+    )
+
+    with st.chat_message("agent", avatar="🤖"):
+        st.write_stream(stream_data(response.choices[0].message.content))
+
+    return response.choices[0].message.content
 
 
 def not_even_alpha_viewagent():
@@ -177,9 +196,34 @@ def not_even_alpha_viewagent():
     st.write("We wish to build this agent to actively plan and execute streamlit code to address user questions. Still WIP")
 
     if query := st.chat_input("Ask Anything!", key='beta_chat'):
+
+        if query in st.session_state.agent_session["query"]:
+
+            with st.chat_message("User", avatar="😀"):
+                st.markdown(query)
+
+            if st.session_state.agent_session["query"][query] == "code":
+
+                with st.chat_message("agent", avatar="🤖"):
+                    plan = st.session_state.agent_session["plan"].get(query)
+                    if plan is not None:
+                        st.write_stream(stream_data(plan))
+                    
+                    response = st.session_state.agent_session["response"].get(query)
+                    if response is not None:
+                        st.code(response)
+                        exec(response, globals())
+            
+            elif st.session_state.agent_session["query"][query] == "answer":
+                with st.chat_message("agent", avatar="🤖"):
+                    st.write_stream(stream_data(st.session_state.agent_session["response"].get(query)))
+
+            return
         
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
+        else:
+            with st.chat_message("User", avatar="😀"):
+                st.markdown(query)
+            st.session_state.agent_session["query"][query] = True
 
         # BLOCK 1: Classify if the query is relevant
         relevance_prompt = Template(QUERY_RELEVANCE_TEMPLATE).render(
@@ -203,8 +247,13 @@ def not_even_alpha_viewagent():
             with st.chat_message("agent", avatar="🤖"):
                 st.write_stream(stream_data("Let me try to generate some code to fulfill this ask. Hold on..."))    
             plan = generate_code_plan(query)
-            generate_and_execuate_code(query, plan)
+            code = generate_and_execuate_code(query, plan)
+            st.session_state.agent_session["query"][query] = "code"
+            st.session_state.agent_session["plan"][query] = plan
+            st.session_state.agent_session["response"][query] = code
         else:
-            assert True
+            answer = generate_generic_answer(query)
+            st.session_state.agent_session["query"][query] = "answer"
+            st.session_state.agent_session["response"][query] = answer
 
         
