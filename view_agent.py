@@ -1,5 +1,6 @@
 import streamlit as st
 from jinja2 import Template
+from exceptions import PotentialHackingAttempt
 
 import google.generativeai as genai
 
@@ -77,6 +78,14 @@ def generate_code_plan(query: str, llm="gemini", model='gpt-3.5-turbo'):
     return plan
 
 
+def hack_check(code: str):
+
+    if "API_KEY" in code:
+        with st.chat_message("agent", avatar="🤖"):
+            st.write_stream(stream_data("Potential hacking attempt detected. Don't do it."))
+        raise PotentialHackingAttempt("Potential hacking attempt detected. Please refrain from using system level commands.")
+    
+
 def generate_and_execuate_code(query: str, code_plan: str):
 
     code_prompt = Template(CODE_GENERATION_TEMPLATE).render(
@@ -97,9 +106,10 @@ def generate_and_execuate_code(query: str, code_plan: str):
     if code is None:
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data("No code snippet was extracted in generation. Please try again."))
-        
         return ""
     
+    hack_check(code)
+
     try:
         exec(code, globals())
     except Exception as e:
@@ -110,6 +120,7 @@ def generate_and_execuate_code(query: str, code_plan: str):
 
         while retry_cnt <= st.session_state.code_generation_retry:
             code = correct_code(query, code_plan, code, code_error)
+            hack_check(code)
             try:
                 exec(code, globals())
                 return code
@@ -122,7 +133,6 @@ def generate_and_execuate_code(query: str, code_plan: str):
         
         show_give_up_message(query)
 
-    st.write(code)
     return code
         
         
