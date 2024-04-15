@@ -202,10 +202,9 @@ def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
 
 def not_even_alpha_viewagent():
 
-    st.warning("This is a beta feature. Please ask questions related to the conference. The agent is still learning.")
-    st.write("We wish to build this agent to actively plan and execute streamlit code to address user questions. Still WIP")
+    st.warning("This is a beta feature. We wish to build an code-generation agent to go beyond rigid templates!")
 
-    if query := st.chat_input("Ask Anything!", key='beta_chat'):
+    if query := st.chat_input("Ask Anything! Randomly pick a note written by Site and show it to me.", key='beta_chat'):
 
         if query in st.session_state.agent_session["query"]:
 
