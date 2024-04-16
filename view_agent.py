@@ -200,7 +200,7 @@ def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
     return response.choices[0].message.content
 
 
-def not_even_alpha_viewagent():
+def alpha_viewagent():
 
     st.warning("This is a beta feature. We wish to build an code-generation agent to go beyond rigid templates!")
 

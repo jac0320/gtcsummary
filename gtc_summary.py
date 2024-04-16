@@ -16,7 +16,7 @@ from utils import *
 from constants import OPENAI_API_KEY
 
 from rag import keynote_qa
-from view_agent import not_even_alpha_viewagent
+from view_agent import alpha_viewagent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
@@ -176,7 +176,7 @@ def main():
             "📕 My Takeaways", 
             "🎙️ Technical Talks", 
             "🏢 Companies", 
-            "🤖NOT-EVEN-ALPHA-ViewAgent"
+            "🤖 ALPHA-ViewAgent"
         ]
     )
 
@@ -208,7 +208,7 @@ def main():
 
     with tab_beta:
         st.subheader("Beta-ViewAgent")
-        not_even_alpha_viewagent()
+        alpha_viewagent()
         
 
 main()
