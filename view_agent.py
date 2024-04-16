@@ -44,7 +44,7 @@ def boolean_classification(prompt, model='gpt-3.5-turbo', show_output=False, sho
         return False
 
 
-def generate_code_plan(query: str, llm="gemini", model='gpt-3.5-turbo'):
+def generate_code_plan(query: str, llm="openai", model='gpt-3.5-turbo'):
 
     prompt = Template(PLAN_GENERATION_TEMPLATE).render(
             context=SYSTEM_PROMPT, 
@@ -52,14 +52,14 @@ def generate_code_plan(query: str, llm="gemini", model='gpt-3.5-turbo'):
             plan_template=PLAN_STEPS_TEMPLATE
         )
 
-    if llm == "openai":
+    if llm == "OpenAI":
         response = st.session_state.openai_client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.01,
         )
         plan = response.choices[0].message.content
-    elif llm == "gemini":
+    elif llm == "Gemini":
         response = st.session_state.gemini_client.generate_content(
             prompt, 
             generation_config=genai.types.GenerationConfig(temperature=0.01)
@@ -255,7 +255,7 @@ def alpha_viewagent():
         if require_codegen:
             with st.chat_message("agent", avatar="🤖"):
                 st.write_stream(stream_data("Let me try to generate some code to fulfill this ask. Hold on..."))    
-            plan = generate_code_plan(query)
+            plan = generate_code_plan(query, llm=st.session_state.code_planer)
             code = generate_and_execuate_code(query, plan)
             st.session_state.agent_session["query"][query] = "code"
             st.session_state.agent_session["plan"][query] = plan

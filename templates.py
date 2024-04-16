@@ -65,9 +65,10 @@ PLAN_GENERATION_TEMPLATE = """
 {{ context }}
 
 Given the available information above. Now, a user sends request: {{ query }}
-Please provide a plan of steps to address the user question in the streamlit interface.
+Please provide a plan of steps to address the user question by coding in the streamlit interface.
+Do not to plan any code for any sidebar.
 
-We will later convert these steps into code. Emit the steps in the following dict format:
+Emit the steps in the following dict format:
 {{ plan_template }}
 """
 

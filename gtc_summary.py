@@ -141,6 +141,13 @@ def main():
         on_click=clean_agent_session,
         use_container_width=True
     )
+
+    st.session_state.code_planer = st.sidebar.selectbox(
+        "Code Planer",
+        ["OpenAI", "Gemini"],
+        key="code_planer_select",
+        index=0
+    )
     
     st.session_state.code_generation_retry = st.sidebar.slider(
         "Code Generation Retry", 
@@ -208,7 +215,10 @@ def main():
 
     with tab_beta:
         st.subheader("Beta-ViewAgent")
-        alpha_viewagent()
+        try:
+            alpha_viewagent()
+        except Exception as e:
+            st.error(f"Error: {e}")
         
 
 main()
