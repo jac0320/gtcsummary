@@ -18,7 +18,7 @@ from constants import OPENAI_API_KEY
 from rag import keynote_qa
 from view_agent import not_even_alpha_viewagent
 
-from llama_index.core.embeddings import resolve_embed_model
+from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -34,19 +34,23 @@ st.set_page_config(
 
 def talk_show():
 
-    user_search = st.text_input("Describe what you want to learn for a talk", key='talk_search')
-    user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
+    user_search = st.text_input("Describe what you want to learn for a talk", key='talk_search', value=None)
+    
+    if user_search is not None:
+        user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
-    df = pd.read_json('notebooks/talk_cleaned_titles_full.json', orient='index')
-    df = df.rename(columns={'cleaned_title': 'Title'})
+    df = pd.read_json('notebooks/pdf_full.json')
 
     if 'embds' not in df.columns:
         df['embds'] = df['Title'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
 
-    embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
-    df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
     st.write("Talks ranked based on your search || Scrapped PDF + Title Extracted from PDF")
-    st.dataframe(df.sort_values('distance')[['Title']], use_container_width=True, hide_index=True)
+    if user_search is not None:
+        embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
+        df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
+        st.dataframe(df.sort_values('distance')[['Title']], use_container_width=True, hide_index=True)
+    else:
+        st.dataframe(df[['Title']], use_container_width=True, hide_index=True)
 
     titles = df.Title.tolist()
     selected_title = st.selectbox(
@@ -71,17 +75,21 @@ def talk_show():
 
 def company_show():
 
-    user_search = st.text_input("Descibe what company you wish to know", key='company_search')
-    user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
+    user_search = st.text_input("Descibe what company you wish to know", key='company_search', value=None)
+    if user_search is not None:
+        user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
     df = pd.read_json('notebooks/company_full.json')
     if 'embds' not in df.columns:
         df['embds'] = df['description'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
 
-    embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
-    df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
     st.write("Companies ranked based on your search || Extracted by AI from https://www.nvidia.com/gtc/sponsors/#/ ")
-    st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
+    if user_search is not None:    
+        embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
+        df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
+        st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
+    else:
+        st.dataframe(df[['name', 'description']], use_container_width=True, hide_index=True)
     
     st.write("---")
     if query := st.chat_input("Tell me more about Unstructured ai company?", key='company_chat'):
@@ -116,7 +124,7 @@ def main():
     st.title("GTC 2024 : Learning Notes 🤖📚")
 
     if 'embeddings' not in st.session_state:
-        st.session_state.embeddings = resolve_embed_model("local:BAAI/bge-small-en-v1.5")
+        st.session_state.embeddings = OpenAIEmbedding()
     
     if 'gemini_client' not in st.session_state:
         genai.configure(api_key=os.environ["API_KEY"])
