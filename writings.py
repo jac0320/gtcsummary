@@ -152,7 +152,8 @@ def notes_summary():
 
     with st.expander("Retrieval vs. Generative"):
         with open(str('personal_notes/retrieval_vs_generation.md'), "r") as file:
-            st.markdown(file.read())
+            st.markdown(file.read(), unsafe_allow_html=True)
+        st.image('pictures/images/rvg.png', caption='Retrieval vs. Generation', use_column_width='always')
     
     with st.expander("The Need for Scalable Inference"):
         with open(str('personal_notes/the_need_for_scalable_inference.md'), "r") as file:

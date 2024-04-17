@@ -79,7 +79,7 @@ def generate_code_plan(query: str, llm="openai", model='gpt-3.5-turbo'):
 
 
 def hack_check(code: str):
-
+    
     if "API_KEY" in code:
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data("Potential hacking attempt detected. Don't do it."))

@@ -37,7 +37,7 @@ def qa_chat_engine(doc_dir, persist_dir):
         Settings.llm = Ollama(model="mistral", request_timeout=30.0)
 
     if 'chat_engine' not in st.session_state or st.session_state.chat_engine is None:
-        st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question")
+        st.session_state.chat_engine = index.as_chat_engine(chat_mode="best")
 
     
 def keynote_qa():
