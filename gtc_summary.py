@@ -15,7 +15,7 @@ from templates import *
 from utils import *
 from constants import OPENAI_API_KEY
 
-from rag import keynote_qa
+from rag import keynote_rag
 from view_agent import alpha_viewagent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -83,7 +83,7 @@ def company_show():
     if 'embds' not in df.columns:
         df['embds'] = df['description'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
 
-    st.write("Companies ranked based on your search || Extracted by AI from https://www.nvidia.com/gtc/sponsors/#/ ")
+    st.write("Companies ranked based on your search || Extracted using AI from https://www.nvidia.com/gtc/sponsors/#/ ")
     if user_search is not None:    
         embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
         df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
@@ -196,7 +196,7 @@ def main():
         keynote_perplexity_summary()
         keynote_openai_summary()
         st.write('---')
-        keynote_qa()
+        keynote_rag()
 
     with tab_ama:
         notes_summary()

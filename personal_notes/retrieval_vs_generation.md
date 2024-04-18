@@ -12,6 +12,8 @@ Take the following example when I want to know which fasteners (diameter and len
 2. I tried watching a tutorial on YouTube. It was a 10-minute video. Nah, who knows if it has my answer or not? I am too impatient.
 3. Then I hopped on perplexity.ai and asked the same questions, and I got the AI-generated answer in less than 5 seconds (with references).
 
+![Test image](personal_notes/rvg.png "whatever")
+
 What struck me was how the AI seemed to intuitively understand what I was looking for amidst a sea of diverse information. While I still value the depth and quality of pre-recorded tutorials and guides, I'm increasingly convinced of the potential of generative AI. It's about connecting people with the right information in the right context - and that's where I put my money at.
 
 [Written by Site 🤓]

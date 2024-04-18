@@ -1,37 +1,51 @@
 import streamlit as st
 
+
 def intro():
     st.markdown(
         """
-            👋 Hi there! This is a simple app that summarizes my GTC-2024 conference experience.
+            👋 Hi there! I am Site Wang. This is a summary of my GTC-2024 conference experience.
 
             NVIDIA GTC 2024 was NVIDIA's flagship annual conference focused on the latest advancements 
-            in AI and other cutting-edge technologies. The 5-day event took place from March 17th - 21st, 
+            in AI and other cutting-edge technologies. The 4-day conference took place from March 18th - 21st, 
             2024 in San Jose, California, marking the first in-person GTC since 2019.
 
-            * March 18
-                NVIDIA CEO Jensen Huang will deliver the highly anticipated keynote address on this day
-            * March 18-21
-                The main AI Conference and Expo will take place over these 4 days from March 18 to March 21
-            
-            The conference will feature over 900 sessions, 300+ exhibits, and 20 technical workshops covering 
-            a diverse range of topics related to AI, accelerated computing, data science, and more.
+            I figured what would be a better way to summarize the conference than using AI itself. Hence, leveraging some rudimentary
+            learning of the AI technologies, I built this app to summarize what I learned/read.
         """
         )
 
     st.write('---')
+    
+    st.subheader("🏆 The Keynote")
+    st.markdown("""        
+        AI summarized transcripts of the Keynote + an AMA Bot
+        * Summarized Transcript = Audio Recordings + OpenAI's Whisper API + OpenAI/Perpexity AI
+        * AMA Bot = RAG using LlamaIndex + GPT-3.5-Turbo
+    """)
 
+    st.subheader("📕 My Takeaways")        
+    st.markdown("""Explore my personal notes on the conference. Nothing fancy here - [almost] all written by me.""")
+
+    st.subheader("🎙️ Technical Talks")
     st.markdown("""
-        I participated in the conference and here is a summary of my experience. I figured what would be
-        a better way to summarize the conference than using AI itself. Hence, leveraging some rudimentary
-        learning of the AI technologies, I have built this app to summarize the conference.
-        
-        Feel free to explore the tabs for:
-        * 🏆 The Keynote: learn more about the Jensen Huang's keynote.
-        * 📕 My Takeaways: explore my personal notes on the conference.
-        * 🎙️ Technical Talks: explore the technical talks transcript summaries + PDFs.
-        * 🏢 Companies: learn about the companies that participated in the conference.
-        * 🤖 NOT-EVEN-ALPHA-ViewAgent: a Alpha feature to ask questions about anything (if it works).
+        Explore & search the technical talks transcript summaries + PDFs.
+        * Summarized Transcript = Audio Recordings + OpenAI's Whisper API + OpenAI GPT-4
+        * Search Rank = OpenAI's embedding
+        * PDFs = Scrapped PDFs + GPT-3.5-Turbo to Extract Title
+    """)
+
+    st.subheader("🏢 Companies")
+    st.markdown("""
+        Learn about the companies that participated in the conference.
+        * Scrapped Data + GPT-3.5-Turbo to Extract Information
+    """)
+
+    st.subheader("🤖 ALPHA-ViewAgent")
+    st.markdown("""
+        A Alpha feature to ask questions about anything (it works when it works).
+        * Hack Blocking + Workflow Guider + Code Planner = GPT-3.5-Turbo + Rules
+        * Code Generation + Critic = Gemini-1.5Pro + GPT-4
     """)
 
 

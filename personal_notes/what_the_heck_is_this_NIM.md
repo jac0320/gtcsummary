@@ -2,6 +2,8 @@
 
 NIM is everything you'd want to enterprise AI. It optimizes a bunch of things for you. It is like a magic box that you can put your AI model in and it will run faster and cheaper.... as long as you buy the hardware from NVIDIA. 
 
+![Test image](personal_notes/nim.jpeg "whatever")
+
 Feel free to read below if you want to continue [Written by Site 🤓 until here and summarized by AI 🤖 below]:
 
 NIM is a powerful tool from NVIDIA that helps organizations accelerate their journey to production AI. It is designed to bridge the gap between the complex world of AI development and the operational needs of enterprises.

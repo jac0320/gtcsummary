@@ -14,6 +14,7 @@ from llama_index.core import (
     Settings
 )
 
+from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.llms.ollama import Ollama
 
 
@@ -37,14 +38,26 @@ def qa_chat_engine(doc_dir, persist_dir):
         Settings.llm = Ollama(model="mistral", request_timeout=30.0)
 
     if 'chat_engine' not in st.session_state or st.session_state.chat_engine is None:
-        st.session_state.chat_engine = index.as_chat_engine(chat_mode="best")
+        memory = ChatMemoryBuffer.from_defaults(token_limit=3900)
+        st.session_state.chat_engine = index.as_chat_engine(
+            memory=memory,
+            context_prompt=(
+                "You are a chatbot, able to have normal interactions, as well as talk"
+                " about Jensen Huang's Keynote at GTC 2024. You can also provide information."
+                f" Here is the general context {SYSTEM_PROMPT}"
+                "Here are the relevant documents for the context:\n"
+                "{context_str}"
+                "\nInstruction: Use the previous chat history, or the context above, to interact and help the user."
+            ),
+            chat_mode="condense_plus_context",
+            verbose=True
+        )
 
     
-def keynote_qa():
+def keynote_rag():
 
     def reset_keynote_messages():
         st.session_state.keynote_messages = [
-            {'role': "system", "content": SYSTEM_PROMPT},
             {"role": "agent", "content": "Hello! I may know a bit about Jensen Huang's 2024 GTC Keynote. Ask me anything."},
         ]
         st.session_state.chat_engine = None
