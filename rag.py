@@ -74,7 +74,7 @@ def keynote_rag():
             st.write(message["content"])
     
     if query := st.chat_input("Ask a question"):
-        st.session_state.logger.info(f"User: {query}")
+        st.session_state.logger.info(f"User {st.session_state.session_id}: {query}")
         st.session_state.keynote_messages.append({"role": "user", "content": query})
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
