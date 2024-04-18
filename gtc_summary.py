@@ -22,6 +22,7 @@ from view_agent import alpha_viewagent
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
 
+logging.basicConfig(level=logging.INFO)
 
 st.set_page_config(
     page_title="GTC 2024", 
