@@ -50,7 +50,7 @@ def qa_chat_engine(doc_dir, persist_dir):
                 "\nInstruction: Use the previous chat history, or the context above, to interact and help the user."
             ),
             chat_mode="condense_plus_context",
-            verbose=True
+            verbose=False
         )
 
     
