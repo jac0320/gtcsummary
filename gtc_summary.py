@@ -35,6 +35,7 @@ def talk_show():
     user_search = st.text_input("Describe what you want to learn for a talk", key='talk_search', value=None)
     
     if user_search is not None:
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : TALK_SEARCH : {user_search}")
         user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
     df = pd.read_json('notebooks/pdf_full.json')
@@ -59,7 +60,8 @@ def talk_show():
     )
 
     if selected_title:
-        selected_file = df.loc[df['Title'] == selected_title].index[0]
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : TALK_PDF : {selected_title}")
+        selected_file = df.loc[df['Title'] == selected_title].filename.head(1).squeeze()
         filapath = f"talks/{selected_file}"
         with open(filapath, "rb") as file:
             st.download_button(
@@ -75,6 +77,7 @@ def company_show():
 
     user_search = st.text_input("Descibe what company you wish to know", key='company_search', value=None)
     if user_search is not None:
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY_SEARCH : {user_search}")
         user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
     df = pd.read_json('notebooks/company_full.json')
@@ -91,10 +94,12 @@ def company_show():
     
     st.write("---")
     if query := st.chat_input("Tell me more about Unstructured ai company?", key='company_chat'):
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY : {query}")
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
         
         answer = st.session_state.gemini_client.generate_content(query)
+        st.session_state.logger.info(f"BOT {st.session_state.session_id} : COMPANY : {answer.text}")
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(answer.text))
 
@@ -109,6 +114,7 @@ def show_summarized_notes():
         index=None
     )
     if selected_md_file:
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : NOTE : {selected_md_file}")
         with open(str(selected_md_file), "r") as file:
             st.markdown(file.read())
 

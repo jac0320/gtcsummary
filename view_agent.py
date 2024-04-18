@@ -205,7 +205,7 @@ def alpha_viewagent():
     st.warning("This is a beta feature. We wish to build an code-generation agent to go beyond rigid templates!")
 
     if query := st.chat_input("Ask Anything! Randomly pick a note written by Site and show it to me.", key='beta_chat'):
-
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : AGENT : {query}")
         if query in st.session_state.agent_session["query"]:
 
             with st.chat_message("User", avatar="😀"):

@@ -31,7 +31,7 @@ def qa_chat_engine(doc_dir, persist_dir):
     else:
         # load the existing index
         storage_context = StorageContext.from_defaults(persist_dir=persist_dir)
-        index = load_index_from_storage(storage_context, similarity_top_k=10)
+        index = load_index_from_storage(storage_context, similarity_top_k=1)
 
     if st.session_state.llm_name != "OpenAI":  # additional steps for ollama - which I think I can remove
         Settings.embed_model = st.session_state.embeddings
@@ -74,12 +74,13 @@ def keynote_rag():
             st.write(message["content"])
     
     if query := st.chat_input("Ask a question"):
-        st.session_state.logger.info(f"User {st.session_state.session_id}: {query}")
+        st.session_state.logger.info(f"USER {st.session_state.session_id} : KEYNOTE : {query}")
         st.session_state.keynote_messages.append({"role": "user", "content": query})
         with st.chat_message("User", avatar="😀"):
             st.markdown(query)
         
         response = st.session_state.chat_engine.chat(query)
+        st.session_state.logger.info(f"BOT {st.session_state.session_id} : KEYNOTE : {response.response}")
         st.session_state.keynote_messages.append({"role": "agent", "content": response.response})
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(response.response))
