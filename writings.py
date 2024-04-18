@@ -16,7 +16,7 @@ def intro():
         )
 
     st.write('---')
-    
+
     st.subheader("🏆 The Keynote")
     st.markdown("""        
         AI summarized transcripts of the Keynote + an AMA Bot
@@ -43,7 +43,7 @@ def intro():
 
     st.subheader("🤖 ALPHA-ViewAgent")
     st.markdown("""
-        A Alpha feature to ask questions about anything (it works when it works).
+        An ALPHA feature to that use code generator to anything your question (it works when it works).
         * Hack Blocking + Workflow Guider + Code Planner = GPT-3.5-Turbo + Rules
         * Code Generation + Critic = Gemini-1.5Pro + GPT-4
     """)
