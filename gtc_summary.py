@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import uuid
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -20,9 +21,6 @@ from view_agent import alpha_viewagent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
-
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 st.set_page_config(
@@ -122,6 +120,12 @@ def clean_agent_session():
 def main():
 
     st.title("GTC 2024 : Learning Notes 🤖📚")
+    
+    if 'session_id' not in st.session_state:
+        session_id = uuid.uuid4().hex
+        st.session_state['session_id'] = session_id
+        st.session_state.logger = logging.getLogger(session_id)
+        st.session_state.logger.setLevel(logging.INFO)
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = OpenAIEmbedding()
