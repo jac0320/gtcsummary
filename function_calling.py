@@ -26,18 +26,25 @@ def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MO
 
 def chat_completion_with_function_execution(messages, tools=[None], query=None):
     """This function makes a ChatCompletion API call with the option of adding functions"""
+    st.session_state.chat_messages.append({"role": "user", "content": query})
     response = chat_completion_request(messages, tools=tools)
     full_message = response.choices[0]
-    st.session_state.chat_messages.append({"role": "user", "content": query})
+    
     if full_message.finish_reason == "tool_calls":
-        st.info(f"Function generation requested, calling function {full_message.message.tool_calls[0].function.name} with arguments={full_message.message.tool_calls[0].function.arguments}")
-        if full_message.message.tool_calls[0].function.name == "keynote_rag":
+
+        function_name = full_message.message.tool_calls[0].function.name
+        args = full_message.message.tool_calls[0].function.arguments
+
+        st.info(f"Function generation requested, calling function {function_name} with arguments={args}")
+        if function_name == "keynote_rag":
             query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
             return keynote_rag(query)
-        elif full_message.message.tool_calls[0].function.name == "personal_note_rag":
+        elif function_name == "personal_note_rag":
             query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
             return personal_note_rag(query)
+        
     else:
+        # Do a regular response here with System Prompt
         st.info(f"Function not required, responding to user")
-        st.session_state.chat_messages.append({"role": "assistant", "content": response.content})
+        st.session_state.chat_messages.append({"role": "assistant", "content": response.choices[0].message.content})
         return response

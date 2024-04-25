@@ -130,6 +130,7 @@ def clean_agent_session():
 
 def reset_chat_messages():
     st.session_state.chat_messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "assistant", "content": "Hello! Ask anything. I will try to leverage all the tools the answer."},
     ]
 
@@ -267,13 +268,13 @@ def main():
             "type": "function",
             "function": {
                 "name": "keynote_rag",
-                "description": "Ask a question about more information Jensen Huang's Keynote presentation at GTC 2024. The questions/query only applies to the keynote information.",
+                "description": "Answer question about Jensen Huang's Keynote presentation at GTC 2024. The questions/query only applies to the keynote information.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Question for the RAG model that connets with Site's notes",
+                            "description": "Question string about with Jensen Huang's Keynote Presentation",
                         }
                     },
                     "required": ["query"],
@@ -284,13 +285,13 @@ def main():
             "type": "function",
             "function": {
                 "name": "personal_note_rag",
-                "description": "Ask about what notes Site Wang wrote based on his experience at GTC 2024. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
+                "description": "Answer question about personal notes written by Site Wang based on his experience at GTC 2024. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Question for the RAG model that connets with Site's notes",
+                            "description": "Question string about personal notes written by Site Wang",
                         }
                     },
                     "required": ["query"],
@@ -301,6 +302,8 @@ def main():
     
     st.write('---')
     for message in st.session_state.chat_messages: # Display the prior chat messages
+        if message["role"] == "system":
+            continue
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
