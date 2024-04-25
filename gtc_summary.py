@@ -11,9 +11,12 @@ from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
 from openai import OpenAI
 import google.generativeai as genai
 
+from rag import initialize_rag_chat_engine
 from writings import *
 from templates import *
 from utils import *
+from constants import *
+from function_calling import chat_completion_with_function_execution
 from constants import OPENAI_API_KEY
 
 from rag import keynote_rag
@@ -29,6 +32,7 @@ st.set_page_config(
     layout="centered", 
     initial_sidebar_state="collapsed"
 )
+
 
 
 def talk_show():
@@ -124,6 +128,12 @@ def clean_agent_session():
     st.session_state.agent_session = {"query": {}, "plan": {}, "response": {}}
 
 
+def reset_chat_messages():
+    st.session_state.chat_messages = [
+        {"role": "assistant", "content": "Hello! Ask anything. I will try to leverage all the tools the answer."},
+    ]
+
+
 def main():
 
     st.title("GTC 2024 : Learning Notes 🤖📚")
@@ -136,7 +146,7 @@ def main():
 
     if 'embeddings' not in st.session_state:
         st.session_state.embeddings = OpenAIEmbedding()
-    
+
     if 'gemini_client' not in st.session_state:
         genai.configure(api_key=os.environ["API_KEY"])
         st.session_state.gemini_client = genai.GenerativeModel('gemini-pro')
@@ -144,12 +154,21 @@ def main():
     if 'openai_client' not in st.session_state:
         st.session_state.openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
+    if 'chat_messages' not in st.session_state:
+        reset_chat_messages()
+    
     if 'agent_session' not in st.session_state:
         clean_agent_session()
-    
+
     st.sidebar.button(
         "Clean Agent Session", 
         on_click=clean_agent_session,
+        use_container_width=True
+    )
+
+    st.sidebar.button(
+        "🧹 Clear Chat Session", 
+        on_click=reset_chat_messages, 
         use_container_width=True
     )
 
@@ -187,6 +206,20 @@ def main():
             request_timeout=30.0
         )
 
+    initialize_rag_chat_engine(
+        "keynote", 
+        KEYNOTE_PERSIST_DIR, 
+        prefix="keynote", 
+        prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2024. You can also provide information."
+    )
+
+    initialize_rag_chat_engine(
+        "personal_notes", 
+        PERSONAL_NOTE_PERSIST_DIR,
+        prefix="personal_notes",
+        prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
+    )
+
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies, tab_beta = st.tabs(
         [
             "👋 Welcome!", 
@@ -206,8 +239,6 @@ def main():
         st.video(data='https://www.youtube.com/watch?v=Y2F8yisiS6E')
         keynote_perplexity_summary()
         keynote_openai_summary()
-        st.write('---')
-        keynote_rag()
 
     with tab_ama:
         notes_summary()
@@ -230,6 +261,57 @@ def main():
             alpha_viewagent()
         except Exception as e:
             st.error(f"Error: {e}")
-        
 
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "keynote_rag",
+                "description": "Ask a question about more information Jensen Huang's Keynote presentation at GTC 2024. The questions/query only applies to the keynote information.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "Question for the RAG model that connets with Site's notes",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "personal_note_rag",
+                "description": "Ask about what notes Site Wang wrote based on his experience at GTC 2024. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "Question for the RAG model that connets with Site's notes",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
+        }
+    ]
+    
+    st.write('---')
+    for message in st.session_state.chat_messages: # Display the prior chat messages
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+    if query := st.chat_input("Ask a question", key="main_chat"):
+    
+        response = chat_completion_with_function_execution(
+            st.session_state.chat_messages, 
+            tools=tools,
+            query=query
+        )
+        st.write(response)
+        st.rerun()
+        
 main()
