@@ -20,6 +20,7 @@ from function_calling import chat_completion_with_function_execution
 from constants import OPENAI_API_KEY
 
 from rag import keynote_rag
+from companies import company_tab
 from view_agent import alpha_viewagent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -78,35 +79,6 @@ def talk_show():
         pdf_viewer(filapath)
 
 
-def company_show():
-
-    user_search = st.text_input("Descibe what company you wish to know", key='company_search', value=None)
-    if user_search is not None:
-        st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY_SEARCH : {user_search}")
-        user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
-
-    df = pd.read_json('notebooks/company_full.json')
-    if 'embds' not in df.columns:
-        df['embds'] = df['description'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
-
-    st.write("Companies ranked based on your search || Extracted using AI from https://www.nvidia.com/gtc/sponsors/#/ ")
-    if user_search is not None:    
-        embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
-        df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
-        st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
-    else:
-        st.dataframe(df[['name', 'description']], use_container_width=True, hide_index=True)
-    
-    st.write("---")
-    if query := st.chat_input("Tell me more about Unstructured ai company?", key='company_chat'):
-        st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY : {query}")
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
-        
-        answer = st.session_state.gemini_client.generate_content(query)
-        st.session_state.logger.info(f"BOT {st.session_state.session_id} : COMPANY : {answer.text}")
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(answer.text))
 
 
 def show_summarized_notes():
@@ -149,7 +121,7 @@ def main():
         st.session_state.embeddings = OpenAIEmbedding()
 
     if 'gemini_client' not in st.session_state:
-        genai.configure(api_key=os.environ["API_KEY"])
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
         st.session_state.gemini_client = genai.GenerativeModel('gemini-pro')
 
     if 'openai_client' not in st.session_state:
@@ -254,7 +226,7 @@ def main():
 
     with tab_companies:
         st.subheader("The Companies")
-        company_show()
+        company_tab()
 
     with tab_beta:
         st.subheader("Beta-ViewAgent")
@@ -292,6 +264,40 @@ def main():
                         "query": {
                             "type": "string",
                             "description": "Question string about personal notes written by Site Wang",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "company_rerank",
+                "description": "Rank sponsor companies at GTC 2024 based on the user query related to the company description.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "Question string about generatl description of a company",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "company_info_search",
+                "description": "Answer question about a specific sponsor company at GTC 2024. It is only used when a sepcific company name is mentioned/asked by the user.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "Question string about a specific sponsor company at GTC 2024",
                         }
                     },
                     "required": ["query"],

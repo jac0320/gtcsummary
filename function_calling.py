@@ -4,9 +4,11 @@ import json
 from constants import OPENAI_API_KEY
 
 from rag import keynote_rag, personal_note_rag
+from companies import company_rerank, company_info_search
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 GPT_MODEL = "gpt-3.5-turbo-0613"
+
 
 @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
 def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL):
@@ -31,10 +33,8 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
     full_message = response.choices[0]
     
     if full_message.finish_reason == "tool_calls":
-
         function_name = full_message.message.tool_calls[0].function.name
         args = full_message.message.tool_calls[0].function.arguments
-
         st.info(f"Function generation requested, calling function {function_name} with arguments={args}")
         if function_name == "keynote_rag":
             query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
@@ -42,7 +42,12 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         elif function_name == "personal_note_rag":
             query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
             return personal_note_rag(query)
-        
+        elif function_name == "company_rerank":
+            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
+            return company_rerank(query)
+        elif function_name == "company_info_search":
+            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
+            return company_info_search(query)
     else:
         # Do a regular response here with System Prompt
         st.info(f"Function not required, responding to user")
