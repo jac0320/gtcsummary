@@ -36,7 +36,7 @@ def company_tab():
 
 
 
-def company_rerank(user_search):
+def company_rerank(user_search, k=5):
 
     if user_search is None or user_search == "":
         return "Please provide a company name to search for"
@@ -52,7 +52,7 @@ def company_rerank(user_search):
     embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
     df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
 
-    rerank_table = df.sort_values('distance')[['name', 'description']].head(10).to_markdown(index=False)
+    rerank_table = df.sort_values('distance')[['name', 'description']].head(k).to_markdown(index=False)
     st.session_state.chat_messages.append({"role": "assistant", "content": rerank_table})
 
 

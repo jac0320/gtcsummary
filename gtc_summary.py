@@ -281,6 +281,11 @@ def main():
                         "query": {
                             "type": "string",
                             "description": "Question string about generatl description of a company",
+                        },
+                        "k": {
+                            "type": "integer",
+                            "description": "how many top results to be returned",
+                            "default": 5
                         }
                     },
                     "required": ["query"],

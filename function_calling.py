@@ -36,17 +36,19 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         function_name = full_message.message.tool_calls[0].function.name
         args = full_message.message.tool_calls[0].function.arguments
         st.info(f"Function generation requested, calling function {function_name} with arguments={args}")
+        args = json.loads(full_message.message.tool_calls[0].function.arguments)
         if function_name == "keynote_rag":
-            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
+            query = args.get("query")
             return keynote_rag(query)
         elif function_name == "personal_note_rag":
-            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
+            query = args.get("query")
             return personal_note_rag(query)
         elif function_name == "company_rerank":
-            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
-            return company_rerank(query)
+            query = args.get("query")
+            k = args.get("k", 5)
+            return company_rerank(query, k)
         elif function_name == "company_info_search":
-            query = json.loads(full_message.message.tool_calls[0].function.arguments)["query"]
+            query = args.get("query")
             return company_info_search(query)
     else:
         # Do a regular response here with System Prompt
