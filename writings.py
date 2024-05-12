@@ -17,26 +17,21 @@ def intro():
     st.write('---')
     
     st.markdown(f"""        
-        #### 🏆 **Jensen's Keynote**
-        * AI summarized transcripts of tshe keynote delivered by Jensen Huang.
-        * You can directly ask "What was so exciting about the Jensen's keynote?"
-        
-        #### 📕 **My Notes**
-        * Explore my personal notes about the conference. Nothing fancy here - [almost] all written by me. 
-        * You can directly ask "What are some learnings from Site?"
-        
-        
-        #### 🎙️ **Talks**
-        * Some AI Summarized transcripts of the technical talks I attended + Scraped talks of my interest.
-        * You can ask "Show me some talks about RAG", given the search results, you can further ask "What is the talk Robotics in the age of Generative AI about?" 
-        
-        #### 🏢 **Companies**
-        * Learn about the companies that participated in the conference.
-        * You can ask "What are some companies that handles unstructure data?", given the search results, you can further ask "What does this Unstructured do?"    
-        
-        #### 🤖 **(Alpha)ViewAgent**
-        * An experimental agent that generate code to answer your questions about the conference. It works when it works.
-        * You can ask "Generate and execute the code that randomly show two notes written by Site side by side." or "Build an run the code that shows one company's name in hash code."
+        * 🏆 **Jensen's Keynote**
+            * AI summarized transcripts of tshe keynote delivered by Jensen Huang.
+            * You can directly ask "What was so exciting about the Jensen's keynote?"
+        * 📕 **My Notes**
+            * Explore my personal notes about the conference. Nothing fancy here - [almost] all written by me. 
+            * You can directly ask "What are some learnings from Site?"
+        * 🎙️ **Talks**
+            * Some AI Summarized transcripts of the technical talks I attended + Scraped talks of my interest.
+            * You can ask "Show me some talks about RAG", given the search results, you can further ask "What is the talk Robotics in the age of Generative AI about?" 
+        * 🏢 **Companies**
+            * Learn about the companies that participated in the conference.
+            * You can ask "What are some companies that handles unstructure data?", given the search results, you can further ask "What does this Unstructured do?"    
+        * 🤖 **(Alpha)ViewAgent**
+            * An experimental agent that generate code to answer your questions about the conference. It works when it works.
+            * You can ask "Generate and execute the code that randomly show two notes written by Site side by side." or "Build an run the code that shows one company's name in hash code."
                 
         Most importantly, don't be limited by the instructions above. Feel free to ask anything about the conference.
     """)
