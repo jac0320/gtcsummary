@@ -1,11 +1,9 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-from streamlit_pdf_viewer import pdf_viewer
 from utils import collect_md_files
 from constants import GTCSUMMARY_SEARCH_API_KEY, GTCSUMMARY_SEARCH_ENGINE_ID
 from googleapiclient.discovery import build
-from utils import find_most_similar_index
 
 
 def show_summarized_notes():
@@ -71,15 +69,14 @@ def talk_info_search(search_title):
     if search_title is None or search_title == "":
         return "Please provide a talk title to search for"
     
-    user_search_embds = st.session_state.embeddings.get_text_embedding(search_title)
-    
     service = build("customsearch", "v1", developerKey=GTCSUMMARY_SEARCH_API_KEY)
-    results = service.cse().list(q=search_title, cx=GTCSUMMARY_SEARCH_ENGINE_ID, num=5).execute()
+    results = service.cse().list(q=search_title, cx=GTCSUMMARY_SEARCH_ENGINE_ID, num=3).execute()
     
-    titles = [st.session_state.embeddings.get_text_embedding(i['title']) for i in results['items']]
+    urls = ""
+    for i in results['items']:
+        urls += f"* [{i['title']}]({i['link']}) \n"
 
-    target = find_most_similar_index(user_search_embds, titles)
-    target_url = results['items'][target]['link']
+    response = f"""Here are the links to the talk you want to learn more: \n\n{urls}\n\n"""
+    response += f"""You can also search more [here](https://www.nvidia.com/gtc/session-catalog/#/)"""
 
-    response = f"Here is the link to the talk if you want to learn more: {target_url}"
     st.session_state.chat_messages.append({"role": "assistant", "content": response})

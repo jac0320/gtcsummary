@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils import stream_data
 
 
 def company_tab():
@@ -22,17 +21,6 @@ def company_tab():
         st.dataframe(df.sort_values('distance')[['name', 'description']], use_container_width=True, hide_index=True)
     else:
         st.dataframe(df[['name', 'description']], use_container_width=True, hide_index=True)
-    
-    st.write("---")
-    if query := st.chat_input("Tell me more about Unstructured ai company?", key='company_chat'):
-        st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY : {query}")
-        with st.chat_message("User", avatar="😀"):
-            st.markdown(query)
-        
-        answer = st.session_state.gemini_client.generate_content(query)
-        st.session_state.logger.info(f"BOT {st.session_state.session_id} : COMPANY : {answer.text}")
-        with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(answer.text))
 
 
 def company_rerank(user_search, k=5):

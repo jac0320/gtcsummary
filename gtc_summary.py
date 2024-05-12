@@ -18,10 +18,9 @@ from constants import *
 from function_calling import chat_completion_with_function_execution
 from constants import OPENAI_API_KEY
 
-from rag import keynote_rag
 from companies import company_tab
 from talks import talk_show, show_summarized_notes
-from view_agent import alpha_viewagent
+from view_agent import alpha_view_agent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
@@ -35,15 +34,12 @@ st.set_page_config(
 )
 
 
-def clean_agent_session():
-    st.session_state.agent_session = {"query": {}, "plan": {}, "response": {}}
-
-
 def reset_chat_messages():
     st.session_state.chat_messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "assistant", "content": "Hello! Ask anything. I will try to leverage all the tools the answer."},
     ]
+    st.session_state.exec_code = {}
 
 
 def main():
@@ -69,15 +65,6 @@ def main():
     if 'chat_messages' not in st.session_state:
         reset_chat_messages()
     
-    if 'agent_session' not in st.session_state:
-        clean_agent_session()
-
-    st.sidebar.button(
-        "Clean Agent Session", 
-        on_click=clean_agent_session,
-        use_container_width=True
-    )
-
     st.sidebar.button(
         "🧹 Clear Chat Session", 
         on_click=reset_chat_messages, 
@@ -132,14 +119,13 @@ def main():
         prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
     )
 
-    tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies, tab_beta = st.tabs(
+    tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(
         [
             "👋 Welcome!", 
-            "🏆 The Keynote", 
-            "📕 My Takeaways", 
-            "🎙️ Technical Talks", 
+            "🏆 Jensen's Keynote", 
+            "📕 My Notes", 
+            "🎙️ Talks", 
             "🏢 Companies", 
-            "🤖 ALPHA-ViewAgent"
         ]
     )
 
@@ -147,7 +133,6 @@ def main():
         intro()
 
     with tab_keynote:
-        st.subheader("The Keynote by Jensen Huang")
         st.video(data='https://www.youtube.com/watch?v=Y2F8yisiS6E')
         keynote_perplexity_summary()
         keynote_openai_summary()
@@ -164,15 +149,7 @@ def main():
         talk_show()
 
     with tab_companies:
-        st.subheader("The Companies")
         company_tab()
-
-    with tab_beta:
-        st.subheader("Beta-ViewAgent")
-        try:
-            alpha_viewagent()
-        except Exception as e:
-            st.error(f"Error: {e}")
 
     tools = [
         {
@@ -256,12 +233,12 @@ def main():
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "search_title": {
+                        "query": {
                             "type": "string",
                             "description": "Title string about a specific technical talk at GTC 2024",
                         }
                     },
-                    "required": ["search_title"],
+                    "required": ["query"],
                 },
             }
         },
@@ -286,16 +263,45 @@ def main():
                     "required": ["query"],
                 },
             }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "alpha_view_agent",
+                "description": "This function is used to generate code to fulfill a users request. The requests is not a typically information retrieval request but a more complex tasks that requires code generation. The function will generate a plan of steps to address the user question by coding in the streamlit interface.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "User requests for a code generation task",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
         }
     ]
     
     st.write('---')
+
+    if 'user' in [i['role'] for i in st.session_state.chat_messages]:
+        st.button(
+            "🧹 Clear Chat Session", 
+            on_click=reset_chat_messages, 
+            key="clear_chat_button",
+            use_container_width=True
+        )
+
     for message in st.session_state.chat_messages: # Display the prior chat messages
         if message["role"] == "system":
             continue
         with st.chat_message(message["role"]):
             st.write(message["content"])
-
+        if message["role"] == "assistant" and "Code execution successful." == message["content"]:
+            code_key = message.get("source")
+            exec(st.session_state.exec_code[code_key], globals())
+    
     if query := st.chat_input("Ask a question", key="main_chat"):
     
         response = chat_completion_with_function_execution(
