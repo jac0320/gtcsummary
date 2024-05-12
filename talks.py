@@ -29,7 +29,7 @@ def talk_show():
         st.session_state.logger.info(f"USER {st.session_state.session_id} : TALK_SEARCH : {user_search}")
         user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
-    df = pd.read_json('notebooks/pdf_full.json')
+    df = pd.read_json('notebooks/talks_full.json')
 
     if 'embds' not in df.columns:
         df['embds'] = df['Title'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
@@ -52,7 +52,7 @@ def talk_rerank(user_search, k=5):
     st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY_SEARCH : {user_search}")
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
-    df = pd.read_json('notebooks/pdf_full.json')
+    df = pd.read_json('notebooks/talks_full.json')
     if 'embds' not in df.columns:
         df['embds'] = df['Title'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
 
@@ -72,11 +72,15 @@ def talk_info_search(search_title):
     service = build("customsearch", "v1", developerKey=GTCSUMMARY_SEARCH_API_KEY)
     results = service.cse().list(q=search_title, cx=GTCSUMMARY_SEARCH_ENGINE_ID, num=3).execute()
     
-    urls = ""
-    for i in results['items']:
-        urls += f"* [{i['title']}]({i['link']}) \n"
+    if 'items' in results:
+        urls = ""
+        for i in results['items']:
+            urls += f"* [{i['title']}]({i['link']}) \n"
 
-    response = f"""Here are the links to the talk you want to learn more: \n\n{urls}\n\n"""
+        response = f"""Here are the links to the talk you want to learn more: \n\n{urls}\n\n"""
+    else:
+        response = f"""I couldn't find any relevant links for the talk you are looking for. \n\n"""
+
     response += f"""You can also search more [here](https://www.nvidia.com/gtc/session-catalog/#/)"""
 
     st.session_state.chat_messages.append({"role": "assistant", "content": response})
