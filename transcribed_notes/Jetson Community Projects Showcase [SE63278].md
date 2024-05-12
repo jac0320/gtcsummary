@@ -1,4 +1,5 @@
 ## Jetson Community Projects Showcase [SE63278] - GTC 2024 Summary
+https://developer.nvidia.com/embedded/community/jetson-projects
 
 ### Topic 1: Robot Perception and Navigation System Upgrade
 

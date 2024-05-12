@@ -1,4 +1,6 @@
 # Fireside Chat: Building Practical AI Agents that Reason and Code at Scale
+Bryan Catanzaro, Vice President, Applied Deep Learning Research, NVIDIA
+Kanjun Qiu, Chief Executive Officer and Co-Founder, Imbue
 
 ## Introduction
 - Warm welcome and excitement for discussing the future of AI agents.

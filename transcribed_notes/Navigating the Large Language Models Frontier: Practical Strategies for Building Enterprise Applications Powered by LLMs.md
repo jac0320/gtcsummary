@@ -1,5 +1,7 @@
 # Navigating the Large Language Models Frontier: Practical Strategies for Building Enterprise Applications Powered by LLMs
 
+Navigating the Large Language Models Frontier: Practical Strategies for Building Enterprise Applications Powered by LLMs
+
 ## Introduction
 - Welcome and housekeeping notes from Chinder Patel of NVIDIA.
 - Overview of session focus on building enterprise applications with large language models (LLMs).

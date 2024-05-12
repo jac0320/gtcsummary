@@ -5,6 +5,7 @@ from constants import OPENAI_API_KEY
 
 from rag import keynote_rag, personal_note_rag
 from companies import company_rerank, company_info_search
+from talks import talk_info_search, talk_rerank
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 GPT_MODEL = "gpt-3.5-turbo-0613"
@@ -47,9 +48,16 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
             query = args.get("query")
             k = args.get("k", 5)
             return company_rerank(query, k)
+        elif function_name == "talk_rerank":
+            query = args.get("query")
+            k = args.get("k", 5)
+            return talk_rerank(query, k)
         elif function_name == "company_info_search":
             query = args.get("query")
             return company_info_search(query)
+        elif function_name == "talk_info_search":
+            query = args.get("search_title")
+            return talk_info_search(query)
     else:
         # Do a regular response here with System Prompt
         st.info(f"Function not required, responding to user")

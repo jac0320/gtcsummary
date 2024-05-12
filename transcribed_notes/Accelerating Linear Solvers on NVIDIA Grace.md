@@ -1,4 +1,6 @@
 # Accelerating Linear Solver on NVIDIA Grace
+Felipe Portella, IT Consultant, Petrobras
+Joao Paulo Navarro, Senior Solutions Architect, NVIDIA
 
 ## Introduction
 - Appreciation for the audience and introductions by the host.

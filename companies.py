@@ -35,7 +35,6 @@ def company_tab():
             st.write_stream(stream_data(answer.text))
 
 
-
 def company_rerank(user_search, k=5):
 
     if user_search is None or user_search == "":

@@ -1,4 +1,5 @@
-# Mistral AI: Frontier AI in Your Hands - GTC 2024 Talk Summary
+# Mistral AI: Frontier AI in Your Hands
+Arthur Mensch, Chief Executive Officer, Mistral AI
 
 ## Introduction
 - **Background on Language Models**: Overview of the evolution of language models from 2019 to 2023, highlighting the transition from large models with extensive memory requirements to more efficient models deployable on laptops.

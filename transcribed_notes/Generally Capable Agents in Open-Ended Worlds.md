@@ -1,4 +1,5 @@
-# Generally Capable Agents in Open-Ended Worlds by Jim Fan
+# Generally Capable Agents in Open-Ended Worlds
+Jim Fan
 
 ## Introduction
 - Introduction to Jim Fan, a research scientist at NVIDIA focused on creating autonomous agents.

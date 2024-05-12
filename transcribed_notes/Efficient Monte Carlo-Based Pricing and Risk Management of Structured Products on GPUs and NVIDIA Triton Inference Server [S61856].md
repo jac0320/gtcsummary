@@ -1,5 +1,8 @@
 # Efficient Monte Carlo-Based Pricing and Risk Management of Structured Products on GPUs and NVIDIA Triton Inference Server [S61856] - GTC 2024
 
+Amit Varshney, Executive Director, Data Scientist Lead, JP Morgan Chase & Co.
+Leonard Eun, Vice President, Data Scientist Lead, JP Morgan Chase & Co.
+
 ## Introduction
 - Discussion on the diversity and complexity of language models.
 - Overview of GBT, BERT, and full architecture transformers like T5.

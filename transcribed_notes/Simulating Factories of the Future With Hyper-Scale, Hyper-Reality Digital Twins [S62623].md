@@ -1,4 +1,6 @@
 # Simulating Factories of the Future With Hyper-Scale, Hyper-Reality Digital Twins
+Greg Berger, Industry Solution Consultant, Rockwell Automation
+John Pritchard, Business Manager - Emulate3D, Rockwell Automation
 
 ### Introduction
 - Overview of the company's history and emphasis on domain expertise in industrial operations.
