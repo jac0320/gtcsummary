@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO)
 
 st.set_page_config(
     page_title="GTC 2024", 
-    layout="centered", 
+    layout="wide", 
     initial_sidebar_state="collapsed"
 )
 
