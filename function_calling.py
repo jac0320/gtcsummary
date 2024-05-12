@@ -29,6 +29,7 @@ def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MO
 
 def chat_completion_with_function_execution(messages, tools=[None], query=None):
     """This function makes a ChatCompletion API call with the option of adding functions"""
+    
     st.session_state.chat_messages.append({"role": "user", "content": query})
     response = chat_completion_request(messages, tools=tools)
     full_message = response.choices[0]
