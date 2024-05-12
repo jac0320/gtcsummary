@@ -81,6 +81,6 @@ def talk_info_search(search_title):
     else:
         response = f"""I couldn't find any relevant links for the talk you are looking for. \n\n"""
 
-    response += f"""You can also search more [here](https://www.nvidia.com/gtc/session-catalog/#/)"""
+    response += f"""You can also search more [here](https://www.nvidia.com/gtc/session-catalog/#/). All GTC talks are available on-demand when you sign up for developer account. \n\n"""
 
     st.session_state.chat_messages.append({"role": "assistant", "content": response})
