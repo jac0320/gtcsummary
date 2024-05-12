@@ -41,7 +41,7 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         st.session_state.chat_messages.append({"role": "assistant", "content": debug_message})
         return alpha_view_agent(query)
     
-    if full_message.finish_reason == "tool_calls" or "DEBUG" in query:
+    if full_message.finish_reason == "tool_calls":
 
         function_name = full_message.message.tool_calls[0].function.name
         args = full_message.message.tool_calls[0].function.arguments
@@ -49,7 +49,7 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         
         st.info(f"Function generation requested, calling function {function_name} with arguments={args}")
 
-        if function_name == "alpha_view_agent" or "AGENTDEBUG" in query:
+        if function_name == "alpha_view_agent":
             query = args.get("query")
             return alpha_view_agent(query)
         elif function_name == "keynote_rag":
@@ -70,7 +70,7 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
             query = args.get("query")
             return company_info_search(query)
         elif function_name == "talk_info_search":
-            query = args.get("search_title")
+            query = args.get("query")
             return talk_info_search(query)
         
     else:
