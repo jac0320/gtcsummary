@@ -1,4 +1,6 @@
 # What's Next In Generative AI with OpenAI COO
+Brad Lightcap, Chief Operating Officer, OpenAI
+Manuvir Das, Vice President of Enterprise Computing, NVIDIA
 
 ## Introduction
 - **Opening Remarks**: Wallace Mills discusses the session's significance and the anticipation around the conversation on generative AI.

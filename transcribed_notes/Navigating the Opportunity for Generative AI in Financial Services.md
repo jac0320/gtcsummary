@@ -1,5 +1,10 @@
 # Navigating the Opportunity for Generative AI in Financial Services: GTC 2024 Summary
 
+Belinda Neal, Chief Operating Officer for Core Engineering and Head of Engineering Partnerships, Goldman Sachs
+Benika Hall, Senior Solutions Architect, NVIDIA
+Prem Natarajan, Executive Vice President, Chief Scientist and Head of Enterprise AI, Capital One
+Rohit Chauhan, Executive Vice President, Artificial Intelligence, Mastercard
+
 ## Introduction
 - Brief introductions of the panel members.
 - Panel consists of experts from Goldman Sachs, Capital One, and MasterCard.

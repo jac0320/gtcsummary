@@ -1,4 +1,5 @@
 # How To Write A CUDA Program: The Ninja Edition [S62401] - GTC 2024
+Stephen Jones (SW), CUDA Architect, NVIDIA
 
 ## Introduction
 - Importance of understanding CUDA for parallel computing

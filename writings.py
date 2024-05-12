@@ -4,48 +4,41 @@ import streamlit as st
 def intro():
     st.markdown(
         """
-            👋 Hi there! I am Site Wang. This is a summary of my GTC-2024 conference experience.
-
+            👋 Hi there! I am Site Wang. This is a summary of my GTC-2024 conference experience. 
+            
             NVIDIA GTC 2024 was NVIDIA's flagship annual conference focused on the latest advancements 
-            in AI and other cutting-edge technologies. The 4-day conference took place from March 18th - 21st, 
-            2024 in San Jose, California, marking the first in-person GTC since 2019.
+            in AI and other cutting-edge technologies.
 
-            I figured what would be a better way to summarize the conference than using AI itself. Hence, leveraging some rudimentary
-            learning of the AI technologies, I built this app to summarize what I learned/read.
+            I figured the best to summarize the AI conference is to use AI. Hence, leveraging some rudimentary
+            learning of the AI technologies, I built this experience to let people interact with my experience using generative AI. **You can directly ask quesitons through the chat interface below. Or visit each tab to explore more information in details.**
         """
         )
 
     st.write('---')
-
-    st.subheader("🏆 The Keynote")
-    st.markdown("""        
-        AI summarized transcripts of the Keynote + an AMA Bot
-        * Summarized Transcript = Audio Recordings + OpenAI's Whisper API + OpenAI/Perpexity AI
-        * AMA Bot = RAG using LlamaIndex + GPT-3.5-Turbo
-    """)
-
-    st.subheader("📕 My Takeaways")        
-    st.markdown("""Explore my personal notes on the conference. Nothing fancy here - [almost] all written by me.""")
-
-    st.subheader("🎙️ Technical Talks")
-    st.markdown("""
-        Explore & search the technical talks transcript summaries + PDFs.
-        * Summarized Transcript = Audio Recordings + OpenAI's Whisper API + OpenAI GPT-4
-        * Search Rank = OpenAI's embedding
-        * PDFs = Scrapped PDFs + GPT-3.5-Turbo to Extract Title
-    """)
-
-    st.subheader("🏢 Companies")
-    st.markdown("""
-        Learn about the companies that participated in the conference.
-        * Scrapped Data + GPT-3.5-Turbo to Extract Information
-    """)
-
-    st.subheader("🤖 ALPHA-ViewAgent")
-    st.markdown("""
-        An ALPHA feature to that use code generator to anything your question (it works when it works).
-        * Hack Blocking + Workflow Guider + Code Planner = GPT-3.5-Turbo + Rules
-        * Code Generation + Critic = Gemini-1.5Pro + GPT-4
+    
+    st.markdown(f"""        
+        #### 🏆 **Jensen's Keynote**
+        * AI summarized transcripts of tshe keynote delivered by Jensen Huang.
+        * You can directly ask "What was so exciting about the Jensen's keynote?"
+        
+        #### 📕 **My Notes**
+        * Explore my personal notes about the conference. Nothing fancy here - [almost] all written by me. 
+        * You can directly ask "What are some learnings from Site?"
+        
+        
+        #### 🎙️ **Talks**
+        * Some AI Summarized transcripts of the technical talks I attended + Scraped talks of my interest.
+        * You can ask "Show me some talks about RAG", given the search results, you can further ask "What is the talk Robotics in the age of Generative AI about?" 
+        
+        #### 🏢 **Companies**
+        * Learn about the companies that participated in the conference.
+        * You can ask "What are some companies that handles unstructure data?", given the search results, you can further ask "What does this Unstructured do?"    
+        
+        #### 🤖 **(Alpha)ViewAgent**
+        * An experimental agent that generate code to answer your questions about the conference. It works when it works.
+        * You can ask "Generate and execute the code that randomly show two notes written by Site side by side." or "Build an run the code that shows one company's name in hash code."
+                
+        Most importantly, don't be limited by the instructions above. Feel free to ask anything about the conference.
     """)
 
 

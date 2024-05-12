@@ -1,4 +1,5 @@
 ### Model Development for Bias, Factuality, and Attribution - GTC 2024 Summary Outline
+Vijay Karunamurthy, Field Chief Technology Officer, Scale AI
 
 #### Introduction
 - Emphasis on understanding model development to evaluate weaknesses, biases, and factual accuracy.

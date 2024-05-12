@@ -1,6 +1,7 @@
 import os
 import re
 import time
+import numpy as np
 
 
 def collect_md_files(folder_path):
@@ -48,3 +49,11 @@ def postprocess_strings(response, as_type=str):
     Post-processes the response string to remove unwanted characters.
     """
     return response.strip()
+
+
+def find_most_similar_index(a, embedding_list):
+    a_normalized = a / np.linalg.norm(a)
+    embedding_list_normalized = np.array(embedding_list) / np.linalg.norm(embedding_list, axis=1)[:, np.newaxis]
+    similarities = np.dot(embedding_list_normalized, a_normalized)
+    most_similar_index = np.argmax(similarities)
+    return most_similar_index

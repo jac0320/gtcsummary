@@ -15,6 +15,7 @@ from templates import (
     WHIP_RESPONSE_TEMPLATE,
     GENERAL_AGENT_TEMPLATE
 )
+
 from utils import extract_code_segments, stream_data
 
 
@@ -69,11 +70,15 @@ def generate_code_plan(query: str, llm="openai", model='gpt-3.5-turbo'):
         raise ValueError("Invalid LLM model specified. Please choose between 'openai' or 'gemini'.")
 
     try:
+        plan_msg = "Here is a plan of how to code for your ask:  \n\n" + plan
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data("Here is a plan of how to code for your ask:  \n\n" + plan))
+            st.write_stream(stream_data(plan_msg))
+        st.session_state.chat_messages.append({"role": "assistant", "content": plan_msg})
     except Exception as e:
+        err_msg = "Error in executing plan dictionary:  \n\n" + str(e)
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data("Error in executing plan dictionary:  \n\n" + str(e)))
+            st.write_stream(stream_data(err_msg))
+        st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
 
     return plan
 
@@ -81,8 +86,10 @@ def generate_code_plan(query: str, llm="openai", model='gpt-3.5-turbo'):
 def hack_check(code: str):
     
     if "API_KEY" in code:
+        hack_msg = "Potential hacking attempt detected. Don't do it."
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data("Potential hacking attempt detected. Don't do it."))
+            st.write_stream(stream_data(hack_msg))
+        st.session_state.chat_messages.append({"role": "assistant", "content": hack_msg})
         raise PotentialHackingAttempt("Potential hacking attempt detected. Please refrain from using system level commands.")
     
 
@@ -101,22 +108,30 @@ def generate_and_execuate_code(query: str, code_plan: str):
 
     with st.chat_message("agent", avatar="🤖"):
         st.write_stream(stream_data("Here is the generated code:  \n\n" + code_blob.text))
+    st.session_state.chat_messages.append({"role": "assistant", "content": code_blob.text})
     
     code = extract_code_segments(code_blob.text)
     if code is None:
+        err_msg = "No code snippet was extracted in generation. Please try again."
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data("No code snippet was extracted in generation. Please try again."))
-        return ""
+            st.write_stream(stream_data(err_msg))
+        st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
+        return
     
     hack_check(code)
 
     try:
         exec(code, globals())
+        return code
+    
     except Exception as e:
         code_error = str(e)
         retry_cnt = 1
+
+        retry_msg = f"Oops! Error: {e} when executing generated code. Let me try again..."
         with st.chat_message("agent", avatar="🤖"):
-                st.markdown(f"Oops! Error: {e} when executing generated code. Let me try again...")
+            st.markdown(retry_msg)
+        st.session_state.chat_messages.append({"role": "assistant", "content": retry_msg})
 
         while retry_cnt <= st.session_state.code_generation_retry:
             code = correct_code(query, code_plan, code, code_error)
@@ -126,14 +141,14 @@ def generate_and_execuate_code(query: str, code_plan: str):
                 return code
             except Exception as e:
                 code_error = str(e)
+                retry_msg = f"Oops! Error: {e} when executing re-generated code. Let me try again..."
                 with st.chat_message("agent", avatar="🤖"):
-                    st.markdown(f"Oh no... Error: {e} when executing re-generated code. Let me try again...")
+                    st.markdown(retry_msg)
+                st.session_state.chat_messages.append({"role": "assistant", "content": retry_msg})
 
             retry_cnt += 1
         
         show_give_up_message(query)
-
-    return code
         
         
 def correct_code(query: str, code_plan: str, error_code_blob: str, error: str, model="gpt-4-turbo-2024-04-09"):
@@ -153,15 +168,17 @@ def correct_code(query: str, code_plan: str, error_code_blob: str, error: str, m
     )
 
     retry_code_blob = retry_response.choices[0].message.content
-    
     with st.chat_message("agent", avatar="🤖"):
         st.write_stream(stream_data("Correct Code Attempt: \n\n" + retry_code_blob))
+    st.session_state.chat_messages.append({"role": "assistant", "content": retry_code_blob})
 
     try:
         retry_code_blob = extract_code_segments(retry_code_blob)
     except Exception as e:
+        err_msg = f"No luck here. Error in extracting code segments: {e}"
         with st.chat_message("agent", avatar="🤖"):
-            st.write_stream(stream_data(f"No luck here. Error in extracting code segments: {e}"))
+            st.write_stream(stream_data(err_msg))
+        st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
         return
 
     return retry_code_blob
@@ -177,8 +194,10 @@ def show_give_up_message(query):
         temperature=0.01,
     )
 
+    give_up_msg = give_up_response.choices[0].message.content
     with st.chat_message("agent", avatar="🤖"):
-        st.write_stream(stream_data(give_up_response.choices[0].message.content))
+        st.write_stream(stream_data(give_up_msg))
+    st.session_state.chat_messages.append({"role": "assistant", "content": give_up_msg})
 
 
 def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
@@ -194,75 +213,58 @@ def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
         temperature=0.01,
     )
 
+    msg = response.choices[0].message.content
     with st.chat_message("agent", avatar="🤖"):
-        st.write_stream(stream_data(response.choices[0].message.content))
+        st.write_stream(stream_data(msg))
+    st.session_state.chat_messages.append({"role": "assistant", "content": msg})
 
-    return response.choices[0].message.content
+    return msg
 
 
-def alpha_viewagent():
+def alpha_view_agent(query=None):
 
-    st.warning("This is a beta feature. We wish to build an code-generation agent to go beyond rigid templates!")
+    st.session_state.logger.info(f"USER {st.session_state.session_id} : AGENT : {query}")
 
-    if query := st.chat_input("Ask Anything! Randomly pick a note written by Site and show it to me.", key='beta_chat'):
-        st.session_state.logger.info(f"USER {st.session_state.session_id} : AGENT : {query}")
-        if query in st.session_state.agent_session["query"]:
+    if query is None:
+        if query := st.chat_input("Try ask me anything", key="query"):
+            run_agent(query)
+    else:
+        run_agent(query)
 
-            with st.chat_message("User", avatar="😀"):
-                st.markdown(query)
 
-            if st.session_state.agent_session["query"][query] == "code":
+def run_agent(query):
 
-                with st.chat_message("agent", avatar="🤖"):
-                    plan = st.session_state.agent_session["plan"].get(query)
-                    if plan is not None:
-                        st.write_stream(stream_data(plan))
-                    
-                    response = st.session_state.agent_session["response"].get(query)
-                    if response is not None:
-                        st.code(response)
-                        exec(response, globals())
-            
-            elif st.session_state.agent_session["query"][query] == "answer":
-                with st.chat_message("agent", avatar="🤖"):
-                    st.write_stream(stream_data(st.session_state.agent_session["response"].get(query)))
+    # BLOCK 1: Classify if the query is relevant
+    relevance_prompt = Template(QUERY_RELEVANCE_TEMPLATE).render(
+        context=SYSTEM_PROMPT,
+        query=query
+    )
 
-            return
-        
-        else:
-            with st.chat_message("User", avatar="😀"):
-                st.markdown(query)
-            st.session_state.agent_session["query"][query] = True
-
-        # BLOCK 1: Classify if the query is relevant
-        relevance_prompt = Template(QUERY_RELEVANCE_TEMPLATE).render(
-            context=SYSTEM_PROMPT,
-            query=query
-        )
-
-        relevant = boolean_classification(relevance_prompt)
-        if not relevant:
-            with st.chat_message("agent", avatar="🤖"):
-                st.write_stream(stream_data("The request is not relevant for this project. AMA sometimes don't mean AMA."))
-            return
-        
-        codegen_prompt = Template(CODEGEN_CLASSIFICATION_TEMPLATE).render(
-            context=SYSTEM_PROMPT,
-            query=query
-        )
-        require_codegen = boolean_classification(codegen_prompt)
-        
-        if require_codegen:
-            with st.chat_message("agent", avatar="🤖"):
-                st.write_stream(stream_data("Let me try to generate some code to fulfill this ask. Hold on..."))    
-            plan = generate_code_plan(query, llm=st.session_state.code_planer)
-            code = generate_and_execuate_code(query, plan)
-            st.session_state.agent_session["query"][query] = "code"
-            st.session_state.agent_session["plan"][query] = plan
-            st.session_state.agent_session["response"][query] = code
-        else:
-            answer = generate_generic_answer(query)
-            st.session_state.agent_session["query"][query] = "answer"
-            st.session_state.agent_session["response"][query] = answer
+    relevant = boolean_classification(relevance_prompt)
+    if not relevant:
+        with st.chat_message("agent", avatar="🤖"):
+            reject_msg = "The request is not relevant for this project. AMA sometimes don't mean AMA."
+            st.write_stream(stream_data(reject_msg))
+            st.session_state.chat_messages.append({"role": "assistant", "content": reject_msg})
+        return
+    
+    codegen_prompt = Template(CODEGEN_CLASSIFICATION_TEMPLATE).render(
+        context=SYSTEM_PROMPT,
+        query=query
+    )
+    require_codegen = boolean_classification(codegen_prompt)
+    
+    if require_codegen:
+        wait_msg = "Let me try to generate some code to fulfill this ask. Hold on..."
+        with st.chat_message("agent", avatar="🤖"):
+            st.write_stream(stream_data(wait_msg))    
+        st.session_state.chat_messages.append({"role": "assistant", "content": wait_msg})
+        plan = generate_code_plan(query, llm=st.session_state.code_planer)
+        code = generate_and_execuate_code(query, plan)
+        if code is not None:
+            st.session_state.chat_messages.append({"role": "assistant", "content": "Code execution successful.", "source": query})
+            st.session_state.exec_code[query] = code
+    else:
+        generate_generic_answer(query)
 
         

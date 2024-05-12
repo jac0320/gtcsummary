@@ -1,5 +1,11 @@
 # Leveling Up Game Worlds: Smart NPCs Driving Dynamic Narratives
 
+Kylan Gibbs, CEO & Co-Founder, InWorld.AI
+Nyla Worker, Product Lead, Convai Technologies
+Seth Schneider, Senior Product Manager, NVIDIA
+Yasmina Benkhoui, Strategic Alliances and Partnerships Manager, NVIDIA
+
+
 ## Introduction
 - The session opens with speakers sharing their backgrounds in AI and gaming, highlighting the crossover between AI in robotics and AI in gaming, particularly in controlling NPCs in dynamic game environments.
 
