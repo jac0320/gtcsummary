@@ -82,7 +82,7 @@ def main():
         "Code Generation Retry", 
         min_value=0, 
         max_value=3, 
-        value=1, 
+        value=2, 
         key="code_genneration_retry_limit"
     )
 
