@@ -285,14 +285,6 @@ def main():
     
     st.write('---')
 
-    if 'user' in [i['role'] for i in st.session_state.chat_messages]:
-        st.button(
-            "🧹 Clear Chat Session", 
-            on_click=reset_chat_messages, 
-            key="clear_chat_button",
-            use_container_width=True
-        )
-
     for message in st.session_state.chat_messages: # Display the prior chat messages
         if message["role"] == "system":
             continue
@@ -301,6 +293,14 @@ def main():
         if message["role"] == "assistant" and "Code execution successful." == message["content"]:
             code_key = message.get("source")
             exec(st.session_state.exec_code[code_key], globals())
+    
+    if 'user' in [i['role'] for i in st.session_state.chat_messages]:
+        st.button(
+            "🧹 Clear Chat Session", 
+            on_click=reset_chat_messages, 
+            key="clear_chat_button",
+            use_container_width=True
+        )
     
     if query := st.chat_input("Ask a question", key="main_chat"):
     
