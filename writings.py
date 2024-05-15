@@ -41,36 +41,11 @@ def keynote_perplexity_summary():
 
     with st.expander("Perplexity's Summary of the Event News Resources 🗞️ [by AI 🤖s]"):
         st.markdown("""
-            Jensen Huang's GTC 2024 keynote highlighted several major announcements and developments from NVIDIA:
-
-            NVIDIA's Blackwell Architecture: Huang announced the Blackwell architecture, which he said will accelerate AI products in late 2024. Blackwell is designed to run real-time generative AI on trillion-parameter large language models (LLMs) at 25x less cost and energy compared to current solutions[4].
-
-            NVIDIA GB200 Grace Blackwell Superchip: Alongside the Blackwell GPUs, NVIDIA unveiled the GB200 Grace Blackwell Superchip, which connects multiple Blackwell GPUs[4].
-
-            Partnerships and Integrations: Huang detailed major partnerships and integrations with cloud providers and enterprise companies:
-
-            - NVIDIA's full-stack AI platform will be integrated into Oracle's Enterprise AI[4].
-            - AWS will provide access to NVIDIA Grace Blackwell GPU-based Amazon EC2 instances and NVIDIA DGX Cloud with Blackwell[4].
-            - NVIDIA will accelerate Google Cloud with the Grace Blackwell AI computing platform and NVIDIA DGX Cloud service[4].
-            - Microsoft will adopt the NVIDIA Grace Blackwell Superchip to accelerate Azure[4].
-            - Dell will use NVIDIA's AI infrastructure and software, and will eventually incorporate the Grace Blackwell Superchip into its PowerEdge servers[4].
-            - SAP will add NVIDIA's retrieval-augmented generation capabilities into its Joule copilot and use NVIDIA NIMs and other joint services[4].
-
-            Other Announcements:
-            - NVIDIA announced cuPQC, a library to accelerate post-quantum cryptography[4].
-            - NVIDIA unveiled its X800 series of network switches to accelerate AI infrastructure[4].
-
-            The keynote was widely praised, with Bloomberg calling NVIDIA the center stage of the "AI Era"[2] and Forbes describing it as the "Woodstock of AI"[2]. Overall, Huang's keynote showcased NVIDIA's leadership in AI and its deep partnerships across the technology industry[1][2][3][4][5].
-        """)
-
-
-        st.markdown("""
-            Citations:
-            1. https://www.nvidia.com/gtc/keynote/
-            2. https://www.nvidia.com/gtc/
-            3. https://www.investopedia.com/what-to-expect-from-nvidia-gpu-technology-conference-2024-8609090
-            4. https://www.techrepublic.com/article/nvidia-gtc-2024-keynote/
-            5. https://www.technewsworld.com/story/gtc-2024-the-brilliant-insanity-of-nvidias-ceo-and-which-ai-vendors-stood-out-179082.html              
+            GTC 2024 was NVIDIA's premier AI conference, showcasing the latest breakthroughs in hardware, software, and services for accelerating AI development. The event kicked off with a keynote by NVIDIA CEO Jensen Huang, where he unveiled the powerful new Blackwell GPUs, including the flagship GB200 chip designed for raw compute gains in AI. 
+            Huang emphasized that we have entered the "Era of AI," with accelerated computing being crucial for driving simulations and digital twins across industries. He highlighted NVIDIA's Omniverse platform as the "soul" of the company, enabling collaboration and integration of generative AI for interactive visualization and physics-based rendering. 
+            Key announcements included the integration of NVIDIA AI and Omniverse technologies into Siemens' TeamCenter X software for unified engineering data visualization and AI-generated 3D objects/backgrounds. Partnerships with companies like Hyundai for sustainable shipbuilding were also showcased, leveraging Omniverse for massive engineering datasets. 
+            NVIDIA positioned itself as a full-stack AI development engine, with offerings spanning hardware like the Blackwell GPUs, software like the Omniverse platform, and services for data management and computing tailored to AI requirements. 
+            The conference highlighted NVIDIA's central role in powering the AI revolution across various industries.
         """)
 
 
@@ -79,74 +54,23 @@ def keynote_openai_summary():
     with st.expander("OpenAI's Summary of the Keynote Transcript 📝 [by AI 🤖]"):
 
         st.markdown("""
-            The GTC 2024 keynote by Nvidia's CEO Jensen Huang covered a wide range of 
-            topics showcasing Nvidia's vision and advancements in AI and computing. Here's a 
-            detailed summary of the key points discussed:
-        """)
+        GTC 2024, hosted by NVIDIA, was a pivotal event that showcased groundbreaking advancements in AI and computing. The conference featured a mix of technical presentations, panels, and discussions that emphasized the transformative potential of AI across various sectors.
 
-        st.markdown("##### AI's Impact Across Various Domains")
-        st.write("""
-            Nvidia's AI is portrayed as transformative across multiple sectors, including astronomy, 
-            healthcare, energy, robotics, and more. The keynote emphasized AI's role in improving our 
-                understanding of the universe, assisting the disabled, revolutionizing energy storage, 
-                and enhancing patient care, among other benefits.
-        """)
+        **Key Highlights and Innovations:**
 
-        st.markdown("##### Conference Overview")
-        st.write("""
-            The GTC event was highlighted as a convergence of experts from diverse scientific fields, 
-            aiming to leverage AI for innovative applications such as next-gen 6G technologies and 
-            robotic cars. The conference also showcased the involvement of major companies from various 
-            industries, emphasizing the broad impact of accelerated computing.
-        """)
+        1. **Blackwell Architecture**: NVIDIA introduced its new Blackwell architecture, which is designed for the generative AI era. This architecture underpins NVIDIA's latest GPUs and is set to boost AI performance significantly, especially for tasks involving massive AI models【7†source】【10†source】.
 
-        st.markdown("##### Nvidia's Journey and Achievements")
-        st.write("""
-            The keynote touched upon significant milestones in Nvidia's history, from the introduction of 
-                CUDA in 2006 to the revolutionary advancements brought about by AlexNet in 2012, the development 
-                of the DGX-1 AI supercomputer in 2016, and the emergence of generative AI in 2023.
-        """)
+        2. **Generative AI and Software Development**: NVIDIA's CEO Jensen Huang discussed the shift in software development towards using generative AI. Instead of traditional coding, companies are expected to assemble AI models and manage them through examples and feedback, a process facilitated by NVIDIA's NIMs (NVIDIA Inference Microservices)【7†source】【8†source】.
 
-        st.markdown("##### The Evolution and Future of AI and Computing")
-        st.write("""
-            Huang discussed the shift towards generative AI, where computers are used to create new software, 
-                offering a novel approach to software development. This section also explored the concept of
-                "AI factories" that produce AI models and the potential transformations in various industries 
-                due to fundamental changes in computing.
-        """)
+        3. **Sustainability and Efficiency**: Despite the high power consumption of GPUs, Huang highlighted the efficiency improvements AI can bring, such as more effective battery charging and grid management. These advancements present a net positive impact on energy use and sustainability【8†source】.
 
-        st.markdown("##### Partnerships and Collaborations")
-        st.write("""
-            Nvidia announced collaborations with significant industry players to accelerate their ecosystems 
-                and connect them to Nvidia's Omniverse for creating digital twins. Partners include Ansys, 
-                Synopsis, TSMC, and Cadence, highlight Nvidia's influence across different sectors.
-        """)
+        4. **Applications in Diverse Fields**: Panels and discussions at the conference explored AI's role in various domains, from automotive and healthcare to digital media and robotics. For example, the use of AI in drug discovery and patient care was discussed as transforming healthcare delivery【6†source】.
 
-        st.markdown("##### Advancements in Large Language Models and AI Supercomputing")
-        st.write("""
-            The keynote covered the exponential growth of AI models, requiring more substantial computing capabilities. 
-                Nvidia introduced a new GPU platform named "Blackwell," designed to cater to the demands of generative 
-                AI and large language models.
-        """)
-        
-        st.markdown("##### Nvidia's Vision for AI-Driven Industries")
-        st.write("""
-            The discussion extended to the transformation of various industries through AI, including weather forecasting 
-                with Nvidia's CORDI model, healthcare innovations with Nvidia's BioNeMo, and the development of AI co-pilots 
-                for enhancing productivity in chip design and other domains.
-        """)
+        5. **Networking and Supercomputing Capabilities**: The event showcased enhancements in networking and supercomputing, such as the integration with Quantum-X800 InfiniBand and Spectrum-X800 Ethernet platforms, supporting speeds up to 800Gb/s, crucial for handling extensive AI workloads【10†source】.
 
-        st.markdown("##### The Future of Robotics and Digital Twins")
-        st.write("""
-            Huang explored the next wave of robotics powered by AI, requiring a synergy of multiple computing systems
-                for training, simulating, and operating robots. Nvidia's Omniverse was presented as a crucial platform 
-                for creating sophisticated digital twins for various applications, including industrial and warehouse operations. 
-        """)
-        
-        st.markdown("##### Collaborations with Industry Giants")
-        st.write("""
-            The keynote concluded with announcements of strategic partnerships with companies like Siemens, aiming to integrate Nvidia's 
-                AI and Omniverse technologies into their platforms, thus enabling more efficient and collaborative workflows across industries.
+        6. **Project Groot and Robotics**: Project Groot was unveiled, marking NVIDIA's venture into humanoid robotics aimed at creating more adaptable and interactive AI systems. This initiative aligns with NVIDIA's broader vision of integrating AI with real-world applications【10†source】.
+
+        The conference not only highlighted technological advances but also emphasized NVIDIA's central role in the AI industry's future, with significant endorsements from major tech leaders and widespread adoption of the Blackwell platform【7†source】【10†source】. Overall, GTC 2024 set the stage for the next leaps in AI technology, promising profound impacts across various industries.
         """)
 
 
