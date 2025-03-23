@@ -28,7 +28,7 @@ from llama_index.llms.ollama import Ollama
 logging.basicConfig(level=logging.INFO)
 
 st.set_page_config(
-    page_title="GTC 2024", 
+    page_title="GTC 2025", 
     layout="wide", 
     initial_sidebar_state="collapsed"
 )
@@ -44,7 +44,7 @@ def reset_chat_messages():
 
 def main():
 
-    st.title("GTC 2024 : Learning Notes 🤖📚")
+    st.title("GTC 2025 : Learning Notes 🤖📚")
     
     if 'session_id' not in st.session_state:
         session_id = uuid.uuid4().hex
@@ -95,7 +95,7 @@ def main():
 
     if st.session_state.llm_name == "OpenAI":
         st.session_state.llm = llamaindex_OpenAI(
-            model="gpt-3.5-turbo", 
+            model="gpt-4o", 
             temperature=0.5, 
             system_prompt=SYSTEM_PROMPT
         )
@@ -109,7 +109,7 @@ def main():
         "keynote", 
         KEYNOTE_PERSIST_DIR, 
         prefix="keynote", 
-        prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2024. You can also provide information."
+        prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2025. You can also provide information."
     )
 
     initialize_rag_chat_engine(
@@ -123,7 +123,7 @@ def main():
         [
             "👋 Welcome!", 
             "🏆 Jensen's Keynote", 
-            "📕 My Notes", 
+            "📕 My Blogs", 
             "🎙️ Talks", 
             "🏢 Companies", 
         ]
@@ -133,7 +133,14 @@ def main():
         intro()
 
     with tab_keynote:
-        st.video(data='https://www.youtube.com/watch?v=Y2F8yisiS6E')
+
+        st.subheader("GTC 2025")
+        st.video(data="https://www.youtube.com/watch?v=_waPvOwL9Z8")
+        keynote_2025_openai_summary()
+
+        st.write('---')
+        st.subheader("GTC 2024")
+        st.video(data="https://www.youtube.com/watch?v=Y2F8yisiS6E")
         keynote_perplexity_summary()
         keynote_openai_summary()
 
@@ -156,7 +163,7 @@ def main():
             "type": "function",
             "function": {
                 "name": "keynote_rag",
-                "description": "Answer question about Jensen Huang's Keynote presentation at GTC 2024. The questions/query only applies to the keynote information.",
+                "description": "Answer question about Jensen Huang's Keynote presentation at GTC 2025. The questions/query only applies to the keynote information.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -173,7 +180,7 @@ def main():
             "type": "function",
             "function": {
                 "name": "personal_note_rag",
-                "description": "Answer question about personal notes written by Site Wang based on his experience at GTC 2024. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
+                "description": "Answer question about personal notes written by Site Wang based on his experience at GTC 2025. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -190,7 +197,7 @@ def main():
             "type": "function",
             "function": {
                 "name": "company_rerank",
-                "description": "Rank sponsor companies at GTC 2024 based on the user query relevance to the company description.",
+                "description": "Rank sponsor companies at GTC 2025 based on the user query relevance to the company description.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -212,13 +219,13 @@ def main():
             "type": "function",
             "function": {
                 "name": "company_info_search",
-                "description": "Answer question about a specific sponsor company at GTC 2024. It is only used when a sepcific company name is mentioned/asked by the user.",
+                "description": "Answer question about a specific sponsor company at GTC 2025. It is only used when a sepcific company name is mentioned/asked by the user.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Question string about a specific sponsor company at GTC 2024",
+                            "description": "Question string about a specific sponsor company at GTC 2025",
                         }
                     },
                     "required": ["query"],
@@ -235,7 +242,7 @@ def main():
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Title string about a specific technical talk at GTC 2024",
+                            "description": "Title string about a specific technical talk at GTC 2025",
                         }
                     },
                     "required": ["query"],
@@ -246,13 +253,13 @@ def main():
             "type": "function",
             "function": {
                 "name": "talk_rerank",
-                "description": "Rank technical talks at GTC 2024 based on the user query relevance to talks' title.",
+                "description": "Rank technical talks at GTC 2025 based on the user query relevance to talks' title.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Question string about a general direction of research topics to be used for searching for relevant technical talks at GTC 2024",
+                            "description": "Question string about a general direction of research topics to be used for searching for relevant technical talks at GTC 2025",
                         },
                         "k": {
                             "type": "integer",

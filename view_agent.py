@@ -19,7 +19,7 @@ from templates import (
 from utils import extract_code_segments, stream_data
 
 
-def boolean_classification(prompt, model='gpt-3.5-turbo', show_output=False, show_prefix=""):
+def boolean_classification(prompt, model='gpt-4o', show_output=False, show_prefix=""):
     """
     Classify the query to determine if it requires code generation at all.
     """
@@ -45,7 +45,7 @@ def boolean_classification(prompt, model='gpt-3.5-turbo', show_output=False, sho
         return False
 
 
-def generate_code_plan(query: str, llm="openai", model='gpt-3.5-turbo'):
+def generate_code_plan(query: str, llm="openai", model='gpt-4o'):
 
     prompt = Template(PLAN_GENERATION_TEMPLATE).render(
             context=SYSTEM_PROMPT, 
@@ -151,7 +151,7 @@ def generate_and_execuate_code(query: str, code_plan: str):
         show_give_up_message(query)
         
         
-def correct_code(query: str, code_plan: str, error_code_blob: str, error: str, model="gpt-4-turbo-2024-04-09"):
+def correct_code(query: str, code_plan: str, error_code_blob: str, error: str, model="gpt-4o"):
 
     prompt = Template(CODE_CORRECTION_TEMPLATE).render(
             context=SYSTEM_PROMPT,
@@ -189,7 +189,7 @@ def show_give_up_message(query):
     prompt = Template(WHIP_RESPONSE_TEMPLATE).render(query=query)
 
     give_up_response = st.session_state.openai_client.chat.completions.create(
-        model='gpt-3.5-turbo',
+        model='gpt-4o',
         messages=[{"role": "user", "content": prompt}],
         temperature=0.01,
     )
@@ -200,7 +200,7 @@ def show_give_up_message(query):
     st.session_state.chat_messages.append({"role": "assistant", "content": give_up_msg})
 
 
-def generate_generic_answer(query: str, model='gpt-3.5-turbo'):
+def generate_generic_answer(query: str, model='gpt-4o'):
 
     prompt = Template(GENERAL_AGENT_TEMPLATE).render(
         context=SYSTEM_PROMPT,
