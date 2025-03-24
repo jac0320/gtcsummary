@@ -149,10 +149,8 @@ def main():
         notes_pictures()
 
     with tab_talks:
-        st.info("Select a transcribed talk to view summaried notes")
         show_summarized_notes()
         st.write('---')
-        st.info("Search for Collected Technical Talks and Read/Downlaod PDFs")
         talk_show()
 
     with tab_companies:
