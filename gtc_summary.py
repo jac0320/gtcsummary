@@ -20,6 +20,7 @@ from constants import OPENAI_API_KEY
 
 from companies import company_tab
 from talks import talk_show, show_summarized_notes
+from tools import TOOLS
 from view_agent import alpha_view_agent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -95,7 +96,7 @@ def main():
 
     if st.session_state.llm_name == "OpenAI":
         st.session_state.llm = llamaindex_OpenAI(
-            model="gpt-4o", 
+            model="gpt-4", 
             temperature=0.5, 
             system_prompt=SYSTEM_PROMPT
         )
@@ -105,19 +106,27 @@ def main():
             request_timeout=30.0
         )
 
-    initialize_rag_chat_engine(
-        "keynote", 
-        KEYNOTE_PERSIST_DIR, 
-        prefix="keynote", 
-        prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2025. You can also provide information."
-    )
+    with st.spinner("Setting up RAG"):
+        initialize_rag_chat_engine(
+            "keynote", 
+            KEYNOTE_PERSIST_DIR, 
+            prefix="keynote", 
+            prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2025 and 2024. You can also provide information."
+        )
 
-    initialize_rag_chat_engine(
-        "personal_notes", 
-        PERSONAL_NOTE_PERSIST_DIR,
-        prefix="personal_notes",
-        prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
-    )
+        initialize_rag_chat_engine(
+            "personal_notes", 
+            PERSONAL_NOTE_PERSIST_DIR,
+            prefix="personal_notes",
+            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
+        )
+
+        initialize_rag_chat_engine(
+            "transcribed_notes", 
+            NOTES_PERSIST_DIR,
+            prefix="transcribed_notes",
+            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
+        )
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(
         [
@@ -141,8 +150,7 @@ def main():
         st.write('---')
         st.subheader("GTC 2024")
         st.video(data="https://www.youtube.com/watch?v=Y2F8yisiS6E")
-        keynote_perplexity_summary()
-        keynote_openai_summary()
+        keynote_2024_openai_summary()
 
     with tab_ama:
         notes_summary()
@@ -155,138 +163,6 @@ def main():
 
     with tab_companies:
         company_tab()
-
-    tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "keynote_rag",
-                "description": "Answer question about Jensen Huang's Keynote presentation at GTC 2025. The questions/query only applies to the keynote information.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Question string about with Jensen Huang's Keynote Presentation",
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "personal_note_rag",
-                "description": "Answer question about personal notes written by Site Wang based on his experience at GTC 2025. These notes are all written by Site Wang himself with fresh opinion about several new AI topics about the conferece.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Question string about personal notes written by Site Wang",
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "company_rerank",
-                "description": "Rank sponsor companies at GTC 2025 based on the user query relevance to the company description.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Question string about general description of a company",
-                        },
-                        "k": {
-                            "type": "integer",
-                            "description": "how many top results to be returned",
-                            "default": 5
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "company_info_search",
-                "description": "Answer question about a specific sponsor company at GTC 2025. It is only used when a sepcific company name is mentioned/asked by the user.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Question string about a specific sponsor company at GTC 2025",
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "talk_info_search",
-                "description": "Conduct a searched to fetch the url about a specific talk based on the user query. It is only applicable when user is asking about a specific talk.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Title string about a specific technical talk at GTC 2025",
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "talk_rerank",
-                "description": "Rank technical talks at GTC 2025 based on the user query relevance to talks' title.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "Question string about a general direction of research topics to be used for searching for relevant technical talks at GTC 2025",
-                        },
-                        "k": {
-                            "type": "integer",
-                            "description": "how many top results to be returned",
-                            "default": 5
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "alpha_view_agent",
-                "description": "This function is used to generate code to fulfill a users request. The requests is not a typically information retrieval request but a more complex tasks that requires code generation. The function will generate a plan of steps to address the user question by coding in the streamlit interface.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "User requests for a code generation task",
-                        }
-                    },
-                    "required": ["query"],
-                },
-            }
-        }
-    ]
     
     st.write('---')
 
@@ -311,7 +187,7 @@ def main():
     
         response = chat_completion_with_function_execution(
             st.session_state.chat_messages, 
-            tools=tools,
+            tools=TOOLS,
             query=query
         )
         st.write(response)

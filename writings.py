@@ -135,7 +135,7 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
         """)
 
 
-def keynote_openai_summary():
+def keynote_2024_openai_summary():
 
     with st.expander("OpenAI's Summary of the Keynote Transcript 📝 [by AI 🤖]"):
 

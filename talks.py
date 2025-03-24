@@ -34,7 +34,8 @@ def talk_show():
         st.session_state.logger.info(f"USER {st.session_state.session_id} : TALK_SEARCH : {user_search}")
         user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
-    df_2025 = pd.read_json('notebooks/GTC_Talk_Info_with_embed.json')
+    with st.spinner("Loading talks info"):
+        df_2025 = pd.read_json('notebooks/GTC_Talk_Info_with_embed.json')
 
     gb = GridOptionsBuilder.from_dataframe(df_2025[['title', 'presenter', 'abstract']])
     

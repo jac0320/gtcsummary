@@ -32,7 +32,7 @@ def initialize_rag_chat_engine(doc_dir, persist_dir, prefix="", prompt=""):
         # load the existing index
         storage_context = StorageContext.from_defaults(persist_dir=persist_dir)
         index = load_index_from_storage(storage_context, similarity_top_k=1)
-
+    
     if st.session_state.llm_name != "OpenAI":  # additional steps for ollama - which I think I can remove
         Settings.embed_model = st.session_state.embeddings
         Settings.llm = Ollama(model="mistral", request_timeout=30.0)
@@ -41,7 +41,7 @@ def initialize_rag_chat_engine(doc_dir, persist_dir, prefix="", prompt=""):
         memory = ChatMemoryBuffer.from_defaults(token_limit=3900)
         st.session_state[f'{prefix}_chat_engine'] = index.as_chat_engine(
             memory=memory,
-            context_prompt=(
+            system_prompt=(
                 prompt + f"\n Here is the general context {SYSTEM_PROMPT}"
                 "Here are the relevant documents for the context:\n"
                 "{context_str}"
