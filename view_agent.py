@@ -101,16 +101,18 @@ def generate_and_execuate_code(query: str, code_plan: str):
         code_plan=code_plan
     )
 
-    code_blob = st.session_state.gemini_client.generate_content(
-        code_prompt,
-        generation_config=genai.types.GenerationConfig(temperature=0.01)
+    response = st.session_state.openai_client.chat.completions.create(
+        model='gpt-4o',
+        messages=[{"role": "user", "content": code_prompt}],
+        temperature=0.01,
     )
+    code_blob = response.choices[0].message.content
 
     with st.chat_message("agent", avatar="🤖"):
-        st.write_stream(stream_data("Here is the generated code:  \n\n" + code_blob.text))
-    st.session_state.chat_messages.append({"role": "assistant", "content": code_blob.text})
+        st.write_stream(stream_data("Here is the generated code:  \n\n" + code_blob))
+    st.session_state.chat_messages.append({"role": "assistant", "content": code_blob})
     
-    code = extract_code_segments(code_blob.text)
+    code = extract_code_segments(code_blob)
     if code is None:
         err_msg = "No code snippet was extracted in generation. Please try again."
         with st.chat_message("agent", avatar="🤖"):
