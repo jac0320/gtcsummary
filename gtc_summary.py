@@ -45,7 +45,7 @@ def reset_chat_messages():
 
 def main():
 
-    st.title("GTC 2025 : Learning Notes 🤖📚")
+    st.title("🥕 GTC Notes")
     
     if 'session_id' not in st.session_state:
         session_id = uuid.uuid4().hex
@@ -118,14 +118,14 @@ def main():
             "personal_notes", 
             PERSONAL_NOTE_PERSIST_DIR,
             prefix="personal_notes",
-            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
+            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site for both GTC 2024 and 2025. You can also provide information."
         )
 
         initialize_rag_chat_engine(
             "transcribed_notes", 
             NOTES_PERSIST_DIR,
             prefix="transcribed_notes",
-            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site. You can also provide information."
+            prompt="You are a chatbot, able to have normal interactions, as well as talk about transcribed talks that Site attended in GTC 2024 and 2025. You can also provide information."
         )
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(

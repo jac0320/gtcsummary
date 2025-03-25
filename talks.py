@@ -92,7 +92,8 @@ def talk_rerank(user_search, k=5):
     st.session_state.logger.info(f"USER {st.session_state.session_id} : COMPANY_SEARCH : {user_search}")
     user_search_embds = st.session_state.embeddings.get_text_embedding(user_search)
 
-    df = pd.read_json('notebooks/talks_full.json')
+    df = pd.read_json('notebooks/GTC_Talk_Info_with_embed.json')
+    df = df[df.title != '']
     if 'embds' not in df.columns:
         df['embds'] = df['Title'].apply(lambda x: st.session_state.embeddings.get_text_embedding(x))
 
@@ -100,8 +101,9 @@ def talk_rerank(user_search, k=5):
     embeddings_array = np.stack(df['embds'].values)  # Convert embeddings list to a NumPy array for efficient computation
     df['distance'] = np.sqrt(np.sum((embeddings_array - user_search_embds) ** 2, axis=1))
 
-    rerank_table = df.sort_values('distance')[['Title']].head(k).to_markdown(index=False)
-    st.session_state.chat_messages.append({"role": "assistant", "content": rerank_table})
+    # Sort the DataFrame by distance and select the top k results
+    reranked_df = df.sort_values('distance')[['title', 'presenter', 'abstract']].head(k)
+    st.session_state.chat_messages.append({"role": "assistant", "content": reranked_df.to_markdown()})
 
 
 def talk_info_search(search_title):

@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 
-from rag import keynote_rag, personal_note_rag
+from rag import keynote_rag, personal_note_rag, transcribed_talks_rag
 from companies import company_rerank, company_info_search
 from talks import talk_info_search, talk_rerank
 from tenacity import retry, wait_random_exponential, stop_after_attempt
@@ -74,9 +74,12 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         elif function_name == "talk_info_search":
             query = args.get("query")
             return talk_info_search(query)
+        elif function_name == "transcribed_talks_rag":
+            query = args.get("query")
+            return transcribed_talks_rag(query)
         
     else:
         # Do a regular response here with System Prompt
-        st.info(f"Function not required, responding to user")
+        st.info(f"Function not required, directly responding to user")
         st.session_state.chat_messages.append({"role": "assistant", "content": response.choices[0].message.content})
         return response

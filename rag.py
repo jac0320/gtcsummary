@@ -19,6 +19,9 @@ from llama_index.llms.ollama import Ollama
 
 
 def initialize_rag_chat_engine(doc_dir, persist_dir, prefix="", prompt=""):
+
+    if f'{prefix}_chat_engine' in st.session_state:
+        return
     
     if not os.path.exists(persist_dir):
         documents = SimpleDirectoryReader(doc_dir, recursive=True).load_data()  # load the documents and create the index
@@ -55,9 +58,9 @@ def initialize_rag_chat_engine(doc_dir, persist_dir, prefix="", prompt=""):
 def personal_note_rag(query):
 
     prefix = "personal_notes"
-    st.session_state.logger.info(f"USER {st.session_state.session_id} : KEYNOTE : {query}")
+    st.session_state.logger.info(f"USER {st.session_state.session_id} : PERSONAL NOTE : {query}")
     response = st.session_state[f'{prefix}_chat_engine'].chat(query)
-    st.session_state.logger.info(f"BOT {st.session_state.session_id} : KEYNOTE : {response.response}")
+    st.session_state.logger.info(f"BOT {st.session_state.session_id} : PERSONAL NOTE : {response.response}")
     st.session_state.chat_messages.append({"role": "assistant", "content": response.response})
     
 
@@ -70,3 +73,11 @@ def keynote_rag(query):
     st.session_state.chat_messages.append({"role": "assistant", "content": response.response})
     
     st.rerun()
+
+def transcribed_talks_rag(query):
+
+    prefix = "transcribed_talks"
+    st.session_state.logger.info(f"USER {st.session_state.session_id} : TRANSCRIBED TALKS : {query}")
+    response = st.session_state[f'{prefix}_chat_engine'].chat(query)
+    st.session_state.logger.info(f"BOT {st.session_state.session_id} : TRANSCRIBED TALKS : {response.response}")
+    st.session_state.chat_messages.append({"role": "assistant", "content": response.response})
