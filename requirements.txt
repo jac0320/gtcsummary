@@ -12,3 +12,4 @@ tiktoken==0.6.0
 nltk==3.8.1
 rich<14,>=10.14.0
 ollama
+streamlit-aggrid
