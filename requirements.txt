@@ -2,6 +2,7 @@ streamlit==1.33.0
 openai==1.16.2
 google-generativeai==0.5.0
 llama-index
+llama-index-core
 sentence-transformers==2.6.1
 pandas==2.2.1
 numpy==1.26.4
@@ -9,3 +10,4 @@ pillow==10.3.0
 tiktoken==0.6.0
 nltk==3.8.1
 nltk-data==0.1.0
+rich<14,>=10.14.0

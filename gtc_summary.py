@@ -9,8 +9,21 @@ import streamlit as st
 # Configure NLTK data path
 nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')
 os.makedirs(nltk_data_dir, exist_ok=True)
+
+# Configure llama-index NLTK cache
+llama_index_cache = os.path.join(os.getcwd(), 'llama_index_cache')
+os.makedirs(llama_index_cache, exist_ok=True)
+os.environ['LLAMA_INDEX_CACHE_DIR'] = llama_index_cache
+
 import nltk
 nltk.data.path.append(nltk_data_dir)
+
+# Pre-download required NLTK data
+try:
+    nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+    nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
+except Exception as e:
+    st.error(f"Error downloading NLTK data: {e}")
 
 from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
 from openai import OpenAI
