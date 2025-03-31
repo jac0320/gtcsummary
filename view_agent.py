@@ -202,26 +202,6 @@ def show_give_up_message(query):
     st.session_state.chat_messages.append({"role": "assistant", "content": give_up_msg})
 
 
-def generate_generic_answer(query: str, model='gpt-4o'):
-
-    prompt = Template(GENERAL_AGENT_TEMPLATE).render(
-        context=SYSTEM_PROMPT,
-        query=query
-    )
-    
-    response = st.session_state.openai_client.chat.completions.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.01,
-    )
-
-    msg = response.choices[0].message.content
-    with st.chat_message("agent", avatar="🤖"):
-        st.write_stream(stream_data(msg))
-    st.session_state.chat_messages.append({"role": "assistant", "content": msg})
-
-    return msg
-
 
 def alpha_view_agent(query=None):
 
@@ -229,9 +209,9 @@ def alpha_view_agent(query=None):
 
     if query is None:
         if query := st.chat_input("Try ask me anything", key="query"):
-            run_agent(query)
+            return run_agent(query)
     else:
-        run_agent(query)
+        return run_agent(query)
 
 
 def run_agent(query):
@@ -245,18 +225,18 @@ def run_agent(query):
     relevant = boolean_classification(relevance_prompt)
     if not relevant:
         with st.chat_message("agent", avatar="🤖"):
-            reject_msg = "The request is not relevant for this project. AMA sometimes don't mean AMA."
+            reject_msg = "I might be too sensitive but I feel you are trying to hack the code. AMA sometimes don't mean AMA. Thanks!"
             st.write_stream(stream_data(reject_msg))
             st.session_state.chat_messages.append({"role": "assistant", "content": reject_msg})
-        return
+        return reject_msg
     
     codegen_prompt = Template(CODEGEN_CLASSIFICATION_TEMPLATE).render(
         context=SYSTEM_PROMPT,
         query=query
     )
-    require_codegen = boolean_classification(codegen_prompt)
+    # require_codegen = boolean_classification(codegen_prompt)
     
-    if require_codegen:
+    if True:
         wait_msg = "Let me try to generate some code to fulfill this ask. Hold on..."
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(wait_msg))    
@@ -266,7 +246,5 @@ def run_agent(query):
         if code is not None:
             st.session_state.chat_messages.append({"role": "assistant", "content": "Code execution successful.", "source": query})
             st.session_state.exec_code[query] = code
-    else:
-        generate_generic_answer(query)
 
         

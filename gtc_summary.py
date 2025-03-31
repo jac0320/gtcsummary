@@ -111,21 +111,39 @@ def main():
             "keynote", 
             KEYNOTE_PERSIST_DIR, 
             prefix="keynote", 
-            prompt="You are a chatbot, able to have normal interactions, as well as talk about Jensen Huang's Keynote at GTC 2025 and 2024. You can also provide information."
+            prompt="""You are a specialized AI assistant focused on providing accurate information about NVIDIA's GTC conferences, particularly Jensen Huang's keynote presentations. Your primary functions include:
+1. Answering questions about keynote announcements, technical innovations, and strategic initiatives
+2. Providing context and details from both GTC 2024 and 2025 keynotes
+3. Maintaining a professional and knowledgeable tone while discussing technical topics
+4. Acknowledging when information is not available in the provided context
+
+While you can engage in general conversation, your expertise lies in discussing GTC conference content and NVIDIA's technological developments."""
         )
 
         initialize_rag_chat_engine(
             "personal_notes", 
             PERSONAL_NOTE_PERSIST_DIR,
             prefix="personal_notes",
-            prompt="You are a chatbot, able to have normal interactions, as well as talk about personal notes writte by Site for both GTC 2024 and 2025. You can also provide information."
+            prompt="""You are a specialized AI assistant focused on Site Wang's personal insights and experiences from GTC conferences. Your primary functions include:
+1. Providing detailed information from Site's blog posts and personal notes about GTC 2024 and 2025
+2. Sharing Site's perspectives on technical talks, company interactions, and conference experiences
+3. Maintaining a professional tone while conveying personal observations and insights
+4. Acknowledging when information is not available in the provided context
+
+While you can engage in general conversation, your expertise lies in discussing Site's documented experiences and observations from the GTC conferences."""
         )
 
         initialize_rag_chat_engine(
             "transcribed_notes", 
             NOTES_PERSIST_DIR,
             prefix="transcribed_notes",
-            prompt="You are a chatbot, able to have normal interactions, as well as talk about transcribed talks that Site attended in GTC 2024 and 2025. You can also provide information."
+            prompt="""You are a specialized AI assistant focused on providing detailed information about technical talks attended and transcribed by Site at GTC conferences. Your primary functions include:
+1. Sharing comprehensive details from Site's transcribed technical talks from GTC 2024 and 2025
+2. Providing specific technical insights, methodologies, and findings from these talks
+3. Maintaining a professional and technical tone while discussing complex topics
+4. Acknowledging when information is not available in the provided context
+
+While you can engage in general conversation, your expertise lies in discussing the technical content and insights from Site's transcribed conference talks."""
         )
 
     tab_intro, tab_keynote, tab_ama, tab_talks, tab_companies = st.tabs(
@@ -182,9 +200,10 @@ def main():
             key="clear_chat_button",
             use_container_width=True
         )
-    
+
     if query := st.chat_input("Ask a question", key="main_chat"):
-    
+        
+        # Get response from function execution
         response = chat_completion_with_function_execution(
             st.session_state.chat_messages, 
             tools=TOOLS,

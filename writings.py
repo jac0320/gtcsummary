@@ -57,7 +57,7 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 
 ## 1. The Evolution of AI
 
-- **Generative AI**: Emphasis on the industry’s transition from perception AI (vision/speech) to generative AI (text-to-anything, amino acids-to-proteins, etc.).  
+- **Generative AI**: Emphasis on the industry's transition from perception AI (vision/speech) to generative AI (text-to-anything, amino acids-to-proteins, etc.).  
 - **Agentic AI**: New wave of AI systems that can reason step-by-step and plan/execute actions. Major leaps in compute demands stem from these capabilities.  
 - **Physical AI & Robotics**: Expansion from purely digital AI to AI that understands and interacts with the physical world (autonomous vehicles, factory robots, etc.).
 
@@ -65,7 +65,7 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 
 ## 2. Surging Demand for AI Infrastructure
 
-- **Scaling Law & Compute**: “Reasoning” tokens can multiply training and inference requirements by as much as 100× vs. previous assumptions.  
+- **Scaling Law & Compute**: "Reasoning" tokens can multiply training and inference requirements by as much as 100× vs. previous assumptions.  
 - **Data Center Investment**: Data center spending to reach trillions by 2030, shifting toward accelerated computing rather than traditional CPU servers.
 
 ---
@@ -75,7 +75,7 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 ### Blackwell GPU Architecture
 - **Full Production**: Blackwell succeeds Hopper with major performance gains.  
 - **Disaggregated MVLink 72 & Liquid Cooling**: Separating the NVLink switches from motherboards and liquid cooling each rack to achieve 1 exaflop in a single rack.  
-- **Inference Focus**: Up to 40× faster on “reasoning” inference (large-token outputs) vs. Hopper.
+- **Inference Focus**: Up to 40× faster on "reasoning" inference (large-token outputs) vs. Hopper.
 
 ### Annual Release Cadence
 - **Vera Reuben (2026)**: Introduces next-gen CPU, GPU (CX9), memory (HBM4), and NVLink 144.  
@@ -93,14 +93,14 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 ## 5. Full-Stack for Enterprises & Edge
 
 - **DGX Spark**: A compact personal AI workstation featuring a CPU/GPU with 1 petaFLOP of compute.  
-- **DGX Station**: A liquid-cooled, 20 petaFLOP “desktop supercomputer” for data scientists.  
+- **DGX Station**: A liquid-cooled, 20 petaFLOP "desktop supercomputer" for data scientists.  
 - **Edge & 5G**: Partnerships with Cisco, T-Mobile, and more to bring accelerated and AI-driven networking to telecom edges.
 
 ---
 
 ## 6. AI Software & Frameworks
 
-- **Nvidia Dynamo**: “Operating system” for AI factories, orchestrating model parallelism (pipeline, tensor, expert) and dynamic resource allocation.  
+- **Nvidia Dynamo**: "Operating system" for AI factories, orchestrating model parallelism (pipeline, tensor, expert) and dynamic resource allocation.  
 - **Nvidia NIMS**: Open-source AI model framework for advanced reasoning.  
 - **Semantic Storage**: Future enterprise storage will continuously embed data (not just store/retrieve) for more intelligent querying.
 
@@ -110,7 +110,7 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 
 - **Omniverse + Cosmos**: Large-scale synthetic data generation and simulation for robotics training.  
 - **Newton Physics Engine**: Partnership among Nvidia, DeepMind, and Disney Research, providing real-time, GPU-accelerated rigid/soft body simulation.  
-- **Groot N1**: A dual-system (“fast” vs. “slow” thinking) generalist humanoid-robot model. Announced as open-sourced for developers.
+- **Groot N1**: A dual-system ("fast" vs. "slow" thinking) generalist humanoid-robot model. Announced as open-sourced for developers.
 
 ---
 
@@ -118,16 +118,16 @@ Below is a concise overview of the main topics and announcements Jensen Huang co
 
 - **GM**: Uses Nvidia platforms for next-gen autonomous driving (training, simulation, in-car computation).  
 - **Cisco & T-Mobile**: Collaborations on edge AI and 5G radio networks.  
-- **Enterprise Ecosystem**: Mentions of Dell, HP, Lenovo, Accenture, SAP, ServiceNow, Box, and more adopting Nvidia’s AI infrastructure/software stacks.
+- **Enterprise Ecosystem**: Mentions of Dell, HP, Lenovo, Accenture, SAP, ServiceNow, Box, and more adopting Nvidia's AI infrastructure/software stacks.
 
 ---
 
 ## 9. Key Takeaways
 
 1. **Massive Growth**: AI computation needs will continue skyrocketing, driven by reasoning-based workloads.  
-2. **Nvidia’s Full-Stack Approach**: GPUs, CPUs, networking, software frameworks, and digital-twin simulations all aim to create “AI factories.”  
+2. **Nvidia's Full-Stack Approach**: GPUs, CPUs, networking, software frameworks, and digital-twin simulations all aim to create "AI factories."  
 3. **Annual Innovation**: New hardware every year, each generation designed to keep pace with exponential AI demands.  
-4. **Robotics & Physical AI**: Accelerated physics-based simulation, reinforcement learning, and shared “foundation robot models.”  
+4. **Robotics & Physical AI**: Accelerated physics-based simulation, reinforcement learning, and shared "foundation robot models."  
 5. **Broad Industry Impact**: Cloud, enterprise, automotive, manufacturing, telecom—accelerated AI is becoming the default across all segments.
 
 ---
@@ -160,68 +160,71 @@ def keynote_2024_openai_summary():
         """)
 
 
-def notes_summary():
-
-    st.subheader("2025 Blogs")
-    with st.expander("Tokens Tokens Tokens"):
-        with open(str('personal_notes/tokens_tokens_tokens.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
+def display_markdown_with_image(file_path, image_caption=None, image_width=50):
+    """Helper function to display markdown content with optional image.
     
-    with st.expander("Is Agent AI Really Different?"):
-        with open(str('personal_notes/is_agentic_ai_really_different.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
+    Args:
+        file_path (str): Path to the markdown file
+        image_caption (str, optional): Caption for the image
+        image_width (int, optional): Width of the image as percentage of container width. Defaults to 50.
+    """
+    with open(str(file_path), "r") as file:
+        content = file.read()
+        # Split content by image placeholder
+        parts = content.split('[IMAGE_PLACEHOLDER:')
+        if len(parts) > 1:
+            # Display first part
+            st.markdown(parts[0], unsafe_allow_html=True)
+            # Extract image name and remaining content
+            image_name, remaining = parts[1].split(']', 1)
+            # Display image with specified width
+            col1, col2, col3 = st.columns([(100-image_width)/2, image_width, (100-image_width)/2])
+            with col2:
+                st.image(f'personal_notes/images/{image_name}', caption=image_caption)
+            # Display remaining content
+            st.markdown(remaining, unsafe_allow_html=True)
+        else:
+            st.markdown(content, unsafe_allow_html=True)
 
-    with st.expander("Keeping an Eye on Physical AI"):
-        with open(str('personal_notes/keeping_an_eye_on_physical_ai.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
+def notes_summary():
+    st.subheader("2025 Blogs")
+    
+    # 2025 Blog Posts
+    blog_posts_2025 = [
+        ("💻 The Vibe of Vibe Coding", "the_vibe_of_vibe_coding.md", "Vibe Coding Twitter from Andrej Karpathy", 50),
+        ("🔤 Tokens, Tokens, Tokens", "tokens_tokens_tokens.md", "There Will Be Blood meme", 50)
+        ("🤔 How Many A's are There in AAAgent?", "how_many_a_are_there_in_aaagent.md", "Ariel from The Tempest", 50),
+        ("🤖 Keeping an Eye on Physical AI", "keeping_an_eye_on_physical_ai.md", "Shakey the robot", 50),
+        ("👁️ Vision, Speech, Text and the Rests", "vision_speech_text_and_the_rests.md", "Video Ingestion", 50),
+        ("🔄 Revisit NIM After One Year", "revisit_nim_after_one_year.md", None, 50),
+    ]
 
-    with st.expander("Revisiting NIM After One Year"):
-        with open(str('personal_notes/revisit_nim_after_one_year.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
-
-    with st.expander("Vision, Speech, Text, and the Rest"):
-        with open(str('personal_notes/vision_speech_text_and_the_rests.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
-
-    with st.expander("Observe An Inflexction Point with AI Customer Support"):
-        with open(str('personal_notes/observe_ai_customer_support_inflection_point.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
-
-    with st.expander("Developer Tool and Vibe Coding"):
-        with open(str('personal_notes/developer_tool_and_vibe_coding.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
+    for title, filename, image_caption, image_width in blog_posts_2025:
+        with st.expander(title):
+            display_markdown_with_image(f'personal_notes/{filename}', image_caption, image_width)
 
     st.write('---')
     st.subheader("2024 Blogs")
 
-    with st.expander("Retrieval vs. Generative"):
-        with open(str('personal_notes/retrieval_vs_generation.md'), "r") as file:
-            st.markdown(file.read(), unsafe_allow_html=True)
-        st.image('pictures/images/rvg.png', caption='Retrieval vs. Generation', use_column_width='always')
-    
-    with st.expander("The Need for Scalable Inference"):
-        with open(str('personal_notes/the_need_for_scalable_inference.md'), "r") as file:
-            st.markdown(file.read())
+    # 2024 Blog Posts
+    blog_posts_2024 = [
+        ("🔄 Retrieval vs Generation", "retrieval_vs_generation.md", None, 50),
+        ("❓ What the Heck is This NIM?", "what_the_heck_is_this_NIM.md", None, 50),
+        ("📚 Long Context vs RAG", "long_context_vs_rag.md", None, 50),
+        ("🌍 Democratizing AI", "democratizing_ai.md", None, 50),
+        ("💰 The Economics of AI", "the_economics_of_ai.md", None, 50),
+        ("⚡ The Need for Scalable Inference", "the_need_for_scalable_inference.md", None, 50),
+        ("🤖 The World of Agents", "the_world_of_agents.md", None, 50)
+    ]
 
-    with st.expander("The Economics of AI"):
-        with open(str('personal_notes/the_economics_of_ai.md'), "r") as file:
-            st.markdown(file.read())
-
-    with st.expander("Long-context vs. RAG"):
-        with open(str('personal_notes/long_context_vs_rag.md'), "r") as file:
-            st.markdown(file.read())
-    
-    with st.expander("Democratizing AI"):
-        with open(str('personal_notes/democratizing_ai.md'), "r") as file:
-            st.markdown(file.read())
-
-    with st.expander("The World of Agents"):
-        with open(str('personal_notes/the_world_of_agents.md'), "r") as file:
-            st.markdown(file.read())
-
-    with st.expander("What the heck is this NIM?"):
-        with open(str('personal_notes/what_the_heck_is_this_NIM.md'), "r") as file:
-            st.markdown(file.read())
+    for title, filename, image_caption, image_width in blog_posts_2024:
+        with st.expander(title):
+            display_markdown_with_image(f'personal_notes/{filename}', image_caption, image_width)
+            # Special case for Retrieval vs Generation which has an additional image
+            if filename == "retrieval_vs_generation.md":
+                col1, col2, col3 = st.columns([25, 50, 25])
+                with col2:
+                    st.image('pictures/images/rvg.png', caption='Retrieval vs. Generation')
 
 def notes_pictures():
 

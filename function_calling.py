@@ -12,13 +12,16 @@ GPT_MODEL = "gpt-4o"
 
 
 @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
-def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL):
+def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL, short_term_memory=True):
     try:
-        short_term_memory = [message for message in messages if message['role'] == "system"]
-        short_term_memory.append(messages[-1])
+        if short_term_memory:
+            memory = [message for message in messages if message['role'] == "system"]
+            memory.append(messages[-1])
+        else:
+            memory = messages
         response = st.session_state.openai_client.chat.completions.create(
             model=model,
-            messages=short_term_memory,
+            messages=memory,
             tools=tools,
             tool_choice=tool_choice,
         )
@@ -33,7 +36,7 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
     """This function makes a ChatCompletion API call with the option of adding functions"""
     
     st.session_state.chat_messages.append({"role": "user", "content": query})
-    response = chat_completion_request(messages, tools=tools)
+    response = chat_completion_request(messages, tools=tools, short_term_memory=False)
     full_message = response.choices[0]
 
     if "DEBUG_AGENT" in query:
@@ -81,5 +84,6 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
     else:
         # Do a regular response here with System Prompt
         st.info(f"Function not required, directly responding to user")
+
         st.session_state.chat_messages.append({"role": "assistant", "content": response.choices[0].message.content})
         return response
