@@ -15,6 +15,12 @@ llama_index_cache = os.path.join(os.getcwd(), 'llama_index_cache')
 os.makedirs(llama_index_cache, exist_ok=True)
 os.environ['LLAMA_INDEX_CACHE_DIR'] = llama_index_cache
 
+st.set_page_config(
+    page_title="GTC 2025", 
+    layout="wide", 
+    initial_sidebar_state="collapsed"
+)
+
 import nltk
 nltk.data.path.append(nltk_data_dir)
 
@@ -47,11 +53,168 @@ from llama_index.llms.ollama import Ollama
 
 logging.basicConfig(level=logging.INFO)
 
-st.set_page_config(
-    page_title="GTC 2025", 
-    layout="wide", 
-    initial_sidebar_state="collapsed"
-)
+# Custom CSS for modern theme
+st.markdown("""
+    <style>
+    /* Modern-style background */
+    .stApp {
+        background-color: #ffffff;
+        color: #2c3e50;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    /* Modern-style headers */
+    h1, h2, h3, h4, h5, h6 {
+        color: #2c3e50;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+    
+    /* Modern-style buttons */
+    .stButton>button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Modern-style chat messages */
+    .stChatMessage {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Modern-style tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: #6c757d;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        color: #3498db !important;
+        background-color: #f8f9fa;
+    }
+    
+    /* Modern-style sidebar */
+    .css-1d391kg {
+        background-color: #f8f9fa;
+        border-right: 1px solid #e9ecef;
+    }
+    
+    /* Modern-style selectbox */
+    .stSelectbox>div>div {
+        background-color: white;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        color: #2c3e50;
+    }
+    
+    /* Modern-style slider */
+    .stSlider>div>div>div {
+        background-color: #3498db;
+    }
+    
+    /* Modern-style expander */
+    .streamlit-expanderHeader {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        color: #2c3e50;
+        font-weight: 500;
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Modern-style code blocks */
+    pre {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        color: #2c3e50;
+    }
+
+    /* Modern-style chat input */
+    .stChatInputContainer {
+        background-color: white !important;
+        border-top: 1px solid #e9ecef !important;
+    }
+
+    .stChatInputContainer textarea {
+        background-color: #f8f9fa !important;
+        color: #2c3e50 !important;
+        border: 1px solid #e9ecef !important;
+        border-radius: 6px !important;
+    }
+
+    .stChatInputContainer textarea:focus {
+        border-color: #3498db !important;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+    }
+
+    .stChatInputContainer textarea::placeholder {
+        color: #6c757d !important;
+    }
+
+    /* Modern-style top bar */
+    .stApp > header {
+        background-color: white !important;
+        border-bottom: 1px solid #e9ecef;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Modern-style links */
+    a {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    /* Modern-style markdown */
+    .stMarkdown {
+        color: #2c3e50;
+    }
+
+    /* Modern-style strong text */
+    strong {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    /* Modern-style italic text */
+    em {
+        color: #6c757d;
+    }
+
+    /* Modern-style horizontal rule */
+    hr {
+        border-color: #e9ecef;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 
 def reset_chat_messages():

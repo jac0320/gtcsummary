@@ -29,7 +29,7 @@ def intro():
             * Try: "What companies handle unstructured data?" then "Tell me about Unstructured"
         * 🤖 **ViewAgent**
             * Experimental tool for custom visualizations
-            * Try: "Show two random notes side by side" or "Display the full keynote transcript"
+            * Try: "Show two random notes side by side", "Run a quick analysis on Site's personal blogs in terms of word frequency?" or "Display the full keynote transcript"
     """)
 
 
