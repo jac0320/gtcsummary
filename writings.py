@@ -4,32 +4,32 @@ import streamlit as st
 def intro():
     st.markdown(
         """
-            Hi there! My name is sfcarrot 🥕 and this is about my experience at GTC 2024 & 2025.
+        Hi! I'm sfcarrot 🥕, and this is my GTC 2024 & 2025 experience.
 
-            I figured the best to summarize the AI conference is to use AI. Hence, leveraging some rudimentary learnings of how code works, I built this little app to let people interact with GTC though my eyes. 
-
-            **You can directly ask quesitons through the chat interface below. Or visit each tab to explore more information in details.**
+        I built this digital me to share my conference insights using AI. You can:
+        * Chat directly with me about GTC
+        * Explore different sections through the tabs below
         """
-        )
+    )
 
     st.write('---')
     
     st.markdown(f"""        
-        * 🏆 **Jensen's Keynote**
-            * AI summarized transcripts of tshe keynote delivered by Jensen Huang.
-            * Try ask "What was so exciting about the Jensen's keynote?" or "In Jensen's keynote, what makes NVIDIA Blackwell so powerful?"
-        * 📕 **My Blogs**
-            * Explore my personal notes about the conference. Nothing too fancy here - [almost] all written by me. 
-            * Try ask "What are some learnings from Site?" or "How should I evaluate Site's note on Retrieval vs Generation?"
-        * 🎙️ **Talks**
-            * Some AI Summarized transcripts of the technical talks I attended + Scraped talks of my interest.
-            * Try ask "Show me some talks about RAG", given the search results, you can further ask "What is the talk Robotics in the age of Generative AI about?" 
+        * 🎙️ **Keynote**
+            * AI summaries of Jensen Huang's keynote
+            * Try: "What was exciting about Jensen's keynote?" or "What makes Blackwell powerful?"
+        * 📝 **My Notes**
+            * Personal insights from GTC
+            * Try: "What are some learnings from Site?" or "Tell me about Retrieval vs Generation"
+        * 🎯 **Talks**
+            * AI summaries of technical talks I attended
+            * Try: "Show me talks about RAG" then "What's the talk about Robotics in the age of Generative AI?"
         * 🏢 **Companies**
-            * Learn about the companies that participated in the conference.
-            * Try ask "What are some companies that handles unstructured data?", given the search results, you can further ask "What does this Unstructured do?"    
-        * 🤖 **(Alpha) ViewAgent**
-            * An experimental agent that generate code to answer your questions about the conference. It works when it works.
-            * Try ask "Generate and execute the code that randomly show two notes written by Site side by side." or "Build the code to show the entire transcript of the main Keynote."
+            * Information about GTC sponsors
+            * Try: "What companies handle unstructured data?" then "Tell me about Unstructured"
+        * 🤖 **ViewAgent**
+            * Experimental tool for custom visualizations
+            * Try: "Show two random notes side by side" or "Display the full keynote transcript"
     """)
 
 
