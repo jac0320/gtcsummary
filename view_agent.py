@@ -85,7 +85,7 @@ def generate_code_plan(query: str, llm="openai", model='gpt-4o'):
 
 def hack_check(code: str):
     
-    if ("API_KEY" in code) or ('bash' in code) or ('ENV' in code) or('exec' in code) or ('eval' in code):
+    if ("API_KEY" in code) or ('bash' in code) or ('ENV' in code) or ('OPENAI_API_KEY' in code):
         hack_msg = "Potential hacking attempt detected. Don't do it."
         with st.chat_message("agent", avatar="🤖"):
             st.write_stream(stream_data(hack_msg))
@@ -216,24 +216,24 @@ def alpha_view_agent(query=None):
 
 def run_agent(query):
 
-    # BLOCK 1: Classify if the query is relevant
-    relevance_prompt = Template(QUERY_RELEVANCE_TEMPLATE).render(
-        context=SYSTEM_PROMPT,
-        query=query
-    )
+    # # BLOCK 1: Classify if the query is relevant
+    # relevance_prompt = Template(QUERY_RELEVANCE_TEMPLATE).render(
+    #     context=SYSTEM_PROMPT,
+    #     query=query
+    # )
 
-    relevant = boolean_classification(relevance_prompt)
-    if not relevant:
-        with st.chat_message("agent", avatar="🤖"):
-            reject_msg = "I might be too sensitive but I feel you are trying to hack the code. AMA sometimes don't mean AMA. Thanks!"
-            st.write_stream(stream_data(reject_msg))
-            st.session_state.chat_messages.append({"role": "assistant", "content": reject_msg})
-        return reject_msg
+    # relevant = boolean_classification(relevance_prompt)
+    # if not relevant:
+    #     with st.chat_message("agent", avatar="🤖"):
+    #         reject_msg = "I might be too sensitive but I feel you are trying to hack the code. AMA sometimes don't mean AMA. Thanks!"
+    #         st.write_stream(stream_data(reject_msg))
+    #         st.session_state.chat_messages.append({"role": "assistant", "content": reject_msg})
+    #     return reject_msg
     
-    codegen_prompt = Template(CODEGEN_CLASSIFICATION_TEMPLATE).render(
-        context=SYSTEM_PROMPT,
-        query=query
-    )
+    # codegen_prompt = Template(CODEGEN_CLASSIFICATION_TEMPLATE).render(
+    #     context=SYSTEM_PROMPT,
+    #     query=query
+    # )
     # require_codegen = boolean_classification(codegen_prompt)
     
     if True:
