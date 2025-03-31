@@ -6,6 +6,12 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 
+# Configure NLTK data path
+nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+import nltk
+nltk.data.path.append(nltk_data_dir)
+
 from llama_index.llms.openai import OpenAI as llamaindex_OpenAI
 from openai import OpenAI
 import google.generativeai as genai
