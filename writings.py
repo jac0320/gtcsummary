@@ -192,7 +192,7 @@ def notes_summary():
     # 2025 Blog Posts
     blog_posts_2025 = [
         ("💻 The Vibe of Vibe Coding", "the_vibe_of_vibe_coding.md", "Vibe Coding Twitter from Andrej Karpathy", 50),
-        ("🔤 Tokens, Tokens, Tokens", "tokens_tokens_tokens.md", "There Will Be Blood meme", 50)
+        ("🔤 Tokens, Tokens, Tokens", "tokens_tokens_tokens.md", "There Will Be Blood meme", 50),
         ("🤔 How Many A's are There in AAAgent?", "how_many_a_are_there_in_aaagent.md", "Ariel from The Tempest", 50),
         ("🤖 Keeping an Eye on Physical AI", "keeping_an_eye_on_physical_ai.md", "Shakey the robot", 50),
         ("👁️ Vision, Speech, Text and the Rests", "vision_speech_text_and_the_rests.md", "Video Ingestion", 50),
