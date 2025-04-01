@@ -131,7 +131,7 @@ TOOLS = [
         {
             "type": "function",
             "function": {
-                "name": "transcribed_talks_rag",
+                "name": "transcribed_notes_rag",
                 "description": "Use this for questions about the content of talks that Site attended and transcribed in person at GTC 2025. This tool searches through the transcribed content. Do NOT use this for code generation or data manipulation tasks.",
                 "parameters": {
                     "type": "object",
@@ -139,6 +139,23 @@ TOOLS = [
                         "query": {
                             "type": "string",
                             "description": "A question about the transcribed talks attended in person.",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "search_gtc",
+                "description": "Use this for searching GTC 2025 related content when the existing tools cannot satisfy the query. This tool performs web searches specifically focused on GTC 2025 news, products, and trends. Only use this when other tools (keynote_rag, personal_note_rag, etc.) cannot provide the required information.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "A search query about GTC 2025 that requires web search.",
                         }
                     },
                     "required": ["query"],

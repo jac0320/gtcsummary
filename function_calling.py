@@ -1,11 +1,12 @@
 import streamlit as st
 import json
 
-from rag import keynote_rag, personal_note_rag, transcribed_talks_rag
+from rag import keynote_rag, personal_note_rag, transcribed_notes_rag
 from companies import company_rerank, company_info_search
 from talks import talk_info_search, talk_rerank
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 from view_agent import alpha_view_agent
+from agent import search_gtc
 
 
 GPT_MODEL = "gpt-4o"
@@ -47,7 +48,6 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         return alpha_view_agent(query)
     
     if full_message.finish_reason == "tool_calls":
-
         function_name = full_message.message.tool_calls[0].function.name
         args = full_message.message.tool_calls[0].function.arguments
         args = json.loads(full_message.message.tool_calls[0].function.arguments)
@@ -77,9 +77,13 @@ def chat_completion_with_function_execution(messages, tools=[None], query=None):
         elif function_name == "talk_info_search":
             query = args.get("query")
             return talk_info_search(query)
-        elif function_name == "transcribed_talks_rag":
+        elif function_name == "transcribed_notes_rag":
             query = args.get("query")
-            return transcribed_talks_rag(query)
+            return transcribed_notes_rag(query)
+        elif function_name == "search_gtc":
+            query = args.get("query")
+            response = search_gtc(query)
+            return response
         
     else:
         # Do a regular response here with System Prompt

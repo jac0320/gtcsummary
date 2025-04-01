@@ -46,7 +46,6 @@ from constants import OPENAI_API_KEY
 from companies import company_tab
 from talks import talk_show, show_summarized_notes
 from tools import TOOLS
-from view_agent import alpha_view_agent
 
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.ollama import Ollama
