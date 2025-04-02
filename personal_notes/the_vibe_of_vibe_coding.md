@@ -22,7 +22,7 @@ Fast forward to today, and I'm somehow handling two projects simultaneously. One
 
 Am I getting the vibe right?
 
-But here's the plot twist: the closer you get to turning your vibe-coded MVP into reality, the faster the initial thrill fades. Sure, \"Vibe Coding\" feels amazing when you're staring at a blank canvas, but trust me, reality will slap you hard at 2 AM when you're wrestling with frontend bugs or backend nightmares (this literaly happen on March 29 Sat. 2025). It's exhilarating, yes, but also humbling—a gentle reminder that even in 2025, reliable, scalable software still needs humans who know what they're doing.
+But here's [the plot twist](https://cendyne.dev/posts/2025-03-19-vibe-coding-vs-reality.html): the closer you get to turning your vibe-coded MVP into reality, the faster the initial thrill fades. Sure, \"Vibe Coding\" feels amazing when you're staring at a blank canvas, but trust me, reality will slap you hard at 2 AM when you're wrestling with frontend bugs or backend nightmares (this literaly happen on March 29 Sat. 2025). It's exhilarating, yes, but also humbling—a gentle reminder that even in 2025, reliable, scalable software still needs humans who know what they're doing.
 
 Stay tuned, because that's where the real vibe coding story starts.
 

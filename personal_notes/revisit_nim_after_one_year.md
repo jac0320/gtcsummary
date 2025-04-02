@@ -46,6 +46,8 @@ I’m hoping to answer a few questions here:
 
 Bigger batch sizes mean higher throughput—sweet if you have a ton of users. But it can also slow down each user’s response. Smaller batches speed up individual replies, but you can’t handle as many users at once. Decisions, decisions.
 
+[IMAGE_PLACEHOLDER:latency_vs_throughput.png]
+
 Then there’s the extra “fun” part: context. How big is your model? Is it a chatbot, a classifier, or something spitting out code? Does your traffic spike like crazy, or is it super steady? Do people prefer streaming token-by-token, or is it more of a batch job? And what GPU are you even using?
 
 ### The Reality Check: Auto-Scaling and Cost

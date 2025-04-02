@@ -8,7 +8,8 @@ Then, inevitably, I show it to one of my hardware friends. And they hit me with:
 
 Now I don't know how to continue this conversation, and yet, somehow, I still do.
 
-At GTC 2025, Physical AI took top billing in the keynote—clearly NVIDIA wants this to be The Next Big Thing™. Jensen Huang introduced shiny new stuff that, yes, made me excited all over again. One highlight was **Isaac GR00T N1** (yup, spelled like that), an open-source foundation model to help develop humanoid robots that actually understand physical concepts like friction and inertia. Not just "if-then" rules, but actual physics.  
+At GTC 2025, Physical AI took top billing in the keynote—clearly NVIDIA wants this to be The Next Big Thing™. Jensen Huang introduced shiny new stuff that, yes, made me excited all over again. One highlight was **Isaac GR00T N1** (yup, spelled like that), an open-source foundation model to help develop humanoid robots that actually understand physical concepts like friction and inertia. Not just "if-then" rules, but actual physics. 
+
 Then came **Newton**—no, not the apple guy, but a physics engine made by NVIDIA, DeepMind, and *Disney* (sure, throw in some Pixar magic) to simulate real-world physics in robotics. Basically, it's all about helping robots "get" cause and effect—so they can stop breaking stuff or walking into walls.
 
 There were a dozen sessions dedicated to Physical AI:
@@ -62,7 +63,7 @@ And this is the part that actually has me hooked:
    And please, can we not use *Kill Bill* clips for training material?
 
 3. **Is there an alternate path that doesn't require massive data for robots to "get" us?**  
-   (This one gives me strong sci-fi vibes—cue existential crisis.)
+   This one gives me strong sci-fi vibes—cue existential crisis.
 
 ---
 
